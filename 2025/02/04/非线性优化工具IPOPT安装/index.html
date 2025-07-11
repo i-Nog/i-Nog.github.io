@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="i-Nog">
+    
+    <title>
+        
+            非线性优化工具IPOPT安装 |
+        
+        Lernen Forschen Machen
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+        <link rel="shortcut icon" href="/images/i-nog-logo.png">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/font/css/fontawesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/font/css/regular.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/font/css/solid.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/font/css/brands.min.css">
+    
+        
+            
+        
+            
+                
+<link rel="stylesheet" href="/css/custom-1.css">
+
+            
+        
+    
+    <script class="keep-theme-configurations">
+    const KEEP = window.KEEP || {}
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN","path":"search.json"}
+    KEEP.theme_config = {"base_info":{"primary_color":"#FF9900","title":"Lernen Forschen Machen","author":"i-Nog","avatar":"/images/i-nog-avatar.jpg","logo":"/images/i-nog-logo.png","favicon":"/images/i-nog-logo.png"},"menu":{"home":"/ || fa-solid fa-home","archives":"/archives || fa-solid fa-box-archive","categories":"/categories || fa-solid fa-layer-group","tools":"/tools || fa-solid fa-tools","about":"/about || fa-solid fa-user-graduate"},"first_screen":{"enable":true,"background_img":"/images/bg.svg","background_img_dark":"/images/bg.svg","description":"Keep writing and Keep loving.","hitokoto":true},"social_contact":{"enable":true,"links":{"github":null,"weixin":null,"qq":null,"weibo":null,"zhihu":null,"twitter":null,"x":null,"facebook":null,"email":"linxiaopeng-nog@qq.com"}},"scroll":{"progress_bar":false,"percent":true,"hide_header":true},"home":{"announcement":"转载请注明出处，尊重原创，从我做起。","category":true,"tag":false,"post_datetime":"updated","post_datetime_format":"YYYY-MM-DD HH:mm:ss"},"post":{"author_badge":{"enable":true,"level_badge":true,"custom_badge":["One","Two","Three"]},"word_count":{"wordcount":true,"min2read":true},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":false,"share":true,"reward":{"enable":true,"img_link":"/images/i-nog-avatar.jpg","text":"请作者吃姜饼","icon":null}},"code_block":{"tools":{"enable":true,"style":"default"},"highlight_theme":"obsidian"},"toc":{"enable":true,"number":false,"expand_all":false,"init_open":true,"layout":"right"},"website_count":{"busuanzi_count":{"enable":true,"site_uv":true,"site_pv":true,"page_pv":true}},"local_search":{"enable":true,"preload":true},"comment":{"enable":true,"use":"giscus","valine":{"appid":null,"appkey":null,"server_urls":null,"placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.39"},"waline":{"server_url":null,"reaction":false,"version":"3.3.2"},"giscus":{"repo":"i-Nog/iNog-blog-comments","repo_id":"R_kgDOPF7ymg","category":"Announcements","category_id":"DIC_kwDOPF7yms4Cscff","reactions_enabled":false},"artalk":{"server":null},"disqus":{"shortname":null}},"rss":{"enable":false},"lazyload":{"enable":true},"cdn":{"enable":true,"provider":"cdnjs"},"pjax":{"enable":true},"footer":{"since":2021,"word_count":true,"site_deploy":{"enable":true,"provider":"github","url":null},"record":{"enable":false,"list":[{"code":null,"link":null}]}},"inject":{"enable":true,"css":[null,"/css/custom-1.css"],"js":[null]},"root":"","source_data":{"tools":[{"category":"AI 工具汇总","anchorId":"QUklMjAlRTUlQjclQTUlRTUlODUlQjclRTYlQjElODclRTYlODAlQkI0"},{"name":"AI 工具集","link":"https://ai-bot.cn/","description":"AI工具集导航收录了国内外数百个不同类型的AI工具","image":"/images/tools/ai-bot-logo-black.png"},{"name":"Leaderboard Overview","link":"https://lmarena.ai/leaderboard","description":"See how leading models stack up across text, image, vision, and beyond.","image":"/images/tools/lmarena.png"},{"category":"聊天 AI","anchorId":"JUU4JTgxJThBJUU1JUE0JUE5JTIwQUk3"},{"name":"ChatGPT","link":"https://chatgpt.com/","description":"OpenAI 旗下 AI 聊天对话工具","image":"/images/tools/chatgpt-icon.png"},{"name":"Claude","link":"https://claude.ai/","description":"Anthropic公司推出的对话式AI智能助手","image":"/images/tools/anthropic-icon.png"},{"name":"DeepSeek","link":"https://chat.deepseek.com/","description":"幻方量化推出的AI智能助手和开源大模型","image":"/images/tools/deepseek-chat-icon.png"},{"category":"绘画 AI","anchorId":"JUU3JUJCJTk4JUU3JTk0JUJCJTIwQUk7"},{"name":"即梦AI","link":"https://jimeng.jianying.com/ai-tool/home","description":"字节跳动推出的一站式AI创作平台","image":"/images/tools/jimeng-logo-1.png"},{"name":"Bing Image Creator","link":"https://www.bing.com/images/create","description":"微软必应推出的基于DALL·E的AI图像生成工具","image":"/images/tools/new-bing-icon.png"},{"category":"几何绘图工具","anchorId":"JUU1JTg3JUEwJUU0JUJEJTk1JUU3JUJCJTk4JUU1JTlCJUJFJUU1JUI3JUE1JUU1JTg1JUI310"},{"name":"GeoGebra","link":"https://www.geogebra.org/calculator","description":"以更为灵活的方式进行数学的教授与学习","image":"/images/tools/geogebra.png"},{"name":"desmos","link":"https://www.desmos.com/calculator?lang=zh-CN","description":"Desmos是一款十分实用的函数绘图工具。","image":"/images/tools/desmos.png"},{"category":"博客工具","anchorId":"JUU1JThEJTlBJUU1JUFFJUEyJUU1JUI3JUE1JUU1JTg1JUI313"},{"name":"Hexo","link":"https://hexo.io/zh-cn/","description":"快速、简洁且高效的博客框架","image":"/images/tools/hexo.png"},{"name":"Keep主题","link":"https://keep-docs.xpoet.cn/","description":"Keep 主题使用手册","image":"/images/logo.svg"}]},"version":"4.2.5"}
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"}
+    KEEP.language_code_block = {"copy":"复制代码","copied":"已复制","fold":"折叠代码块","folded":"已折叠"}
+    KEEP.language_copy_copyright = {"copy":"复制版权信息","copied":"已复制","title":"原文标题","author":"原文作者","link":"原文链接"}
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <i class="pjax-progress-icon fas fa-circle-notch fa-spin"></i>
+    
+</div>
+
+
+
+<main class="page-container border-box">
+    <!-- home first screen  -->
+    
+
+    <!-- page content -->
+    <div class="page-main-content border-box">
+        <div class="page-main-content-top">
+            
+<header class="header-wrapper">
+
+    <div class="border-box header-content">
+        <div class="left flex-start border-box">
+            
+                <a class="logo-image border-box" href="/">
+                    <img src="/images/i-nog-logo.png">
+                </a>
+            
+            <a class="site-name border-box" href="/">
+               Lernen Forschen Machen
+            </a>
+        </div>
+
+        <div class="right border-box">
+            <div class="pc border-box">
+                <ul class="menu-list border-box">
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-home"></i>
+                                
+                                首页
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/archives">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-box-archive"></i>
+                                
+                                归档
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/categories">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-layer-group"></i>
+                                
+                                分类
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/tools">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-tools"></i>
+                                
+                                工具
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/about">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-user-graduate"></i>
+                                
+                                关于
+                                
+                            </a>
+                            
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="menu-text-color fas search fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile border-box flex-start">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list border-box">
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-home"></i>
+                                </span>
+                            
+                            首页
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/archives">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-box-archive"></i>
+                                </span>
+                            
+                            归档
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/categories">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-layer-group"></i>
+                                </span>
+                            
+                            分类
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/tools">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-tools"></i>
+                                </span>
+                            
+                            工具
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/about">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-user-graduate"></i>
+                                </span>
+                            
+                            关于
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle border-box">
+
+            <div class="main-content border-box">
+                
+
+                    
+<div class="fade-in-down-animation">
+    <div class="post-page-container border-box">
+        <div class="post-content-container border-box">
+            
+
+            <div class="post-content-bottom border-box">
+                
+                    <div class="post-title">
+                        非线性优化工具IPOPT安装
+                    </div>
+                
+
+                
+                    <div class="post-header border-box">
+                        
+                            <div class="avatar-box border-box">
+                                <img src="/images/i-nog-avatar.jpg">
+                            </div>
+                        
+                        <div class="info-box">
+                            <div class="author border-box">
+                                <span class="name">i-Nog</span>
+                                
+                                    <span class="author-badge">Lv2</span>
+                                
+                            </div>
+                            <div class="meta-info border-box">
+                                
+
+<div class="post-meta-info-container border-box post">
+    <div class="post-meta-info border-box">
+        
+
+        
+            <span class="meta-info-item post-create-date">
+                <i class="icon fa-solid fa-calendar-plus"></i>&nbsp;
+                <span class="datetime">2025-02-04 10:23:00</span>
+            </span>
+
+            
+                <span class="meta-info-item post-update-date">
+                    <i class="icon fa-solid fa-file-pen"></i>&nbsp;
+                    <span class="datetime" data-updated="Fri Jul 11 2025 15:53:58 GMT+0800">2025-07-11 15:53:58</span>
+                </span>
+            
+        
+
+        
+            <span class="meta-info-item post-category border-box"><i class="icon fas fa-folder"></i>&nbsp;
+                <ul class="post-category-ul">
+                    
+                            <li class="category-item"><a href="/categories/Linux%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">Linux软件开发</a></li>
+                        
+                    
+                            <li class="category-item">&nbsp;<i class="icon fas fa-angle-right"></i>&nbsp;<a href="/categories/%E7%AE%97%E6%B3%95/">算法</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+
+        
+        
+            <span class="meta-info-item post-wordcount">
+                <i class="icon fas fa-file-word"></i>&nbsp;<span>2k 字</span>
+            </span>
+        
+        
+            <span class="meta-info-item post-min2read">
+                <i class="icon fas fa-clock"></i>&nbsp;<span>8 分钟</span>
+            </span>
+        
+        
+            <span class="meta-info-item post-pv">
+                <i class="icon fas fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    </div>
+
+    
+</div>
+
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="post-content keep-markdown-body ">
+                    
+
+                    
+                         <p>详细记录了在 Linux（Ubuntu 20.04）环境下安装 IPOPT 及其依赖项（如 ASL、HSL、MUMPS、ColPack、Adol-C）的方法，涵盖 C++ 和 Python 两种使用场景，并附带错误排查建议和编译参数说明，是一份非常实用的安装部署手册。</p>
+<span id="more"></span>
+<h1 id="c"><a class="markdownIt-Anchor" href="#c"></a> C++</h1>
+<h2 id="ipopt安装"><a class="markdownIt-Anchor" href="#ipopt安装"></a> Ipopt安装</h2>
+<p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42301220/article/details/127946528" >Linux | Ubuntu 20.04安装ipopt和cppAD | 安装全流程+报错解决<i class="fas fa-external-link-alt"></i></a><br />
+按照方法二，成功安装Ipot3.14.17版本</p>
+<h3 id="源码安装"><a class="markdownIt-Anchor" href="#源码安装"></a> 源码安装</h3>
+<ol>
+<li>安装依赖</li>
+</ol>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt-get install gcc g++ gfortran git patch wget pkg-config liblapack-dev libmetis-dev libblas-dev </span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>创建一个存放所有跟Ipopt相关的文件夹，便于管理</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir ~/Ipopt_pkg</span><br><span class="line">cd Ipopt_pkg</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>安装ASL</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/coin-or-tools/ThirdParty-ASL.git</span><br><span class="line">cd ThirdParty-ASL</span><br><span class="line">sudo ./get.ASL</span><br><span class="line">sudo ./configure</span><br><span class="line">sudo make</span><br><span class="line">sudo make install</span><br><span class="line">cd ..</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>安装HSL</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/coin-or-tools/ThirdParty-HSL.git</span><br><span class="line">cd ThirdParty-HSL</span><br><span class="line"># 接下来需要下载coinhsl文件，并解压到ThirdParty-HSL目录下</span><br></pre></td></tr></table></figure>
+<p>下载<a href="/images/coinhsl.zip">coinhsl.zip</a>文件，并解压到<code>ThirdParty-HSL</code>目录下</p>
+<p>在<code>ThirdParty-HSL</code>目录下，执行以下命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo ./configure</span><br><span class="line">sudo make</span><br><span class="line">sudo make install</span><br><span class="line">cd ..</span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li>安装MUMPS</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/coin-or-tools/ThirdParty-Mumps.git</span><br><span class="line">cd ThirdParty-Mumps</span><br><span class="line">sudo ./get.Mumps</span><br><span class="line">sudo ./configure</span><br><span class="line">sudo make</span><br><span class="line">sudo make install</span><br><span class="line">cd ..</span><br></pre></td></tr></table></figure>
+<ol start="6">
+<li>安装Ipopt</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/coin-or/Ipopt.git</span><br><span class="line">cd Ipopt</span><br><span class="line">mkdir build</span><br><span class="line">cd build</span><br><span class="line">sudo ../configure</span><br><span class="line">sudo make</span><br><span class="line">sudo make test</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+<ol start="7">
+<li>完善环境</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/include</span><br><span class="line">sudo cp coin-or coin -r</span><br><span class="line">sudo ln -s /usr/local/lib/libcoinmumps.so.3 /usr/lib/libcoinmumps.so.3</span><br><span class="line">sudo ln -s /usr/local/lib/libcoinhsl.so.2 /usr/lib/libcoinhsl.so.2</span><br><span class="line">sudo ln -s /usr/local/lib/libipopt.so.3 /usr/lib/libipopt.so.3</span><br></pre></td></tr></table></figure>
+<h2 id="colpack安装"><a class="markdownIt-Anchor" href="#colpack安装"></a> ColPack安装</h2>
+<h3 id="font-colorgree指令安装验证可行font"><a class="markdownIt-Anchor" href="#font-colorgree指令安装验证可行font"></a> <font color=gree>指令安装(验证可行)</font></h3>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt-get install libcolpack-dev</span><br><span class="line"><span class="comment"># 默认安装在/usr目录下</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查询是否安装了ColPack</span></span><br><span class="line">ldconfig -p | grep ColPack</span><br></pre></td></tr></table></figure>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/6b5cb23f6dd0fd9ce8a284b267651b08.png"
+                        alt="6b5cb23f6dd0fd9ce8a284b267651b08.png" 
+                 ></p>
+<h3 id="源码安装-2"><a class="markdownIt-Anchor" href="#源码安装-2"></a> 源码安装</h3>
+<ol>
+<li>源码下载</li>
+</ol>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/CSCsw/ColPack.git  <span class="comment">#Download ColPack</span></span><br><span class="line"><span class="built_in">cd</span> ColPack             <span class="comment"># ColPack Root Directory</span></span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>安装</li>
+</ol>
+<p><font color=red size=4>该方法变以后的头文件和库所在位置是错误的，需要调整位置。否则，安装<code>Adolc</code>时会链接不到。</font></p>
+<ul>
+<li>通过<code>autotools</code>安装</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> build/automake      <span class="comment"># automake folder</span></span><br><span class="line">autoreconf -vif        <span class="comment"># generate configure files based on the machince</span></span><br><span class="line"><span class="built_in">mkdir</span> mywork           </span><br><span class="line"><span class="built_in">cd</span> mywork</span><br><span class="line">fullpath=$(<span class="built_in">pwd</span>)        <span class="comment"># modify fullpath to your destination folder if need</span></span><br><span class="line">../configure --prefix=<span class="variable">$&#123;fullpath&#125;</span>  </span><br><span class="line">make -j 4              <span class="comment"># Where &quot;4&quot; is the number of cores on your machine</span></span><br><span class="line">make install           <span class="comment"># install lib and include/ColPack to destination  </span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>通过<code>cmake</code>安装</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mkdir build/cmake/mywork</span><br><span class="line">cd build/cmake/mywork</span><br><span class="line">fullpath=$(pwd)        # modify fullpath to your destination folder if need</span><br><span class="line">cmake .. -DCMAKE_INSTALL_PREFIX:PATH=$&#123;fullpath&#125; </span><br><span class="line">make -j 4              # Where &quot;4&quot; is the number of cores on your machine</span><br><span class="line">make install           # install the libararies</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li><font color=gree>如果指定<code>v1.0.10</code>版本(验证可行)</font></li>
+</ol>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git checkout v1.0.10</span><br><span class="line">./autoconf.sh</span><br><span class="line"><span class="comment"># 配置安装地址</span></span><br><span class="line">./configure --prefix=<span class="variable">$&#123;ColPack的安装地址&#125;</span></span><br><span class="line">make</span><br><span class="line"><span class="built_in">sudo</span> make install</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>$&#123;ColPack的安装地址&#125;</code>本人位置是<code>/home/lxp/projects/l2_data_plot_tool/data_plot_tool/third_party</code><br />
+<img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/60ba7871b1d7d20ad7dcda9d7c132a1e.png"
+                        alt="60ba7871b1d7d20ad7dcda9d7c132a1e.png" 
+                 >
+<ul>
+<li>头文件在<code>include/ColPack/</code>目录</li>
+<li>库文件在<code>lib/</code>目录</li>
+</ul>
+</li>
+<li>可以直接修改<code>autoconf.sh</code>文件内容，配置安装地址<br />
+<img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/62affe12b0cf94ec2d10e631f9068f26.png"
+                        alt="62affe12b0cf94ec2d10e631f9068f26.png" 
+                 ></li>
+</ul>
+<h2 id="adolc安装"><a class="markdownIt-Anchor" href="#adolc安装"></a> Adolc安装</h2>
+<p><a class="link"   target="_blank" rel="noopener" href="https://github.com/coin-or/ADOL-C" >库地址<i class="fas fa-external-link-alt"></i></a></p>
+<h3 id="font-colorred使用cmake安装目前还不成熟font"><a class="markdownIt-Anchor" href="#font-colorred使用cmake安装目前还不成熟font"></a> <font color=red>使用CMake安装(目前还不成熟)</font></h3>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/844ca9ef4d906b74739988543380b83e.png"
+                        alt="844ca9ef4d906b74739988543380b83e.png" 
+                 ></p>
+<h3 id="font-colorgree使用autotools安装验证可行font"><a class="markdownIt-Anchor" href="#font-colorgree使用autotools安装验证可行font"></a> <font color=gree>使用AutoTools安装(验证可行)</font></h3>
+<h4 id="使用-autotools-进行本地安装"><a class="markdownIt-Anchor" href="#使用-autotools-进行本地安装"></a> 使用 AutoTools 进行本地安装</h4>
+<ol>
+<li>
+<p><strong>执行 <code>autoreconf -fi</code></strong></p>
+</li>
+<li>
+<p><strong>运行 <code>configure</code>，可能需要使用以下选项之一：</strong></p>
+<ul>
+<li><code>--prefix=PREFIX</code>：将库和头文件安装到 <code>PREFIX</code> 目录（默认：<font color=greee>${HOME}/adolc_base</font>）。</li>
+<li><code>--enable-sparse</code>：构建稀疏驱动程序（默认：<code>no</code>）。</li>
+<li><code>--with-openmp-flag=FLAG</code>：使用 <code>FLAG</code> 来启用编译时的 OpenMP（默认：<code>none</code>）。</li>
+<li><code>--enable-docexa</code>：构建文档化的示例（默认：<code>no</code>）。</li>
+<li><code>--enable-addexa</code>：构建额外的示例（默认：<code>no</code>）。</li>
+<li><code>--enable-parexa</code>：构建并行示例（默认：<code>no</code>）。如果启用此选项，则需要使用 <code>--with-openmp-flag=FLAG</code>。</li>
+<li><code>--with-cflags=FLAGS</code>：使用 <code>CFLAGS=FLAGS</code>（默认：<code>-g -O2</code>）。</li>
+<li><code>--with-cxxflags=FLAGS</code>：使用 <code>CXXFLAGS=FLAGS</code>（默认：<code>-g -O2 -std=c++11</code>）。</li>
+<li><code>--with-boost=BOOST_PATH</code>：指定已编译的 Boost 库路径，默认选择系统库（如果存在）。</li>
+</ul>
+</li>
+<li>
+<p><strong>执行 <code>make</code></strong></p>
+</li>
+<li>
+<p><strong>执行 <code>make install</code></strong></p>
+<p>默认情况下，<code>make install</code> 会将所有文件安装到 <code>$&#123;PREFIX&#125;/lib</code> 和 <code>$&#123;PREFIX&#125;/include</code> 目录。如果需要<font color=gree>指定其他安装目录</font>，可以在 <code>configure</code> 调用时使用 <code>--prefix</code> 选项。</p>
+</li>
+</ol>
+<p>此过程会在适当的目录中生成所有必需的<code>makefile</code>。执行 <code>./configure --help</code> 可以查看其他可用选项的详细信息。</p>
+<h4 id="非本地安装"><a class="markdownIt-Anchor" href="#非本地安装"></a> 非本地安装</h4>
+<p>如同在 <code>INSTALL</code> 文件中提到的，可以使用 <code>--prefix=PATH</code> 配置选项将 adolc 软件包安装到与 <code>$&#123;HOME&#125;/adolc_base</code> 不同的目录。这通常用于全局安装。常见的路径包括 <code>/usr</code> 和 <code>/usr/local/</code>，并且还有其他路径也会被使用。通过提供额外的 <code>configure</code> 选项，可以对安装目录进行更精细的控制。详情请参见 <code>./configure --help</code>。</p>
+<p>执行 <code>make install</code> 完成安装时，目标目录必须具有写权限。确保你拥有相关权限，否则可能会得到意外结果。</p>
+<p>如果需要多个用户共享库文件，全局安装可能会非常有用。通过将库路径添加到 <code>/etc/ld.so.conf</code>，就可以避免使用 <code>LD_LIBRARY_PATH</code> 和 <code>-L</code> 链接选项。在许多情况下，例如 <code>PATH=/usr/local</code>，还可以避免在编译源代码时使用 <code>-I</code> 指令。</p>
+<h4 id="font-colorgree安装指令验证可行font"><a class="markdownIt-Anchor" href="#font-colorgree安装指令验证可行font"></a> <font color=gree>安装指令(验证可行)</font></h4>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 下载源代码</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/coin-or/ADOL-C.git</span><br><span class="line"><span class="built_in">cd</span> ADOL-C/</span><br><span class="line"><span class="comment"># 2. 切换到所需版本分支</span></span><br><span class="line">git checkout releases/2.7.2</span><br><span class="line"><span class="comment"># 3. 执行前期准备（需要AutoTools工具）</span></span><br><span class="line">autoreconf -<span class="keyword">fi</span></span><br><span class="line"><span class="comment"># 4. 配置安装目录和所需驱动</span></span><br><span class="line">CPPFLAGS=-I/usr/local/include LDFLAGS=-L/usr/local/lib \</span><br><span class="line">./configure --prefix=<span class="variable">$&#123;Adolc想要安装地址&#125;</span> --enable-sparse --with-colpack=<span class="variable">$&#123;ColPack的安装地址&#125;</span></span><br><span class="line"><span class="comment"># 5. 编译</span></span><br><span class="line">make</span><br><span class="line"><span class="comment"># 6. 安装</span></span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>$&#123;Adolc想要安装地址&#125;</code>本人位置是<code>/home/lxp/projects/l2_data_plot_tool/data_plot_tool/third_party</code></li>
+<li><code>$&#123;ColPack的安装地址&#125;</code>本人位置是<code>/home/lxp/projects/l2_data_plot_tool/data_plot_tool/third_party</code></li>
+</ul>
+<p><font color=red size=5>注意：</p>
+<ul>
+<li>需要切换发布版本，比如<code>releases/2.7.2</code>，否则<code>autoreconf -fi</code>会执行失败</li>
+<li>需要指定<code>CPPFLAGS=-I/usr/local/include LDFLAGS=-L/usr/local/lib</code>，否则会出现<code>yes/lib64</code>等异常路径，导致失败。<em>(通过设置 CPPFLAGS 和 LDFLAGS 环境变量明确指定 ColPack 的路径来配置 ADOL-C)</em></li>
+</ul>
+</font>
+<p><font color=gree>验证是否成功链接上<code>ColPack</code>库: </font></p>
+<ul>
+<li><code>ldd libadolc.so</code><br />
+<img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/2e7169b76a02aad98e7196f7e56f21d3.png"
+                        alt="2e7169b76a02aad98e7196f7e56f21d3.png" 
+                 ></li>
+</ul>
+<h1 id="python"><a class="markdownIt-Anchor" href="#python"></a> Python</h1>
+<p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/u013468614/article/details/103624851" >c++与python非线性规(优)划（化）工具<i class="fas fa-external-link-alt"></i></a></p>
+<p><font color=gree size=5>在Ubuntu + Anaconda环境下安装pyomo与ipopt：</font></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 进入虚拟环境</span></span><br><span class="line">conda update conda</span><br><span class="line">conda update anaconda</span><br><span class="line">conda install -c conda-forge pyomo</span><br><span class="line">conda install -c conda-forge pyomo.extras</span><br><span class="line">conda install -c conda-forge coincbc</span><br><span class="line">conda install -c conda-forge ipopt</span><br></pre></td></tr></table></figure>
+<h1 id="拓展知识"><a class="markdownIt-Anchor" href="#拓展知识"></a> 拓展知识</h1>
+<h2 id="编译参数cppflags-cflags-ldflags的理解"><a class="markdownIt-Anchor" href="#编译参数cppflags-cflags-ldflags的理解"></a> 编译参数<code>CPPFLAGS</code>、<code>CFLAGS</code>、<code>LDFLAGS</code>的理解</h2>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/e4e77bba96bf4478bcf9f645f4347f8b.png"
+                        alt="e4e77bba96bf4478bcf9f645f4347f8b.png" 
+                 ></p>
+<ul>
+<li><code>CPPFLAGS</code>: <font color=gree>预处理器</font>需要的选项 如：<code>-I</code>(大写i指定<font color=gree>头文件路径</font>)</li>
+<li><code>CFLAGS</code>：<font color=gree>编译的时候</font>使用的参数<code>–Wall –g -c</code></li>
+<li><code>LDFLAGS</code>：<font color=gree>链接库</font>使用的选项<code>–L -l</code>(大写L指定<font color=greee>动态库的路径</font>，小写L指定<font color=yellow>动态库的名称</font>)</li>
+</ul>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/cf27eec5a353926fe6fd8bf8a6ae083c.png"
+                        alt="cf27eec5a353926fe6fd8bf8a6ae083c.png" 
+                 ></p>
+<blockquote>
+<ul>
+<li><code>CFLAGS</code>表示用于<font color=gree>C编译器</font>的选项</li>
+<li><code>CXXFLAGS</code>表示用于<font color=gree>C++编译器</font>的选项<br />
+这两个变量实际上涵盖了<font color=greee>编译</font>和<font color=greee>汇编</font>的两个步骤</li>
+</ul>
+</blockquote>
+<ul>
+<li>
+<p><code>CPPFLAGS</code>：指定头文件(<code>.h</code>)的路径，如：<code>CPPFLAGS=-I/usr/include -I/path/include</code>。</p>
+<ul>
+<li><font color=greee>安装一个包时会在安装路径下建立一个<code>include</code>文件夹</font>;</li>
+<li><font color=yellow>当安装过程中出现故障时，试着把曾经安装的包的<code>include</code>文件夹增加到该变量中来</font>。</li>
+</ul>
+</li>
+<li>
+<p><code>LDFLAGS</code>：<code>gcc</code>等编译器会用到的一些优化參数，也能够在里面<font color=gree>指定库文件的位置</font>。<br />
+使用方法：<code>LDFLAGS=-L/usr/lib -L/path/to/your/lib</code>。</p>
+<ul>
+<li>每安装一个包，一定会在安装文件夹里建立一个<code>lib</code>文件夹。</li>
+<li>假设已经安装了某个包，而在安装另一个包时，它愣是说找不到，那就将那个包的<code>lib</code>路径增加的<code>LDFALGS</code>中试一下。</li>
+</ul>
+</li>
+<li>
+<p><code>LIBS</code>：告诉<font color=gree>链接器</font>要链接<font color=greee>哪些库文件</font>。如<code>LIBS = -lpthread -liconv</code></p>
+<ul>
+<li>简单地说，<code>LDFLAGS</code>是告诉<font color=gree>链接器</font><mark>从哪里寻找库文件</mark>，而<code>LIBS</code>是告诉<font color=gree>链接器</font>要<mark>链接哪些库文件</mark>。</li>
+<li>有时候<code>LDFLAGS</code>指定<code>-L</code>尽管能让<font color=gree>链接器</font>找到库进行链接。可是<font color=greee>运行时链接器却找不到这个库</font>。假设要<font color=yellow>让软件运行时库文件的路径也得到扩展</font>，那么我们须要增加这两个库给<code>-Wl,R</code>：<br />
+假设在运行<code>./configure</code>曾经环境变量设置<code>export LDFLAGS=&quot;-L/var/xxx/lib -L/opt/mysql/lib -Wl,R/var/xxx/lib -Wl,R/opt/mysql/lib&quot;</code>
+<ul>
+<li>注意环境变量设置等号两边不能够有空格，并且要加上引号（<code>shell</code>的使用方法）。</li>
+<li>那么运行<code>configure</code>以后。<code>Makefile</code>将会设置这个选项，链接时会有这个參数，编译出来的可运行程序的库文件搜索路径就得到扩展了。<code>LDFLAGS = -L/var/xxx/lib -L/opt/mysql/lib -Wl,R/var/xxx/lib -Wl,R/opt/mysql/lib</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                    
+                </div>
+
+                
+
+                <div class="post-bottom-tags-and-share border-box">
+                    <div>
+                        
+                    </div>
+                    <div>
+                        
+                            <div class="post-share-container border-box">
+    <ul class="share-list-wrap border-box">
+        <li class="qq share-item border-box flex-center tooltip"
+            data-tooltip-content="分享到 QQ"
+        >
+            <i class="fa-brands fa-qq"></i>
+        </li>
+        <li class="wechat share-item border-box flex-center tooltip tooltip-img"
+            data-tooltip-content="分享到微信"
+            data-tooltip-img-tip="微信扫一扫"
+            data-tooltip-img-style="background-color: #fff; top: -10px; padding: 0.6rem 0.6rem 0.1rem 0.6rem;"
+        >
+            <i class="fa-brands fa-weixin"></i>
+        </li>
+        <li class="weibo share-item border-box flex-center tooltip"
+            data-tooltip-content="分享到微博"
+        >
+            <i class="fa-brands fa-weibo"></i>
+        </li>
+    </ul>
+</div>
+
+                        
+                    </div>
+                </div>
+
+                
+                    
+
+<div class="reward-author-container border-box flex-center">
+    <div class="reward-btn border-box flex-center tooltip tooltip-img"
+            data-tooltip-img-url="/images/i-nog-avatar.jpg"
+            data-tooltip-img-trigger="click"
+            data-tooltip-img-style="top: -6px;"
+    >
+        <i class="fa-solid fa-gift"></i>&nbsp;请作者吃姜饼
+    </div>
+</div>
+
+                
+
+                
+                    <div class="post-nav border-box">
+                        
+                            <div class="prev-post">
+                                <a class="prev"
+                                   rel="prev"
+                                   href="/2025/04/14/sysroot%E7%9B%AE%E5%BD%95%E7%9A%84%E4%BD%9C%E7%94%A8/"
+                                   title="sysroot目录的作用"
+                                >
+                                    <span class="left arrow-icon flex-center">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">sysroot目录的作用</span>
+                                        <span class="post-nav-item">上一篇</span>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                        
+                            <div class="next-post">
+                                <a class="next"
+                                   rel="next"
+                                   href="/2022/09/26/Apollo%20r5.5.0%20%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB%E4%B9%8B%E7%A7%AF%E5%88%86(Integral)/"
+                                   title="Apollo r5.5.0 代码解读之积分(Integral)"
+                                >
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">Apollo r5.5.0 代码解读之积分(Integral)</span>
+                                        <span class="post-nav-item">下一篇</span>
+                                    </span>
+                                    <span class="right arrow-icon flex-center">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                    </div>
+                
+
+                
+                    
+
+
+    <div class="comments-container border-box">
+        <div id="comments-anchor" class="comment-area-title border-box">
+            <i class="fas fa-comments"></i>&nbsp;评论
+        </div>
+        <div class="comment-plugin-fail border-box">
+    <span class="fail-tip">评论插件加载失败</span>
+    <button class="reload keep-button">点击重新加载</button>
+</div>
+<div class="comment-plugin-loading flex-center border-box">
+    <i class="loading-icon fa-solid fa-spinner fa-spin"></i>
+    <span class="load-tip">正在加载评论插件</span>
+</div>
+<script data-pjax>
+  window.KeepCommentPlugin = {}
+  window.KeepCommentPlugin.hideLoading = () => {
+    const cplDom = document.querySelector('.comments-container .comment-plugin-loading')
+    cplDom.style.display = 'none'
+  }
+  window.KeepCommentPlugin.loadFailHandle = () => {
+    window.KeepCommentPlugin.hideLoading()
+    const cpfDom = document.querySelector('.comments-container .comment-plugin-fail')
+    cpfDom.style.display = 'flex'
+    cpfDom.querySelector('.reload').addEventListener('click', () => {
+      window.location.reload()
+    })
+  }
+</script>
+
+        
+            
+
+    <div class="giscus-comments-container">
+        <div class="giscus" id="giscus"></div>
+        <script data-pjax
+                onerror="window.KeepCommentPlugin.loadFailHandle()"
+        >
+          if (!window.KeepCommentPlugin?.getGiscusTheme) {
+            window.KeepCommentPlugin.getGiscusTheme = () => {
+              return document.documentElement.classList.contains('dark-mode') ? 'dark_dimmed' : 'light_tritanopia'
+            }
+          }
+
+          if (!window.KeepCommentPlugin?.changeGiscusTheme) {
+            window.KeepCommentPlugin.changeGiscusTheme = () => {
+              const iframe = document.querySelector('iframe.giscus-frame')
+              iframe && iframe.contentWindow.postMessage({
+                giscus: {
+                  setConfig: {
+                    theme: window.KeepCommentPlugin.getGiscusTheme()
+                  }
+                }
+              }, 'https://giscus.app')
+            }
+          }
+
+          if (!window.KeepCommentPlugin?.initGiscus) {
+            window.KeepCommentPlugin.initGiscus = () => {
+              const script = document.createElement('script')
+              script.async = true
+              script.src = 'https://giscus.app/client.js'
+              script.setAttribute('data-repo', 'i-Nog/iNog-blog-comments')
+              script.setAttribute('data-repo-id', 'R_kgDOPF7ymg')
+              script.setAttribute('data-category', 'Announcements')
+              script.setAttribute('data-category-id', 'DIC_kwDOPF7yms4Cscff')
+              script.setAttribute('data-reactions-enabled', '0')
+              script.setAttribute('data-lang', 'zh-CN')
+              script.setAttribute('data-mapping', 'pathname')
+              script.setAttribute('data-strict', '0')
+              script.setAttribute('data-emit-metadata', '0')
+              script.setAttribute('data-input-position', 'top')
+              script.setAttribute('crossorigin', 'anonymous')
+              script.setAttribute('loading', 'lazy')
+              script.setAttribute('data-theme', window.KeepCommentPlugin.getGiscusTheme())
+              document.querySelector('.giscus-comments-container').appendChild(script)
+              script.onerror = () => {
+                window.KeepCommentPlugin.loadFailHandle()
+              }
+              script.onload = () => {
+                window.KeepCommentPlugin.hideLoading()
+              }
+              const toggleThemeBtn = document.querySelector('.tool-toggle-theme-mode')
+              toggleThemeBtn && toggleThemeBtn.addEventListener('click', () => {
+                window.KeepCommentPlugin.changeGiscusTheme()
+              })
+            }
+          }
+
+          if ('true' === "true") {
+            setTimeout(() => {
+              window.KeepCommentPlugin.initGiscus()
+            }, 1000)
+          } else {
+            window.addEventListener("DOMContentLoaded", window.KeepCommentPlugin.initGiscus)
+          }
+        </script>
+    </div>
+
+
+        
+    </div>
+
+
+
+
+
+                
+            </div>
+        </div>
+
+        
+            <div class="pc-post-toc right-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#c"><span class="nav-text"> C++</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ipopt%E5%AE%89%E8%A3%85"><span class="nav-text"> Ipopt安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85"><span class="nav-text"> 源码安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#colpack%E5%AE%89%E8%A3%85"><span class="nav-text"> ColPack安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#font-colorgree%E6%8C%87%E4%BB%A4%E5%AE%89%E8%A3%85%E9%AA%8C%E8%AF%81%E5%8F%AF%E8%A1%8Cfont"><span class="nav-text"> 指令安装(验证可行)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85-2"><span class="nav-text"> 源码安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#adolc%E5%AE%89%E8%A3%85"><span class="nav-text"> Adolc安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#font-colorred%E4%BD%BF%E7%94%A8cmake%E5%AE%89%E8%A3%85%E7%9B%AE%E5%89%8D%E8%BF%98%E4%B8%8D%E6%88%90%E7%86%9Ffont"><span class="nav-text"> 使用CMake安装(目前还不成熟)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#font-colorgree%E4%BD%BF%E7%94%A8autotools%E5%AE%89%E8%A3%85%E9%AA%8C%E8%AF%81%E5%8F%AF%E8%A1%8Cfont"><span class="nav-text"> 使用AutoTools安装(验证可行)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-autotools-%E8%BF%9B%E8%A1%8C%E6%9C%AC%E5%9C%B0%E5%AE%89%E8%A3%85"><span class="nav-text"> 使用 AutoTools 进行本地安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9D%9E%E6%9C%AC%E5%9C%B0%E5%AE%89%E8%A3%85"><span class="nav-text"> 非本地安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#font-colorgree%E5%AE%89%E8%A3%85%E6%8C%87%E4%BB%A4%E9%AA%8C%E8%AF%81%E5%8F%AF%E8%A1%8Cfont"><span class="nav-text"> 安装指令(验证可行)</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#python"><span class="nav-text"> Python</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8B%93%E5%B1%95%E7%9F%A5%E8%AF%86"><span class="nav-text"> 拓展知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%8F%82%E6%95%B0cppflags-cflags-ldflags%E7%9A%84%E7%90%86%E8%A7%A3"><span class="nav-text"> 编译参数CPPFLAGS、CFLAGS、LDFLAGS的理解</span></a></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+        </div>
+
+        <div class="page-main-content-bottom border-box">
+            
+<footer class="footer border-box">
+    <div class="copyright-info info-item">
+    &copy;&nbsp;<span>2021</span>&nbsp;-&nbsp;2025
+    
+            &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/">i-Nog</a>
+        
+    </div>
+
+    <div class="theme-info info-item">
+        由&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;驱动&nbsp;&&nbsp;主题&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
+    </div>
+
+    
+        
+        <div class="deploy-info info-item">
+            
+            本站由 <span class="tooltip" data-tooltip-content="GitHub Pages"><img src="/images/brands/github.png"></span> 提供部署服务
+            
+        </div>
+    
+
+    
+        <div class="count-info info-item">
+            
+                <span class="count-item border-box word">
+                    <span class="item-type border-box">总字数</span>
+                    <span class="item-value border-box word">20.7k</span>
+                </span>
+            
+
+            
+                <span class="count-item border-box uv">
+                    <span class="item-type border-box">访客数</span>
+                    <span class="item-value border-box uv" id="busuanzi_value_site_uv"></span>
+                </span>
+            
+
+            
+                <span class="count-item border-box pv">
+                    <span class="item-type border-box">访问量</span>
+                    <span class="item-value border-box pv" id="busuanzi_value_site_pv"></span>
+                </span>
+            
+        </div>
+    
+
+    
+</footer>
+
+        </div>
+    </div>
+
+    <!-- post tools -->
+    
+        <div class="post-tools right-toc">
+            <div class="post-tools-container border-box">
+    <ul class="post-tools-list border-box">
+        <!-- PC encrypt again -->
+        
+
+        <!-- PC TOC show toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- PC go comment -->
+        
+            <li class="tools-item flex-center go-to-comments">
+                <i class="fas fa-comment"></i>
+                <span class="post-comments-count"></span>
+            </li>
+        
+
+        <!-- PC full screen -->
+        <li class="tools-item flex-center full-screen">
+            <i class="fa-solid fa-expand"></i>
+        </li>
+    </ul>
+</div>
+
+        </div>
+    
+
+    <!-- side tools -->
+    <div class="side-tools">
+        <div class="side-tools-container border-box ">
+    <ul class="side-tools-list side-tools-show-handle border-box">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <!-- toggle mode -->
+        
+            <li class="tools-item tool-toggle-theme-mode flex-center">
+                <i class="fas fa-moon"></i>
+            </li>
+        
+
+        <!-- rss -->
+        
+
+        <!-- to bottom -->
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list border-box">
+        
+            <li class="tools-item toggle-show-toc-tablet flex-center">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        
+            <li class="tools-item go-to-comments-tablet flex-center">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+        <li class="tools-item tool-scroll-to-top flex-center show-arrow">
+            <i class="arrow fas fa-arrow-up"></i>
+            <span class="percent"></span>
+        </li>
+    </ul>
+</div>
+
+    </div>
+
+    <!-- image mask -->
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
+</div>
+
+
+    <!-- local search -->
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+    <!-- tablet toc -->
+    
+        <div class="tablet-post-toc-mask">
+            <div class="tablet-post-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#c"><span class="nav-text"> C++</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ipopt%E5%AE%89%E8%A3%85"><span class="nav-text"> Ipopt安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85"><span class="nav-text"> 源码安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#colpack%E5%AE%89%E8%A3%85"><span class="nav-text"> ColPack安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#font-colorgree%E6%8C%87%E4%BB%A4%E5%AE%89%E8%A3%85%E9%AA%8C%E8%AF%81%E5%8F%AF%E8%A1%8Cfont"><span class="nav-text"> 指令安装(验证可行)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85-2"><span class="nav-text"> 源码安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#adolc%E5%AE%89%E8%A3%85"><span class="nav-text"> Adolc安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#font-colorred%E4%BD%BF%E7%94%A8cmake%E5%AE%89%E8%A3%85%E7%9B%AE%E5%89%8D%E8%BF%98%E4%B8%8D%E6%88%90%E7%86%9Ffont"><span class="nav-text"> 使用CMake安装(目前还不成熟)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#font-colorgree%E4%BD%BF%E7%94%A8autotools%E5%AE%89%E8%A3%85%E9%AA%8C%E8%AF%81%E5%8F%AF%E8%A1%8Cfont"><span class="nav-text"> 使用AutoTools安装(验证可行)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-autotools-%E8%BF%9B%E8%A1%8C%E6%9C%AC%E5%9C%B0%E5%AE%89%E8%A3%85"><span class="nav-text"> 使用 AutoTools 进行本地安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9D%9E%E6%9C%AC%E5%9C%B0%E5%AE%89%E8%A3%85"><span class="nav-text"> 非本地安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#font-colorgree%E5%AE%89%E8%A3%85%E6%8C%87%E4%BB%A4%E9%AA%8C%E8%AF%81%E5%8F%AF%E8%A1%8Cfont"><span class="nav-text"> 安装指令(验证可行)</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#python"><span class="nav-text"> Python</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8B%93%E5%B1%95%E7%9F%A5%E8%AF%86"><span class="nav-text"> 拓展知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%8F%82%E6%95%B0cppflags-cflags-ldflags%E7%9A%84%E7%90%86%E8%A7%A3"><span class="nav-text"> 编译参数CPPFLAGS、CFLAGS、LDFLAGS的理解</span></a></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        </div>
+    
+</main>
+
+
+
+
+
+<!-- common js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/header-shrink.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/back2top.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/toggle-theme.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/code-block.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/main.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/libs/anime.min.js"></script>
+
+<!-- local search -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/local-search.min.js"></script>
+
+
+<!-- lazyload -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/lazyload.min.js"></script>
+
+
+<div class="pjax">
+    <!-- home page -->
+    
+
+    <!-- post page -->
+    
+        <!-- post-helper -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/post/post-helper.min.js"></script>
+
+        <!-- toc -->
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/post/toc.min.js"></script>
+        
+
+        <!-- copyright-info -->
+        
+
+        <!-- share -->
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/post/share.min.js"></script>
+        
+    
+
+    <!-- categories page -->
+    
+
+    <!-- links page -->
+    
+
+    <!-- photos page -->
+    
+
+    <!-- tools page -->
+    
+</div>
+
+<!-- mermaid -->
+
+
+<!-- pjax -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/libs/pjax.min.js"></script>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart()
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd()
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'))
+            KEEP.initExecute()
+        });
+    });
+</script>
+
+
+
+
+    
+        
+    
+
+</body>
+</html>

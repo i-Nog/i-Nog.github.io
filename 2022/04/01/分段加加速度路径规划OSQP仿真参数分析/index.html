@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="i-Nog">
+    
+    <title>
+        
+            分段加加速度路径规划OSQP仿真参数分析 |
+        
+        Lernen Forschen Machen
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+        <link rel="shortcut icon" href="/images/i-nog-logo.png">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/font/css/fontawesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/font/css/regular.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/font/css/solid.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/font/css/brands.min.css">
+    
+        
+            
+        
+            
+                
+<link rel="stylesheet" href="/css/custom-1.css">
+
+            
+        
+    
+    <script class="keep-theme-configurations">
+    const KEEP = window.KEEP || {}
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN","path":"search.json"}
+    KEEP.theme_config = {"base_info":{"primary_color":"#FF9900","title":"Lernen Forschen Machen","author":"i-Nog","avatar":"/images/i-nog-avatar.jpg","logo":"/images/i-nog-logo.png","favicon":"/images/i-nog-logo.png"},"menu":{"home":"/ || fa-solid fa-home","archives":"/archives || fa-solid fa-box-archive","categories":"/categories || fa-solid fa-layer-group","tools":"/tools || fa-solid fa-tools","about":"/about || fa-solid fa-user-graduate"},"first_screen":{"enable":true,"background_img":"/images/bg.svg","background_img_dark":"/images/bg.svg","description":"Keep writing and Keep loving.","hitokoto":true},"social_contact":{"enable":true,"links":{"github":null,"weixin":null,"qq":null,"weibo":null,"zhihu":null,"twitter":null,"x":null,"facebook":null,"email":"linxiaopeng-nog@qq.com"}},"scroll":{"progress_bar":false,"percent":true,"hide_header":true},"home":{"announcement":"转载请注明出处，尊重原创，从我做起。","category":true,"tag":false,"post_datetime":"updated","post_datetime_format":"YYYY-MM-DD HH:mm:ss"},"post":{"author_badge":{"enable":true,"level_badge":true,"custom_badge":["One","Two","Three"]},"word_count":{"wordcount":true,"min2read":true},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":false,"share":true,"reward":{"enable":true,"img_link":"/images/i-nog-avatar.jpg","text":"请作者吃姜饼","icon":null}},"code_block":{"tools":{"enable":true,"style":"default"},"highlight_theme":"obsidian"},"toc":{"enable":true,"number":false,"expand_all":false,"init_open":true,"layout":"right"},"website_count":{"busuanzi_count":{"enable":true,"site_uv":true,"site_pv":true,"page_pv":true}},"local_search":{"enable":true,"preload":true},"comment":{"enable":true,"use":"giscus","valine":{"appid":null,"appkey":null,"server_urls":null,"placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.39"},"waline":{"server_url":null,"reaction":false,"version":"3.3.2"},"giscus":{"repo":"i-Nog/iNog-blog-comments","repo_id":"R_kgDOPF7ymg","category":"Announcements","category_id":"DIC_kwDOPF7yms4Cscff","reactions_enabled":false},"artalk":{"server":null},"disqus":{"shortname":null}},"rss":{"enable":false},"lazyload":{"enable":true},"cdn":{"enable":true,"provider":"cdnjs"},"pjax":{"enable":true},"footer":{"since":2021,"word_count":true,"site_deploy":{"enable":true,"provider":"github","url":null},"record":{"enable":false,"list":[{"code":null,"link":null}]}},"inject":{"enable":true,"css":[null,"/css/custom-1.css"],"js":[null]},"root":"","source_data":{"tools":[{"category":"AI 工具汇总","anchorId":"QUklMjAlRTUlQjclQTUlRTUlODUlQjclRTYlQjElODclRTYlODAlQkI0"},{"name":"AI 工具集","link":"https://ai-bot.cn/","description":"AI工具集导航收录了国内外数百个不同类型的AI工具","image":"/images/tools/ai-bot-logo-black.png"},{"name":"Leaderboard Overview","link":"https://lmarena.ai/leaderboard","description":"See how leading models stack up across text, image, vision, and beyond.","image":"/images/tools/lmarena.png"},{"category":"聊天 AI","anchorId":"JUU4JTgxJThBJUU1JUE0JUE5JTIwQUk3"},{"name":"ChatGPT","link":"https://chatgpt.com/","description":"OpenAI 旗下 AI 聊天对话工具","image":"/images/tools/chatgpt-icon.png"},{"name":"Claude","link":"https://claude.ai/","description":"Anthropic公司推出的对话式AI智能助手","image":"/images/tools/anthropic-icon.png"},{"name":"DeepSeek","link":"https://chat.deepseek.com/","description":"幻方量化推出的AI智能助手和开源大模型","image":"/images/tools/deepseek-chat-icon.png"},{"category":"绘画 AI","anchorId":"JUU3JUJCJTk4JUU3JTk0JUJCJTIwQUk7"},{"name":"即梦AI","link":"https://jimeng.jianying.com/ai-tool/home","description":"字节跳动推出的一站式AI创作平台","image":"/images/tools/jimeng-logo-1.png"},{"name":"Bing Image Creator","link":"https://www.bing.com/images/create","description":"微软必应推出的基于DALL·E的AI图像生成工具","image":"/images/tools/new-bing-icon.png"},{"category":"几何绘图工具","anchorId":"JUU1JTg3JUEwJUU0JUJEJTk1JUU3JUJCJTk4JUU1JTlCJUJFJUU1JUI3JUE1JUU1JTg1JUI310"},{"name":"GeoGebra","link":"https://www.geogebra.org/calculator","description":"以更为灵活的方式进行数学的教授与学习","image":"/images/tools/geogebra.png"},{"name":"desmos","link":"https://www.desmos.com/calculator?lang=zh-CN","description":"Desmos是一款十分实用的函数绘图工具。","image":"/images/tools/desmos.png"},{"category":"博客工具","anchorId":"JUU1JThEJTlBJUU1JUFFJUEyJUU1JUI3JUE1JUU1JTg1JUI313"},{"name":"Hexo","link":"https://hexo.io/zh-cn/","description":"快速、简洁且高效的博客框架","image":"/images/tools/hexo.png"},{"name":"Keep主题","link":"https://keep-docs.xpoet.cn/","description":"Keep 主题使用手册","image":"/images/logo.svg"}]},"version":"4.2.5"}
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"}
+    KEEP.language_code_block = {"copy":"复制代码","copied":"已复制","fold":"折叠代码块","folded":"已折叠"}
+    KEEP.language_copy_copyright = {"copy":"复制版权信息","copied":"已复制","title":"原文标题","author":"原文作者","link":"原文链接"}
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <i class="pjax-progress-icon fas fa-circle-notch fa-spin"></i>
+    
+</div>
+
+
+
+<main class="page-container border-box">
+    <!-- home first screen  -->
+    
+
+    <!-- page content -->
+    <div class="page-main-content border-box">
+        <div class="page-main-content-top">
+            
+<header class="header-wrapper">
+
+    <div class="border-box header-content">
+        <div class="left flex-start border-box">
+            
+                <a class="logo-image border-box" href="/">
+                    <img src="/images/i-nog-logo.png">
+                </a>
+            
+            <a class="site-name border-box" href="/">
+               Lernen Forschen Machen
+            </a>
+        </div>
+
+        <div class="right border-box">
+            <div class="pc border-box">
+                <ul class="menu-list border-box">
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-home"></i>
+                                
+                                首页
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/archives">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-box-archive"></i>
+                                
+                                归档
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/categories">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-layer-group"></i>
+                                
+                                分类
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/tools">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-tools"></i>
+                                
+                                工具
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/about">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-user-graduate"></i>
+                                
+                                关于
+                                
+                            </a>
+                            
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="menu-text-color fas search fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile border-box flex-start">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list border-box">
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-home"></i>
+                                </span>
+                            
+                            首页
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/archives">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-box-archive"></i>
+                                </span>
+                            
+                            归档
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/categories">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-layer-group"></i>
+                                </span>
+                            
+                            分类
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/tools">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-tools"></i>
+                                </span>
+                            
+                            工具
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/about">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-user-graduate"></i>
+                                </span>
+                            
+                            关于
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle border-box">
+
+            <div class="main-content border-box">
+                
+
+                    
+<div class="fade-in-down-animation">
+    <div class="post-page-container border-box">
+        <div class="post-content-container border-box">
+            
+
+            <div class="post-content-bottom border-box">
+                
+                    <div class="post-title">
+                        分段加加速度路径规划OSQP仿真参数分析
+                    </div>
+                
+
+                
+                    <div class="post-header border-box">
+                        
+                            <div class="avatar-box border-box">
+                                <img src="/images/i-nog-avatar.jpg">
+                            </div>
+                        
+                        <div class="info-box">
+                            <div class="author border-box">
+                                <span class="name">i-Nog</span>
+                                
+                                    <span class="author-badge">Lv2</span>
+                                
+                            </div>
+                            <div class="meta-info border-box">
+                                
+
+<div class="post-meta-info-container border-box post">
+    <div class="post-meta-info border-box">
+        
+
+        
+            <span class="meta-info-item post-create-date">
+                <i class="icon fa-solid fa-calendar-plus"></i>&nbsp;
+                <span class="datetime">2022-04-01 16:25:00</span>
+            </span>
+
+            
+                <span class="meta-info-item post-update-date">
+                    <i class="icon fa-solid fa-file-pen"></i>&nbsp;
+                    <span class="datetime" data-updated="Fri Jul 11 2025 15:46:51 GMT+0800">2025-07-11 15:46:51</span>
+                </span>
+            
+        
+
+        
+            <span class="meta-info-item post-category border-box"><i class="icon fas fa-folder"></i>&nbsp;
+                <ul class="post-category-ul">
+                    
+                            <li class="category-item"><a href="/categories/%E7%AE%97%E6%B3%95/">算法</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+
+        
+        
+            <span class="meta-info-item post-wordcount">
+                <i class="icon fas fa-file-word"></i>&nbsp;<span>2k 字</span>
+            </span>
+        
+        
+            <span class="meta-info-item post-min2read">
+                <i class="icon fas fa-clock"></i>&nbsp;<span>8 分钟</span>
+            </span>
+        
+        
+            <span class="meta-info-item post-pv">
+                <i class="icon fas fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    </div>
+
+    
+</div>
+
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="post-content keep-markdown-body ">
+                    
+
+                    
+                         <h2 id="分段加加速度路径规划osqp仿真参数分析"><a class="markdownIt-Anchor" href="#分段加加速度路径规划osqp仿真参数分析"></a> 分段加加速度路径规划OSQP仿真参数分析</h2>
+<p>在自动驾驶横向路径规划中，分段加加速度模型（最小 jerk）常用于生成平滑轨迹，并以 OSQP 作为优化求解器。本文通过系统性仿真实验，分析路径规划中各种参数对轨迹形状与可行性的影响，并总结出一套实用的参数调试指南。</p>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th>默认值</th>
+<th>建议范围</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>l_weight</code></td>
+<td>1.0</td>
+<td><code>[10, 33]</code></td>
+<td>越大越贴中心线，过大不自然</td>
+</tr>
+<tr>
+<td><code>dl_weight</code></td>
+<td>max(5.0, 初始dl²)</td>
+<td><code>[0, 10000]</code></td>
+<td>越大越直，对结果影响小</td>
+</tr>
+<tr>
+<td><code>ddl_weight</code></td>
+<td>1000.0</td>
+<td>任意</td>
+<td>影响极小</td>
+</tr>
+<tr>
+<td><code>dddl_weight</code></td>
+<td>50000.0</td>
+<td><code>[50000, 500000]</code></td>
+<td>控制曲线“硬直”程度</td>
+</tr>
+<tr>
+<td><code>x_ref_weight</code></td>
+<td>10.0</td>
+<td><code>[10, 30]</code></td>
+<td>越大越接近目标线，但存在跳变</td>
+</tr>
+<tr>
+<td><code>end_state_weight_l</code></td>
+<td>1000.0</td>
+<td><code>[1000, 10000]</code></td>
+<td>控制终点位置贴合度</td>
+</tr>
+<tr>
+<td><code>end_state_weight_dl/ddl</code></td>
+<td>0.0</td>
+<td>任意</td>
+<td>基本无影响</td>
+</tr>
+</tbody>
+</table>
+<p>跳变提示：</p>
+<ul>
+<li>多个权重参数（如 l_weight、x_ref_weight）在某些区间会出现“跳变点”，即微小调整导致轨迹急剧变化，建议避开。</li>
+<li>x_ref_weight 在 [8.8, 9.0] 存在跳变，l_weight 在 [9, 10]、[33, 34]、[43, 44] 存在跳变。</li>
+</ul>
+<span id="more"></span>
+<h3 id="默认参数"><a class="markdownIt-Anchor" href="#默认参数"></a> 默认参数</h3>
+<p>采用单一变量原则：只改变其中一个值，其余不变。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># state (l, dl, ddl) : tuple</span></span><br><span class="line">first_state = (<span class="number">3.0</span>, <span class="number">0.</span>, <span class="number">0.</span>)</span><br><span class="line">last_state = (<span class="number">3.5</span>, <span class="number">0.</span>, <span class="number">0.</span>)</span><br><span class="line"><span class="meta"># weight (l, dl, ddl) : tuple</span></span><br><span class="line">end_state_weight = (<span class="number">1000.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>)</span><br><span class="line"></span><br><span class="line">weight_x_ref = <span class="number">10.0</span></span><br><span class="line"><span class="meta"># weights &#123;l_weight, dl_weight, ddl_weight, dddl_weight, 0.0&#125;</span></span><br><span class="line">weights = np.<span class="built_in">array</span>([<span class="number">1.0</span>, <span class="built_in">max</span>(<span class="number">5.0</span>, first_state[<span class="number">1</span>] * first_state[<span class="number">1</span>]), <span class="number">1000.0</span>, <span class="number">50000.0</span>, <span class="number">0.0</span>])</span><br><span class="line"># <span class="built_in">scale_factors</span> (l_scale_factor, dl_scale_factor, ddl_scale_factor) : tuple</span><br><span class="line">scale_factors = (<span class="number">1.0</span>, <span class="number">10.0</span>, <span class="number">100.0</span>)</span><br><span class="line"></span><br><span class="line">default_lateral_derivative_bound = <span class="number">2.0</span></span><br><span class="line">default_lateral_jerk_bound = <span class="number">4.0</span></span><br></pre></td></tr></table></figure>
+<h3 id="边界约束条件分析"><a class="markdownIt-Anchor" href="#边界约束条件分析"></a> 边界约束条件分析</h3>
+<h4 id="l_bounds根据障碍物道路构造边界"><a class="markdownIt-Anchor" href="#l_bounds根据障碍物道路构造边界"></a> l_bounds根据障碍物道路构造边界</h4>
+<p>就是障碍物边界，硬约束，需要注意的是<mark>起点一定要在约束条件以内</mark>，不然会导致<font color=red>计算失败(<code>primal infeasible</code>)</font>；终点不一定，即终点可以在边界之外。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># <span class="built_in">end_state</span> (l, dl, ddl) : tuple</span><br></pre></td></tr></table></figure>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/end_state.png"
+                        alt="end_state" 
+                 ></p>
+<p><code>0</code>是个需要额外注意的情况，曲线是独特的。</p>
+<h4 id="dl_bounds默认值为20对曲线影响不大"><a class="markdownIt-Anchor" href="#dl_bounds默认值为20对曲线影响不大"></a> dl_bounds默认值为2.0，对曲线影响不大</h4>
+<p>理解成横向速度。</p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/%E9%BB%98%E8%AE%A4%E6%83%85%E5%86%B5.png"
+                        alt="默认情况" 
+                 ></p>
+<p>默认情况下，计算得到的<code>dl</code>在<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mo>−</mo><mn>0.3</mn><mo separator="true">,</mo><mn>0.2</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(-0.3,0.2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">−</span><span class="mord">0</span><span class="mord">.</span><span class="mord">3</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">2</span><span class="mclose">)</span></span></span></span>之间。</p>
+<p>设置<code>default_lateral_derivative_bound</code>太小就会导致<font color=red>计算失败(<code>primal infeasible</code>)</font>。</p>
+<p>如下设置为<code>0.19</code>，发现会与<mark>边界相交</mark>。</p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/dl_bounds.png"
+                        alt="dl_bounds" 
+                 ></p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/dl_bounds_1.png"
+                        alt="dl_bounds_1" 
+                 ></p>
+<p>只要满足规划需求，对结果影响不大。</p>
+<h4 id="ddl_bounds根据车辆性能与参考线曲率设定"><a class="markdownIt-Anchor" href="#ddl_bounds根据车辆性能与参考线曲率设定"></a> ddl_bounds根据车辆性能与参考线曲率设定</h4>
+<p>理解成车辆的转弯曲率边界，以自卸车为例，最大转弯曲率为0.1左右。体现为，计算结果的曲线能转弯的能力。</p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/ddl_bounds.png"
+                        alt="ddl_bounds" 
+                 ></p>
+<p>值越小，拐弯能力越不行，绕障时就需要大幅度的摆动。</p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/ddl_bounds_1.png"
+                        alt="ddl_bounds_1" 
+                 ></p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/ddl_bounds_2.png"
+                        alt="ddl_bounds_2" 
+                 ></p>
+<h4 id="dddl_bound对曲线影响不大默认值为40"><a class="markdownIt-Anchor" href="#dddl_bound对曲线影响不大默认值为40"></a> dddl_bound对曲线影响不大，默认值为4.0</h4>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/dddl_bound_1.png"
+                        alt="dddl_bound_1" 
+                 ></p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/dddl_bound.png"
+                        alt="dddl_bound" 
+                 ></p>
+<p>对曲线影响不大。只要不为零，就不会导致<font color=red>计算失败(<code>primal infeasible</code>)</font>。</p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/dddl_bound_2.png"
+                        alt="dddl_bound_2" 
+                 ></p>
+<p><font color=gree size=5><code>dl,ddl</code>的上下限约束必须包括零点，即下限必须小于零，上限必须大于零，否则会造成<code>primal infeasible</code>求解失败。</font></p>
+<h3 id="weights参数分析"><a class="markdownIt-Anchor" href="#weights参数分析"></a> weights参数分析</h3>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">weights &#123;l_weight, dl_weight, ddl_weight, dddl_weight, <span class="number">0.0</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>无<code>x_reference</code>情况下：</p>
+<h4 id="weight_l默认值10建议区间1033"><a class="markdownIt-Anchor" href="#weight_l默认值10建议区间1033"></a> weight_l默认值1.0，建议区间<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>10</mn><mo separator="true">,</mo><mn>33</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[10,33]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">1</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">3</span><span class="mord">3</span><span class="mclose">]</span></span></span></span></h4>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/diff_weight_l.png"
+                        alt="diff_weight_l" 
+                 ></p>
+<p><code>l_weight</code>比重越大，越贴近中心线，整体感觉就是晚点绕障，提早回中心线，曲线越柔软；值在<code>[0, 1.0]</code>效果差不多；</p>
+<p>比重为<code>1000</code>已经使得曲线基本贴着边界，不可取；</p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/diff_weight_l_1.png"
+                        alt="diff_weight_l_1" 
+                 ></p>
+<p>比重为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>1</mn><mo separator="true">,</mo><mn>9</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[1,9]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">9</span><span class="mclose">]</span></span></span></span>曲线差不多，也就是<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>0</mn><mo separator="true">,</mo><mn>9.0</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[0,9.0]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">9</span><span class="mord">.</span><span class="mord">0</span><span class="mclose">]</span></span></span></span>，影响不大。在<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>9</mn><mo separator="true">,</mo><mn>10</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[9,10]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">9</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">1</span><span class="mord">0</span><span class="mclose">]</span></span></span></span>存在一个跳变值，同<code>end_state_weight_l</code>。</p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/diff_weight_l_2.png"
+                        alt="diff_weight_l_2" 
+                 ></p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/diff_weight_l_3.png"
+                        alt="diff_weight_l_3" 
+                 ></p>
+<p>可见比重在<code>50</code>之后，变化不大，所以调试参数可定在<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>10</mn><mo separator="true">,</mo><mn>33</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[10,33]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">1</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">3</span><span class="mord">3</span><span class="mclose">]</span></span></span></span>。</p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/diff_weight_l_4.png"
+                        alt="diff_weight_l_4" 
+                 ></p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/diff_weight_l_5.png"
+                        alt="diff_weight_l_5" 
+                 ></p>
+<p>比重在<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>33</mn><mo separator="true">,</mo><mn>34</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[33,34]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">3</span><span class="mord">3</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">3</span><span class="mord">4</span><span class="mclose">]</span></span></span></span>之间存在跳变。</p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/diff_weight_l_6.png"
+                        alt="diff_weight_l_6" 
+                 ></p>
+<p>比重在<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>34</mn><mo separator="true">,</mo><mn>43</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[34,43]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">3</span><span class="mord">4</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">4</span><span class="mord">3</span><span class="mclose">]</span></span></span></span>之间对曲线影响不大。</p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/diff_weight_l_7.png"
+                        alt="diff_weight_l_7" 
+                 ></p>
+<p>比重在<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>43</mn><mo separator="true">,</mo><mn>44</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[43,44]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">4</span><span class="mord">3</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">4</span><span class="mord">4</span><span class="mclose">]</span></span></span></span>之间存在跳变。</p>
+<h4 id="weight_dl默认值为5与初始dl平方最大值对曲线其实影响不大"><a class="markdownIt-Anchor" href="#weight_dl默认值为5与初始dl平方最大值对曲线其实影响不大"></a> weight_dl默认值为5与初始dl平方最大值，对曲线其实影响不大</h4>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/diff_weight_dl.png"
+                        alt="diff_weight_dl" 
+                 ></p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/diff_weight_dl_1.png"
+                        alt="diff_weight_dl_1" 
+                 ></p>
+<p><code>dl_weight</code>比重越大，整体拉得越直，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>0</mn><mo separator="true">,</mo><mn>1000</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[0, 1000]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mclose">]</span></span></span></span>差别不大；比重为<code>100000</code>的曲线不平滑，不可取。</p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/diff_weight_dl_2.png"
+                        alt="diff_weight_dl_2" 
+                 ></p>
+<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>10000</mn><mo separator="true">,</mo><mn>100000</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[10000,100000]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mclose">]</span></span></span></span>之间的比重，曲线过于柔软，贴近别解，不建议。</p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/diff_weight_dl_3.png"
+                        alt="diff_weight_dl_3" 
+                 ></p>
+<p>比重在区间<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>1000</mn><mo separator="true">,</mo><mn>10000</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[1000,10000]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mclose">]</span></span></span></span>，对曲线其实影响不大。车辆初始<code>dl</code>一般也不会超过<code>100</code>，也就是比重一般不会超过<code>10000</code>。</p>
+<h4 id="weight_ddl对曲线影响不大默认值10000"><a class="markdownIt-Anchor" href="#weight_ddl对曲线影响不大默认值10000"></a> weight_ddl对曲线影响不大，默认值1000.0</h4>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/diff_weight_ddl.png"
+                        alt="diff_weight_ddl" 
+                 ></p>
+<p><code>ddl_weight</code>比重对曲线影响不大。</p>
+<h4 id="weight_dddl影响结果拐弯性能默认值500000建议区间50-0000500-0000间隔100-0000"><a class="markdownIt-Anchor" href="#weight_dddl影响结果拐弯性能默认值500000建议区间50-0000500-0000间隔100-0000"></a> weight_dddl影响结果拐弯性能，默认值50000.0，建议区间<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>50000.0</mn><mo separator="true">,</mo><mn>500000.0</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[50 000.0,500 000.0]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">5</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">.</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">5</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">.</span><span class="mord">0</span><span class="mclose">]</span></span></span></span>，间隔<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>100000.0</mn></mrow><annotation encoding="application/x-tex">100 000.0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">.</span><span class="mord">0</span></span></span></span></h4>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/diff_weight_dddl_1.png"
+                        alt="diff_weight_dddl_1" 
+                 ></p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/diff_weight_dddl.png"
+                        alt="diff_weight_dddl" 
+                 ></p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/diff_weight_dddl_2.png"
+                        alt="diff_weight_dddl_2" 
+                 ></p>
+<p><code>dddl_weight</code>比重越小，越接近中心线，曲线越扭曲 <mark>(柔软)</mark> ，晚点绕障，提前回位；比重越大，整体曲线越平缓，感觉越 <mark>硬直</mark> ，曲线拐弯性能越差。</p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/diff_weight_dddl_3.png"
+                        alt="diff_weight_dddl_3" 
+                 ></p>
+<h3 id="end_state_weight参数分析"><a class="markdownIt-Anchor" href="#end_state_weight参数分析"></a> end_state_weight参数分析</h3>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># weight (l, dl, ddl) : tuple</span></span><br></pre></td></tr></table></figure>
+<h4 id="end_state_weight_l默认值是1000建议end_state-0-0-0对曲线影响不大"><a class="markdownIt-Anchor" href="#end_state_weight_l默认值是1000建议end_state-0-0-0对曲线影响不大"></a> end_state_weight_l默认值是1000，建议<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mi>n</mi><mi>d</mi><mi mathvariant="normal">_</mi><mi>s</mi><mi>t</mi><mi>a</mi><mi>t</mi><mi>e</mi><mo>=</mo><mo stretchy="false">(</mo><mn>0.</mn><mo separator="true">,</mo><mn>0.</mn><mo separator="true">,</mo><mn>0.</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">end\_state= (0., 0., 0.)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.00444em;vertical-align:-0.31em;"></span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mord mathnormal">d</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mord mathnormal">a</span><span class="mord mathnormal">t</span><span class="mord mathnormal">e</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">0</span><span class="mord">.</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mclose">)</span></span></span></span>，对曲线影响不大</h4>
+<h5 id="当end_state-0-0-0"><a class="markdownIt-Anchor" href="#当end_state-0-0-0"></a> 当<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mi>n</mi><mi>d</mi><mi mathvariant="normal">_</mi><mi>s</mi><mi>t</mi><mi>a</mi><mi>t</mi><mi>e</mi><mo>=</mo><mo stretchy="false">(</mo><mn>0.</mn><mo separator="true">,</mo><mn>0.</mn><mo separator="true">,</mo><mn>0.</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">end\_state= (0., 0., 0.)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.00444em;vertical-align:-0.31em;"></span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mord mathnormal">d</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mord mathnormal">a</span><span class="mord mathnormal">t</span><span class="mord mathnormal">e</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">0</span><span class="mord">.</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mclose">)</span></span></span></span></h5>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/end_state_weight_l_1.png"
+                        alt="end_state_weight_l_1" 
+                 ></p>
+<p>该比重对曲线影响不大，比重为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>0.0</mn><mo separator="true">,</mo><mn>10.0</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[0.0,10.0]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">0</span><span class="mord">.</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">1</span><span class="mord">0</span><span class="mord">.</span><span class="mord">0</span><span class="mclose">]</span></span></span></span>，结果曲线基本一致。当比重为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>100</mn><mo separator="true">,</mo><mn>1000000</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[100,1000000]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mclose">]</span></span></span></span>时，末尾曲线比较靠近<code>0.0</code>，整体上基本一致。</p>
+<h5 id="当end_state-01-0-0建议区间100010000特殊时候区间1000001000000"><a class="markdownIt-Anchor" href="#当end_state-01-0-0建议区间100010000特殊时候区间1000001000000"></a> 当<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mi>n</mi><mi>d</mi><mi mathvariant="normal">_</mi><mi>s</mi><mi>t</mi><mi>a</mi><mi>t</mi><mi>e</mi><mo>=</mo><mo stretchy="false">(</mo><mn>0.1</mn><mo separator="true">,</mo><mn>0.</mn><mo separator="true">,</mo><mn>0.</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">end\_state= (0.1, 0., 0.)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.00444em;vertical-align:-0.31em;"></span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mord mathnormal">d</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mord mathnormal">a</span><span class="mord mathnormal">t</span><span class="mord mathnormal">e</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">0</span><span class="mord">.</span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mclose">)</span></span></span></span>，建议区间<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>1000</mn><mo separator="true">,</mo><mn>10000</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[1000,10000]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mclose">]</span></span></span></span>，特殊时候区间<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>100000</mn><mo separator="true">,</mo><mn>1000000</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[100000,1000000]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mclose">]</span></span></span></span></h5>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/end_state_weight_l_2.png"
+                        alt="end_state_weight_l_2" 
+                 ></p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/end_state_weight_l_3.png"
+                        alt="end_state_weight_l_3" 
+                 ></p>
+<p>比重为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>0</mn><mo separator="true">,</mo><mn>1000</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[0,1000]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mclose">]</span></span></span></span>时，结果曲线与边界相交，不建议；当然如果障碍物<code>buffer</code>考虑很大时，可以适当妥协。</p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/end_state_weight_l_4.png"
+                        alt="end_state_weight_l_4" 
+                 ></p>
+<p>比重为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>10000</mn><mo separator="true">,</mo><mn>100000</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[10000,100000]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mclose">]</span></span></span></span>的结果曲线差别不大，当达到<code>1000000</code>时，曲线过于柔软，不建议。</p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/end_state_weight_l_5.png"
+                        alt="end_state_weight_l_5" 
+                 ></p>
+<p>建议区间<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>1000</mn><mo separator="true">,</mo><mn>10000</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[1000,10000]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mclose">]</span></span></span></span>，间隔<code>1000</code>，比重越大避障时，越早开始绕障，越早回位。</p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/end_state_weight_l_6.png"
+                        alt="end_state_weight_l_6" 
+                 ></p>
+<p>比重也可以在<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>1000</mn><mtext>，</mtext><mn>2000</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[1000，2000]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord cjk_fallback">，</span><span class="mord">2</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mclose">]</span></span></span></span>，间隔<code>100</code>，之间进行微调，比重越大避障时，越早开始绕障，越早回位。</p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/end_state_weight_l_14.png"
+                        alt="end_state_weight_l_14" 
+                 ></p>
+<p><font color=gree>某些时候，可以采用该比重区间<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>100000</mn><mo separator="true">,</mo><mn>1000000</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[100000,1000000]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mclose">]</span></span></span></span>，让车在避障时远离障碍物。</font></p>
+<h5 id="当end_state-35-0-0建议区间200010000特殊时候区间10000100000"><a class="markdownIt-Anchor" href="#当end_state-35-0-0建议区间200010000特殊时候区间10000100000"></a> 当<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mi>n</mi><mi>d</mi><mi mathvariant="normal">_</mi><mi>s</mi><mi>t</mi><mi>a</mi><mi>t</mi><mi>e</mi><mo>=</mo><mo stretchy="false">(</mo><mn>3.5</mn><mo separator="true">,</mo><mn>0.</mn><mo separator="true">,</mo><mn>0.</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">end\_state= (3.5, 0., 0.)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.00444em;vertical-align:-0.31em;"></span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mord mathnormal">d</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mord mathnormal">a</span><span class="mord mathnormal">t</span><span class="mord mathnormal">e</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">3</span><span class="mord">.</span><span class="mord">5</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mclose">)</span></span></span></span>，建议区间<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>2000</mn><mo separator="true">,</mo><mn>10000</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[2000,10000]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">2</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mclose">]</span></span></span></span>，特殊时候区间<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>10000</mn><mo separator="true">,</mo><mn>100000</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[10000,100000]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mclose">]</span></span></span></span></h5>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/end_state_weight_l.png"
+                        alt="end_state_weight_l" 
+                 ></p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/end_state_weight_l_7.png"
+                        alt="end_state_weight_l_7" 
+                 ></p>
+<p>比重为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>0</mn><mo separator="true">,</mo><mn>1000</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[0,1000]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mclose">]</span></span></span></span>时，结果曲线与边界相交，不建议；当然如果障碍物<code>buffer</code>考虑很大时，可以适当妥协。</p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/end_state_weight_l_8.png"
+                        alt="end_state_weight_l_8" 
+                 ></p>
+<p>比重为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>100000</mn><mo separator="true">,</mo><mn>1000000</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[100000,1000000]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mclose">]</span></span></span></span>的结果曲线差别不大，过于柔软，不建议。</p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/end_state_weight_l_9.png"
+                        alt="end_state_weight_l_9" 
+                 ></p>
+<p>存在跳变。</p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/end_state_weight_l_11.png"
+                        alt="end_state_weight_l_11" 
+                 ></p>
+<p>依旧存在跳变。</p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/end_state_weight_l_12.png"
+                        alt="end_state_weight_l_12" 
+                 ></p>
+<p>跳变存在在<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>1500</mn><mo separator="true">,</mo><mn>1600</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[1500,1600]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">1</span><span class="mord">5</span><span class="mord">0</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">1</span><span class="mord">6</span><span class="mord">0</span><span class="mord">0</span><span class="mclose">]</span></span></span></span>之间。</p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/end_state_weight_l_13.png"
+                        alt="end_state_weight_l_13" 
+                 ></p>
+<p>比重在<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>2000</mn><mo separator="true">,</mo><mn>3000</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[2000,3000]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">2</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">3</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mclose">]</span></span></span></span>，间隔<code>100</code>，可以微调结果曲线。</p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/end_state_weight_l_10.png"
+                        alt="end_state_weight_l_10" 
+                 ></p>
+<p><font color=gree>某些时候，可以采用该比重区间<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>10000</mn><mo separator="true">,</mo><mn>100000</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[10000,100000]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mclose">]</span></span></span></span>，让车在避障时远离障碍物。</font></p>
+<h4 id="end_state_weight_dl对曲线影响不大默认值00"><a class="markdownIt-Anchor" href="#end_state_weight_dl对曲线影响不大默认值00"></a> end_state_weight_dl对曲线影响不大，默认值<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.0</mn></mrow><annotation encoding="application/x-tex">0.0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">0</span></span></span></span></h4>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/end_state_weight_dl.png"
+                        alt="end_state_weight_dl" 
+                 ></p>
+<p>比重越大，让曲线的末尾段斜率越接近设定值，对整体曲线的影响不大。</p>
+<h4 id="end_state_weight_ddl对曲线影响不大默认值00"><a class="markdownIt-Anchor" href="#end_state_weight_ddl对曲线影响不大默认值00"></a> end_state_weight_ddl对曲线影响不大，默认值<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.0</mn></mrow><annotation encoding="application/x-tex">0.0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">0</span></span></span></span></h4>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/end_state_weight_ddl.png"
+                        alt="end_state_weight_ddl" 
+                 ></p>
+<p>对生成路径整体影响不大。</p>
+<h3 id="weight_x_ref参数分析默认值10建议区间1030"><a class="markdownIt-Anchor" href="#weight_x_ref参数分析默认值10建议区间1030"></a> weight_x_ref参数分析，默认值<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10</mn></mrow><annotation encoding="application/x-tex">10</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord">0</span></span></span></span>，建议区间<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>10</mn><mo separator="true">,</mo><mn>30</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[10,30]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">1</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">3</span><span class="mord">0</span><span class="mclose">]</span></span></span></span></h3>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/weight_x_ref.png"
+                        alt="weight_x_ref" 
+                 ></p>
+<p>比重越大，曲线越接近目标线。超过100，基本不满足非和谐系统的运动。取值可以考虑在<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>0</mn><mo separator="true">,</mo><mn>100</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[0,100]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mclose">]</span></span></span></span>。</p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/weight_x_ref_1.png"
+                        alt="weight_x_ref_1" 
+                 ></p>
+<p>进一步分析，可以发现在区间<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>0</mn><mo separator="true">,</mo><mn>20</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[0,20]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">2</span><span class="mord">0</span><span class="mclose">]</span></span></span></span>曲线较为敏感，对曲影响较大。</p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/weight_x_ref_2.png"
+                        alt="weight_x_ref_2" 
+                 ></p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/weight_x_ref_3.png"
+                        alt="weight_x_ref_3" 
+                 ></p>
+<p>比重为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>5</mn><mo separator="true">,</mo><mn>6</mn><mo separator="true">,</mo><mn>7</mn><mo separator="true">,</mo><mn>8</mn></mrow><annotation encoding="application/x-tex">5,6,7,8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8388800000000001em;vertical-align:-0.19444em;"></span><span class="mord">5</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">6</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">7</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">8</span></span></span></span>曲线较为一致，比重为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>9</mn><mo separator="true">,</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">9,10</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8388800000000001em;vertical-align:-0.19444em;"></span><span class="mord">9</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">1</span><span class="mord">0</span></span></span></span>曲线较为一致，所以下一步分析区间<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>8</mn><mo separator="true">,</mo><mn>9</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[8,9]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">8</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">9</span><span class="mclose">]</span></span></span></span></p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/weight_x_ref_4.png"
+                        alt="weight_x_ref_4" 
+                 ></p>
+<p>不存在过渡性，即存在跳变(跳变存在在区间<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>8.8</mn><mo separator="true">,</mo><mn>9.0</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[8.8,9.0]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">8</span><span class="mord">.</span><span class="mord">8</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">9</span><span class="mord">.</span><span class="mord">0</span><span class="mclose">]</span></span></span></span>)，不方便调试，所以考虑区间<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>10</mn><mo separator="true">,</mo><mn>30</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[10,30]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">1</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">3</span><span class="mord">0</span><span class="mclose">]</span></span></span></span>。</p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/weight_x_ref_5.png"
+                        alt="weight_x_ref_5" 
+                 ></p>
+<p>比重越大，曲线越接近目标线，越早回中心线。</p>
+
+                    
+                </div>
+
+                
+
+                <div class="post-bottom-tags-and-share border-box">
+                    <div>
+                        
+                    </div>
+                    <div>
+                        
+                            <div class="post-share-container border-box">
+    <ul class="share-list-wrap border-box">
+        <li class="qq share-item border-box flex-center tooltip"
+            data-tooltip-content="分享到 QQ"
+        >
+            <i class="fa-brands fa-qq"></i>
+        </li>
+        <li class="wechat share-item border-box flex-center tooltip tooltip-img"
+            data-tooltip-content="分享到微信"
+            data-tooltip-img-tip="微信扫一扫"
+            data-tooltip-img-style="background-color: #fff; top: -10px; padding: 0.6rem 0.6rem 0.1rem 0.6rem;"
+        >
+            <i class="fa-brands fa-weixin"></i>
+        </li>
+        <li class="weibo share-item border-box flex-center tooltip"
+            data-tooltip-content="分享到微博"
+        >
+            <i class="fa-brands fa-weibo"></i>
+        </li>
+    </ul>
+</div>
+
+                        
+                    </div>
+                </div>
+
+                
+                    
+
+<div class="reward-author-container border-box flex-center">
+    <div class="reward-btn border-box flex-center tooltip tooltip-img"
+            data-tooltip-img-url="/images/i-nog-avatar.jpg"
+            data-tooltip-img-trigger="click"
+            data-tooltip-img-style="top: -6px;"
+    >
+        <i class="fa-solid fa-gift"></i>&nbsp;请作者吃姜饼
+    </div>
+</div>
+
+                
+
+                
+                    <div class="post-nav border-box">
+                        
+                            <div class="prev-post">
+                                <a class="prev"
+                                   rel="prev"
+                                   href="/2022/09/26/Apollo%20r5.5.0%20%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB%E4%B9%8B%E7%A7%AF%E5%88%86(Integral)/"
+                                   title="Apollo r5.5.0 代码解读之积分(Integral)"
+                                >
+                                    <span class="left arrow-icon flex-center">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">Apollo r5.5.0 代码解读之积分(Integral)</span>
+                                        <span class="post-nav-item">上一篇</span>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                        
+                            <div class="next-post">
+                                <a class="next"
+                                   rel="next"
+                                   href="/2021/02/02/Apollo%20r5.5.0%20%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB%E4%B9%8B%E8%A7%84%E5%88%92%E6%A8%A1%E5%9D%97--%E5%A4%9A%E9%A1%B9%E6%AC%A1%E6%9B%B2%E7%BA%BF/"
+                                   title="Apollo r5.5.0 代码解读之规划模块--多项次曲线"
+                                >
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">Apollo r5.5.0 代码解读之规划模块--多项次曲线</span>
+                                        <span class="post-nav-item">下一篇</span>
+                                    </span>
+                                    <span class="right arrow-icon flex-center">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                    </div>
+                
+
+                
+                    
+
+
+    <div class="comments-container border-box">
+        <div id="comments-anchor" class="comment-area-title border-box">
+            <i class="fas fa-comments"></i>&nbsp;评论
+        </div>
+        <div class="comment-plugin-fail border-box">
+    <span class="fail-tip">评论插件加载失败</span>
+    <button class="reload keep-button">点击重新加载</button>
+</div>
+<div class="comment-plugin-loading flex-center border-box">
+    <i class="loading-icon fa-solid fa-spinner fa-spin"></i>
+    <span class="load-tip">正在加载评论插件</span>
+</div>
+<script data-pjax>
+  window.KeepCommentPlugin = {}
+  window.KeepCommentPlugin.hideLoading = () => {
+    const cplDom = document.querySelector('.comments-container .comment-plugin-loading')
+    cplDom.style.display = 'none'
+  }
+  window.KeepCommentPlugin.loadFailHandle = () => {
+    window.KeepCommentPlugin.hideLoading()
+    const cpfDom = document.querySelector('.comments-container .comment-plugin-fail')
+    cpfDom.style.display = 'flex'
+    cpfDom.querySelector('.reload').addEventListener('click', () => {
+      window.location.reload()
+    })
+  }
+</script>
+
+        
+            
+
+    <div class="giscus-comments-container">
+        <div class="giscus" id="giscus"></div>
+        <script data-pjax
+                onerror="window.KeepCommentPlugin.loadFailHandle()"
+        >
+          if (!window.KeepCommentPlugin?.getGiscusTheme) {
+            window.KeepCommentPlugin.getGiscusTheme = () => {
+              return document.documentElement.classList.contains('dark-mode') ? 'dark_dimmed' : 'light_tritanopia'
+            }
+          }
+
+          if (!window.KeepCommentPlugin?.changeGiscusTheme) {
+            window.KeepCommentPlugin.changeGiscusTheme = () => {
+              const iframe = document.querySelector('iframe.giscus-frame')
+              iframe && iframe.contentWindow.postMessage({
+                giscus: {
+                  setConfig: {
+                    theme: window.KeepCommentPlugin.getGiscusTheme()
+                  }
+                }
+              }, 'https://giscus.app')
+            }
+          }
+
+          if (!window.KeepCommentPlugin?.initGiscus) {
+            window.KeepCommentPlugin.initGiscus = () => {
+              const script = document.createElement('script')
+              script.async = true
+              script.src = 'https://giscus.app/client.js'
+              script.setAttribute('data-repo', 'i-Nog/iNog-blog-comments')
+              script.setAttribute('data-repo-id', 'R_kgDOPF7ymg')
+              script.setAttribute('data-category', 'Announcements')
+              script.setAttribute('data-category-id', 'DIC_kwDOPF7yms4Cscff')
+              script.setAttribute('data-reactions-enabled', '0')
+              script.setAttribute('data-lang', 'zh-CN')
+              script.setAttribute('data-mapping', 'pathname')
+              script.setAttribute('data-strict', '0')
+              script.setAttribute('data-emit-metadata', '0')
+              script.setAttribute('data-input-position', 'top')
+              script.setAttribute('crossorigin', 'anonymous')
+              script.setAttribute('loading', 'lazy')
+              script.setAttribute('data-theme', window.KeepCommentPlugin.getGiscusTheme())
+              document.querySelector('.giscus-comments-container').appendChild(script)
+              script.onerror = () => {
+                window.KeepCommentPlugin.loadFailHandle()
+              }
+              script.onload = () => {
+                window.KeepCommentPlugin.hideLoading()
+              }
+              const toggleThemeBtn = document.querySelector('.tool-toggle-theme-mode')
+              toggleThemeBtn && toggleThemeBtn.addEventListener('click', () => {
+                window.KeepCommentPlugin.changeGiscusTheme()
+              })
+            }
+          }
+
+          if ('true' === "true") {
+            setTimeout(() => {
+              window.KeepCommentPlugin.initGiscus()
+            }, 1000)
+          } else {
+            window.addEventListener("DOMContentLoaded", window.KeepCommentPlugin.initGiscus)
+          }
+        </script>
+    </div>
+
+
+        
+    </div>
+
+
+
+
+
+                
+            </div>
+        </div>
+
+        
+            <div class="pc-post-toc right-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E6%AE%B5%E5%8A%A0%E5%8A%A0%E9%80%9F%E5%BA%A6%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92osqp%E4%BB%BF%E7%9C%9F%E5%8F%82%E6%95%B0%E5%88%86%E6%9E%90"><span class="nav-text"> 分段加加速度路径规划OSQP仿真参数分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%BB%98%E8%AE%A4%E5%8F%82%E6%95%B0"><span class="nav-text"> 默认参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BE%B9%E7%95%8C%E7%BA%A6%E6%9D%9F%E6%9D%A1%E4%BB%B6%E5%88%86%E6%9E%90"><span class="nav-text"> 边界约束条件分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#l_bounds%E6%A0%B9%E6%8D%AE%E9%9A%9C%E7%A2%8D%E7%89%A9%E9%81%93%E8%B7%AF%E6%9E%84%E9%80%A0%E8%BE%B9%E7%95%8C"><span class="nav-text"> l_bounds根据障碍物道路构造边界</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dl_bounds%E9%BB%98%E8%AE%A4%E5%80%BC%E4%B8%BA20%E5%AF%B9%E6%9B%B2%E7%BA%BF%E5%BD%B1%E5%93%8D%E4%B8%8D%E5%A4%A7"><span class="nav-text"> dl_bounds默认值为2.0，对曲线影响不大</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ddl_bounds%E6%A0%B9%E6%8D%AE%E8%BD%A6%E8%BE%86%E6%80%A7%E8%83%BD%E4%B8%8E%E5%8F%82%E8%80%83%E7%BA%BF%E6%9B%B2%E7%8E%87%E8%AE%BE%E5%AE%9A"><span class="nav-text"> ddl_bounds根据车辆性能与参考线曲率设定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dddl_bound%E5%AF%B9%E6%9B%B2%E7%BA%BF%E5%BD%B1%E5%93%8D%E4%B8%8D%E5%A4%A7%E9%BB%98%E8%AE%A4%E5%80%BC%E4%B8%BA40"><span class="nav-text"> dddl_bound对曲线影响不大，默认值为4.0</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#weights%E5%8F%82%E6%95%B0%E5%88%86%E6%9E%90"><span class="nav-text"> weights参数分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#weight_l%E9%BB%98%E8%AE%A4%E5%80%BC10%E5%BB%BA%E8%AE%AE%E5%8C%BA%E9%97%B41033"><span class="nav-text"> weight_l默认值1.0，建议区间[10,33][10,33][10,33]</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#weight_dl%E9%BB%98%E8%AE%A4%E5%80%BC%E4%B8%BA5%E4%B8%8E%E5%88%9D%E5%A7%8Bdl%E5%B9%B3%E6%96%B9%E6%9C%80%E5%A4%A7%E5%80%BC%E5%AF%B9%E6%9B%B2%E7%BA%BF%E5%85%B6%E5%AE%9E%E5%BD%B1%E5%93%8D%E4%B8%8D%E5%A4%A7"><span class="nav-text"> weight_dl默认值为5与初始dl平方最大值，对曲线其实影响不大</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#weight_ddl%E5%AF%B9%E6%9B%B2%E7%BA%BF%E5%BD%B1%E5%93%8D%E4%B8%8D%E5%A4%A7%E9%BB%98%E8%AE%A4%E5%80%BC10000"><span class="nav-text"> weight_ddl对曲线影响不大，默认值1000.0</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#weight_dddl%E5%BD%B1%E5%93%8D%E7%BB%93%E6%9E%9C%E6%8B%90%E5%BC%AF%E6%80%A7%E8%83%BD%E9%BB%98%E8%AE%A4%E5%80%BC500000%E5%BB%BA%E8%AE%AE%E5%8C%BA%E9%97%B450-0000500-0000%E9%97%B4%E9%9A%94100-0000"><span class="nav-text"> weight_dddl影响结果拐弯性能，默认值50000.0，建议区间[50000.0,500000.0][50 000.0,500 000.0][50000.0,500000.0]，间隔100000.0100 000.0100000.0</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#end_state_weight%E5%8F%82%E6%95%B0%E5%88%86%E6%9E%90"><span class="nav-text"> end_state_weight参数分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#end_state_weight_l%E9%BB%98%E8%AE%A4%E5%80%BC%E6%98%AF1000%E5%BB%BA%E8%AE%AEend_state-0-0-0%E5%AF%B9%E6%9B%B2%E7%BA%BF%E5%BD%B1%E5%93%8D%E4%B8%8D%E5%A4%A7"><span class="nav-text"> end_state_weight_l默认值是1000，建议end_state&#x3D;(0.,0.,0.)end\_state&#x3D; (0., 0., 0.)end_state&#x3D;(0.,0.,0.)，对曲线影响不大</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%BD%93end_state-0-0-0"><span class="nav-text"> 当end_state&#x3D;(0.,0.,0.)end\_state&#x3D; (0., 0., 0.)end_state&#x3D;(0.,0.,0.)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%BD%93end_state-01-0-0%E5%BB%BA%E8%AE%AE%E5%8C%BA%E9%97%B4100010000%E7%89%B9%E6%AE%8A%E6%97%B6%E5%80%99%E5%8C%BA%E9%97%B41000001000000"><span class="nav-text"> 当end_state&#x3D;(0.1,0.,0.)end\_state&#x3D; (0.1, 0., 0.)end_state&#x3D;(0.1,0.,0.)，建议区间[1000,10000][1000,10000][1000,10000]，特殊时候区间[100000,1000000][100000,1000000][100000,1000000]</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%BD%93end_state-35-0-0%E5%BB%BA%E8%AE%AE%E5%8C%BA%E9%97%B4200010000%E7%89%B9%E6%AE%8A%E6%97%B6%E5%80%99%E5%8C%BA%E9%97%B410000100000"><span class="nav-text"> 当end_state&#x3D;(3.5,0.,0.)end\_state&#x3D; (3.5, 0., 0.)end_state&#x3D;(3.5,0.,0.)，建议区间[2000,10000][2000,10000][2000,10000]，特殊时候区间[10000,100000][10000,100000][10000,100000]</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#end_state_weight_dl%E5%AF%B9%E6%9B%B2%E7%BA%BF%E5%BD%B1%E5%93%8D%E4%B8%8D%E5%A4%A7%E9%BB%98%E8%AE%A4%E5%80%BC00"><span class="nav-text"> end_state_weight_dl对曲线影响不大，默认值0.00.00.0</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#end_state_weight_ddl%E5%AF%B9%E6%9B%B2%E7%BA%BF%E5%BD%B1%E5%93%8D%E4%B8%8D%E5%A4%A7%E9%BB%98%E8%AE%A4%E5%80%BC00"><span class="nav-text"> end_state_weight_ddl对曲线影响不大，默认值0.00.00.0</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#weight_x_ref%E5%8F%82%E6%95%B0%E5%88%86%E6%9E%90%E9%BB%98%E8%AE%A4%E5%80%BC10%E5%BB%BA%E8%AE%AE%E5%8C%BA%E9%97%B41030"><span class="nav-text"> weight_x_ref参数分析，默认值101010，建议区间[10,30][10,30][10,30]</span></a></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+        </div>
+
+        <div class="page-main-content-bottom border-box">
+            
+<footer class="footer border-box">
+    <div class="copyright-info info-item">
+    &copy;&nbsp;<span>2021</span>&nbsp;-&nbsp;2025
+    
+            &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/">i-Nog</a>
+        
+    </div>
+
+    <div class="theme-info info-item">
+        由&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;驱动&nbsp;&&nbsp;主题&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
+    </div>
+
+    
+        
+        <div class="deploy-info info-item">
+            
+            本站由 <span class="tooltip" data-tooltip-content="GitHub Pages"><img src="/images/brands/github.png"></span> 提供部署服务
+            
+        </div>
+    
+
+    
+        <div class="count-info info-item">
+            
+                <span class="count-item border-box word">
+                    <span class="item-type border-box">总字数</span>
+                    <span class="item-value border-box word">20.7k</span>
+                </span>
+            
+
+            
+                <span class="count-item border-box uv">
+                    <span class="item-type border-box">访客数</span>
+                    <span class="item-value border-box uv" id="busuanzi_value_site_uv"></span>
+                </span>
+            
+
+            
+                <span class="count-item border-box pv">
+                    <span class="item-type border-box">访问量</span>
+                    <span class="item-value border-box pv" id="busuanzi_value_site_pv"></span>
+                </span>
+            
+        </div>
+    
+
+    
+</footer>
+
+        </div>
+    </div>
+
+    <!-- post tools -->
+    
+        <div class="post-tools right-toc">
+            <div class="post-tools-container border-box">
+    <ul class="post-tools-list border-box">
+        <!-- PC encrypt again -->
+        
+
+        <!-- PC TOC show toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- PC go comment -->
+        
+            <li class="tools-item flex-center go-to-comments">
+                <i class="fas fa-comment"></i>
+                <span class="post-comments-count"></span>
+            </li>
+        
+
+        <!-- PC full screen -->
+        <li class="tools-item flex-center full-screen">
+            <i class="fa-solid fa-expand"></i>
+        </li>
+    </ul>
+</div>
+
+        </div>
+    
+
+    <!-- side tools -->
+    <div class="side-tools">
+        <div class="side-tools-container border-box ">
+    <ul class="side-tools-list side-tools-show-handle border-box">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <!-- toggle mode -->
+        
+            <li class="tools-item tool-toggle-theme-mode flex-center">
+                <i class="fas fa-moon"></i>
+            </li>
+        
+
+        <!-- rss -->
+        
+
+        <!-- to bottom -->
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list border-box">
+        
+            <li class="tools-item toggle-show-toc-tablet flex-center">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        
+            <li class="tools-item go-to-comments-tablet flex-center">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+        <li class="tools-item tool-scroll-to-top flex-center show-arrow">
+            <i class="arrow fas fa-arrow-up"></i>
+            <span class="percent"></span>
+        </li>
+    </ul>
+</div>
+
+    </div>
+
+    <!-- image mask -->
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
+</div>
+
+
+    <!-- local search -->
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+    <!-- tablet toc -->
+    
+        <div class="tablet-post-toc-mask">
+            <div class="tablet-post-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E6%AE%B5%E5%8A%A0%E5%8A%A0%E9%80%9F%E5%BA%A6%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92osqp%E4%BB%BF%E7%9C%9F%E5%8F%82%E6%95%B0%E5%88%86%E6%9E%90"><span class="nav-text"> 分段加加速度路径规划OSQP仿真参数分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%BB%98%E8%AE%A4%E5%8F%82%E6%95%B0"><span class="nav-text"> 默认参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BE%B9%E7%95%8C%E7%BA%A6%E6%9D%9F%E6%9D%A1%E4%BB%B6%E5%88%86%E6%9E%90"><span class="nav-text"> 边界约束条件分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#l_bounds%E6%A0%B9%E6%8D%AE%E9%9A%9C%E7%A2%8D%E7%89%A9%E9%81%93%E8%B7%AF%E6%9E%84%E9%80%A0%E8%BE%B9%E7%95%8C"><span class="nav-text"> l_bounds根据障碍物道路构造边界</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dl_bounds%E9%BB%98%E8%AE%A4%E5%80%BC%E4%B8%BA20%E5%AF%B9%E6%9B%B2%E7%BA%BF%E5%BD%B1%E5%93%8D%E4%B8%8D%E5%A4%A7"><span class="nav-text"> dl_bounds默认值为2.0，对曲线影响不大</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ddl_bounds%E6%A0%B9%E6%8D%AE%E8%BD%A6%E8%BE%86%E6%80%A7%E8%83%BD%E4%B8%8E%E5%8F%82%E8%80%83%E7%BA%BF%E6%9B%B2%E7%8E%87%E8%AE%BE%E5%AE%9A"><span class="nav-text"> ddl_bounds根据车辆性能与参考线曲率设定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dddl_bound%E5%AF%B9%E6%9B%B2%E7%BA%BF%E5%BD%B1%E5%93%8D%E4%B8%8D%E5%A4%A7%E9%BB%98%E8%AE%A4%E5%80%BC%E4%B8%BA40"><span class="nav-text"> dddl_bound对曲线影响不大，默认值为4.0</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#weights%E5%8F%82%E6%95%B0%E5%88%86%E6%9E%90"><span class="nav-text"> weights参数分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#weight_l%E9%BB%98%E8%AE%A4%E5%80%BC10%E5%BB%BA%E8%AE%AE%E5%8C%BA%E9%97%B41033"><span class="nav-text"> weight_l默认值1.0，建议区间[10,33][10,33][10,33]</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#weight_dl%E9%BB%98%E8%AE%A4%E5%80%BC%E4%B8%BA5%E4%B8%8E%E5%88%9D%E5%A7%8Bdl%E5%B9%B3%E6%96%B9%E6%9C%80%E5%A4%A7%E5%80%BC%E5%AF%B9%E6%9B%B2%E7%BA%BF%E5%85%B6%E5%AE%9E%E5%BD%B1%E5%93%8D%E4%B8%8D%E5%A4%A7"><span class="nav-text"> weight_dl默认值为5与初始dl平方最大值，对曲线其实影响不大</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#weight_ddl%E5%AF%B9%E6%9B%B2%E7%BA%BF%E5%BD%B1%E5%93%8D%E4%B8%8D%E5%A4%A7%E9%BB%98%E8%AE%A4%E5%80%BC10000"><span class="nav-text"> weight_ddl对曲线影响不大，默认值1000.0</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#weight_dddl%E5%BD%B1%E5%93%8D%E7%BB%93%E6%9E%9C%E6%8B%90%E5%BC%AF%E6%80%A7%E8%83%BD%E9%BB%98%E8%AE%A4%E5%80%BC500000%E5%BB%BA%E8%AE%AE%E5%8C%BA%E9%97%B450-0000500-0000%E9%97%B4%E9%9A%94100-0000"><span class="nav-text"> weight_dddl影响结果拐弯性能，默认值50000.0，建议区间[50000.0,500000.0][50 000.0,500 000.0][50000.0,500000.0]，间隔100000.0100 000.0100000.0</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#end_state_weight%E5%8F%82%E6%95%B0%E5%88%86%E6%9E%90"><span class="nav-text"> end_state_weight参数分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#end_state_weight_l%E9%BB%98%E8%AE%A4%E5%80%BC%E6%98%AF1000%E5%BB%BA%E8%AE%AEend_state-0-0-0%E5%AF%B9%E6%9B%B2%E7%BA%BF%E5%BD%B1%E5%93%8D%E4%B8%8D%E5%A4%A7"><span class="nav-text"> end_state_weight_l默认值是1000，建议end_state&#x3D;(0.,0.,0.)end\_state&#x3D; (0., 0., 0.)end_state&#x3D;(0.,0.,0.)，对曲线影响不大</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%BD%93end_state-0-0-0"><span class="nav-text"> 当end_state&#x3D;(0.,0.,0.)end\_state&#x3D; (0., 0., 0.)end_state&#x3D;(0.,0.,0.)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%BD%93end_state-01-0-0%E5%BB%BA%E8%AE%AE%E5%8C%BA%E9%97%B4100010000%E7%89%B9%E6%AE%8A%E6%97%B6%E5%80%99%E5%8C%BA%E9%97%B41000001000000"><span class="nav-text"> 当end_state&#x3D;(0.1,0.,0.)end\_state&#x3D; (0.1, 0., 0.)end_state&#x3D;(0.1,0.,0.)，建议区间[1000,10000][1000,10000][1000,10000]，特殊时候区间[100000,1000000][100000,1000000][100000,1000000]</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%BD%93end_state-35-0-0%E5%BB%BA%E8%AE%AE%E5%8C%BA%E9%97%B4200010000%E7%89%B9%E6%AE%8A%E6%97%B6%E5%80%99%E5%8C%BA%E9%97%B410000100000"><span class="nav-text"> 当end_state&#x3D;(3.5,0.,0.)end\_state&#x3D; (3.5, 0., 0.)end_state&#x3D;(3.5,0.,0.)，建议区间[2000,10000][2000,10000][2000,10000]，特殊时候区间[10000,100000][10000,100000][10000,100000]</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#end_state_weight_dl%E5%AF%B9%E6%9B%B2%E7%BA%BF%E5%BD%B1%E5%93%8D%E4%B8%8D%E5%A4%A7%E9%BB%98%E8%AE%A4%E5%80%BC00"><span class="nav-text"> end_state_weight_dl对曲线影响不大，默认值0.00.00.0</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#end_state_weight_ddl%E5%AF%B9%E6%9B%B2%E7%BA%BF%E5%BD%B1%E5%93%8D%E4%B8%8D%E5%A4%A7%E9%BB%98%E8%AE%A4%E5%80%BC00"><span class="nav-text"> end_state_weight_ddl对曲线影响不大，默认值0.00.00.0</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#weight_x_ref%E5%8F%82%E6%95%B0%E5%88%86%E6%9E%90%E9%BB%98%E8%AE%A4%E5%80%BC10%E5%BB%BA%E8%AE%AE%E5%8C%BA%E9%97%B41030"><span class="nav-text"> weight_x_ref参数分析，默认值101010，建议区间[10,30][10,30][10,30]</span></a></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        </div>
+    
+</main>
+
+
+
+
+
+<!-- common js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/header-shrink.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/back2top.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/toggle-theme.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/code-block.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/main.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/libs/anime.min.js"></script>
+
+<!-- local search -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/local-search.min.js"></script>
+
+
+<!-- lazyload -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/lazyload.min.js"></script>
+
+
+<div class="pjax">
+    <!-- home page -->
+    
+
+    <!-- post page -->
+    
+        <!-- post-helper -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/post/post-helper.min.js"></script>
+
+        <!-- toc -->
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/post/toc.min.js"></script>
+        
+
+        <!-- copyright-info -->
+        
+
+        <!-- share -->
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/post/share.min.js"></script>
+        
+    
+
+    <!-- categories page -->
+    
+
+    <!-- links page -->
+    
+
+    <!-- photos page -->
+    
+
+    <!-- tools page -->
+    
+</div>
+
+<!-- mermaid -->
+
+
+<!-- pjax -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/libs/pjax.min.js"></script>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart()
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd()
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'))
+            KEEP.initExecute()
+        });
+    });
+</script>
+
+
+
+
+    
+        
+    
+
+</body>
+</html>

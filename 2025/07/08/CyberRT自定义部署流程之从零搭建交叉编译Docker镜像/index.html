@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="i-Nog">
+    
+    <title>
+        
+            CyberRT自定义部署流程 之 从零搭建交叉编译Docker镜像 |
+        
+        Lernen Forschen Machen
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+        <link rel="shortcut icon" href="/images/i-nog-logo.png">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/font/css/fontawesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/font/css/regular.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/font/css/solid.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/font/css/brands.min.css">
+    
+        
+            
+        
+            
+                
+<link rel="stylesheet" href="/css/custom-1.css">
+
+            
+        
+    
+    <script class="keep-theme-configurations">
+    const KEEP = window.KEEP || {}
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN","path":"search.json"}
+    KEEP.theme_config = {"base_info":{"primary_color":"#FF9900","title":"Lernen Forschen Machen","author":"i-Nog","avatar":"/images/i-nog-avatar.jpg","logo":"/images/i-nog-logo.png","favicon":"/images/i-nog-logo.png"},"menu":{"home":"/ || fa-solid fa-home","archives":"/archives || fa-solid fa-box-archive","categories":"/categories || fa-solid fa-layer-group","tools":"/tools || fa-solid fa-tools","about":"/about || fa-solid fa-user-graduate"},"first_screen":{"enable":true,"background_img":"/images/bg.svg","background_img_dark":"/images/bg.svg","description":"Keep writing and Keep loving.","hitokoto":true},"social_contact":{"enable":true,"links":{"github":null,"weixin":null,"qq":null,"weibo":null,"zhihu":null,"twitter":null,"x":null,"facebook":null,"email":"linxiaopeng-nog@qq.com"}},"scroll":{"progress_bar":false,"percent":true,"hide_header":true},"home":{"announcement":"转载请注明出处，尊重原创，从我做起。","category":true,"tag":false,"post_datetime":"updated","post_datetime_format":"YYYY-MM-DD HH:mm:ss"},"post":{"author_badge":{"enable":true,"level_badge":true,"custom_badge":["One","Two","Three"]},"word_count":{"wordcount":true,"min2read":true},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":false,"share":true,"reward":{"enable":true,"img_link":"/images/i-nog-avatar.jpg","text":"请作者吃姜饼","icon":null}},"code_block":{"tools":{"enable":true,"style":"default"},"highlight_theme":"obsidian"},"toc":{"enable":true,"number":false,"expand_all":false,"init_open":true,"layout":"right"},"website_count":{"busuanzi_count":{"enable":true,"site_uv":true,"site_pv":true,"page_pv":true}},"local_search":{"enable":true,"preload":true},"comment":{"enable":true,"use":"giscus","valine":{"appid":null,"appkey":null,"server_urls":null,"placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.39"},"waline":{"server_url":null,"reaction":false,"version":"3.3.2"},"giscus":{"repo":"i-Nog/iNog-blog-comments","repo_id":"R_kgDOPF7ymg","category":"Announcements","category_id":"DIC_kwDOPF7yms4Cscff","reactions_enabled":false},"artalk":{"server":null},"disqus":{"shortname":null}},"rss":{"enable":false},"lazyload":{"enable":true},"cdn":{"enable":true,"provider":"cdnjs"},"pjax":{"enable":true},"footer":{"since":2021,"word_count":true,"site_deploy":{"enable":true,"provider":"github","url":null},"record":{"enable":false,"list":[{"code":null,"link":null}]}},"inject":{"enable":true,"css":[null,"/css/custom-1.css"],"js":[null]},"root":"","source_data":{"tools":[{"category":"AI 工具汇总","anchorId":"QUklMjAlRTUlQjclQTUlRTUlODUlQjclRTYlQjElODclRTYlODAlQkI0"},{"name":"AI 工具集","link":"https://ai-bot.cn/","description":"AI工具集导航收录了国内外数百个不同类型的AI工具","image":"/images/tools/ai-bot-logo-black.png"},{"name":"Leaderboard Overview","link":"https://lmarena.ai/leaderboard","description":"See how leading models stack up across text, image, vision, and beyond.","image":"/images/tools/lmarena.png"},{"category":"聊天 AI","anchorId":"JUU4JTgxJThBJUU1JUE0JUE5JTIwQUk3"},{"name":"ChatGPT","link":"https://chatgpt.com/","description":"OpenAI 旗下 AI 聊天对话工具","image":"/images/tools/chatgpt-icon.png"},{"name":"Claude","link":"https://claude.ai/","description":"Anthropic公司推出的对话式AI智能助手","image":"/images/tools/anthropic-icon.png"},{"name":"DeepSeek","link":"https://chat.deepseek.com/","description":"幻方量化推出的AI智能助手和开源大模型","image":"/images/tools/deepseek-chat-icon.png"},{"category":"绘画 AI","anchorId":"JUU3JUJCJTk4JUU3JTk0JUJCJTIwQUk7"},{"name":"即梦AI","link":"https://jimeng.jianying.com/ai-tool/home","description":"字节跳动推出的一站式AI创作平台","image":"/images/tools/jimeng-logo-1.png"},{"name":"Bing Image Creator","link":"https://www.bing.com/images/create","description":"微软必应推出的基于DALL·E的AI图像生成工具","image":"/images/tools/new-bing-icon.png"},{"category":"几何绘图工具","anchorId":"JUU1JTg3JUEwJUU0JUJEJTk1JUU3JUJCJTk4JUU1JTlCJUJFJUU1JUI3JUE1JUU1JTg1JUI310"},{"name":"GeoGebra","link":"https://www.geogebra.org/calculator","description":"以更为灵活的方式进行数学的教授与学习","image":"/images/tools/geogebra.png"},{"name":"desmos","link":"https://www.desmos.com/calculator?lang=zh-CN","description":"Desmos是一款十分实用的函数绘图工具。","image":"/images/tools/desmos.png"},{"category":"博客工具","anchorId":"JUU1JThEJTlBJUU1JUFFJUEyJUU1JUI3JUE1JUU1JTg1JUI313"},{"name":"Hexo","link":"https://hexo.io/zh-cn/","description":"快速、简洁且高效的博客框架","image":"/images/tools/hexo.png"},{"name":"Keep主题","link":"https://keep-docs.xpoet.cn/","description":"Keep 主题使用手册","image":"/images/logo.svg"}]},"version":"4.2.5"}
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"}
+    KEEP.language_code_block = {"copy":"复制代码","copied":"已复制","fold":"折叠代码块","folded":"已折叠"}
+    KEEP.language_copy_copyright = {"copy":"复制版权信息","copied":"已复制","title":"原文标题","author":"原文作者","link":"原文链接"}
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <i class="pjax-progress-icon fas fa-circle-notch fa-spin"></i>
+    
+</div>
+
+
+
+<main class="page-container border-box">
+    <!-- home first screen  -->
+    
+
+    <!-- page content -->
+    <div class="page-main-content border-box">
+        <div class="page-main-content-top">
+            
+<header class="header-wrapper">
+
+    <div class="border-box header-content">
+        <div class="left flex-start border-box">
+            
+                <a class="logo-image border-box" href="/">
+                    <img src="/images/i-nog-logo.png">
+                </a>
+            
+            <a class="site-name border-box" href="/">
+               Lernen Forschen Machen
+            </a>
+        </div>
+
+        <div class="right border-box">
+            <div class="pc border-box">
+                <ul class="menu-list border-box">
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-home"></i>
+                                
+                                首页
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/archives">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-box-archive"></i>
+                                
+                                归档
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/categories">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-layer-group"></i>
+                                
+                                分类
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/tools">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-tools"></i>
+                                
+                                工具
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/about">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-user-graduate"></i>
+                                
+                                关于
+                                
+                            </a>
+                            
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="menu-text-color fas search fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile border-box flex-start">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list border-box">
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-home"></i>
+                                </span>
+                            
+                            首页
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/archives">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-box-archive"></i>
+                                </span>
+                            
+                            归档
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/categories">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-layer-group"></i>
+                                </span>
+                            
+                            分类
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/tools">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-tools"></i>
+                                </span>
+                            
+                            工具
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/about">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-user-graduate"></i>
+                                </span>
+                            
+                            关于
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle border-box">
+
+            <div class="main-content border-box">
+                
+
+                    
+<div class="fade-in-down-animation">
+    <div class="post-page-container border-box">
+        <div class="post-content-container border-box">
+            
+
+            <div class="post-content-bottom border-box">
+                
+                    <div class="post-title">
+                        CyberRT自定义部署流程 之 从零搭建交叉编译Docker镜像
+                    </div>
+                
+
+                
+                    <div class="post-header border-box">
+                        
+                            <div class="avatar-box border-box">
+                                <img src="/images/i-nog-avatar.jpg">
+                            </div>
+                        
+                        <div class="info-box">
+                            <div class="author border-box">
+                                <span class="name">i-Nog</span>
+                                
+                                    <span class="author-badge">Lv2</span>
+                                
+                            </div>
+                            <div class="meta-info border-box">
+                                
+
+<div class="post-meta-info-container border-box post">
+    <div class="post-meta-info border-box">
+        
+
+        
+            <span class="meta-info-item post-create-date">
+                <i class="icon fa-solid fa-calendar-plus"></i>&nbsp;
+                <span class="datetime">2025-07-08 17:30:00</span>
+            </span>
+
+            
+                <span class="meta-info-item post-update-date">
+                    <i class="icon fa-solid fa-file-pen"></i>&nbsp;
+                    <span class="datetime" data-updated="Fri Jul 11 2025 11:01:18 GMT+0800">2025-07-11 11:01:18</span>
+                </span>
+            
+        
+
+        
+            <span class="meta-info-item post-category border-box"><i class="icon fas fa-folder"></i>&nbsp;
+                <ul class="post-category-ul">
+                    
+                            <li class="category-item"><a href="/categories/CyberRT%E4%B8%AD%E9%97%B4%E4%BB%B6/">CyberRT中间件</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+
+        
+        
+            <span class="meta-info-item post-wordcount">
+                <i class="icon fas fa-file-word"></i>&nbsp;<span>2.7k 字</span>
+            </span>
+        
+        
+            <span class="meta-info-item post-min2read">
+                <i class="icon fas fa-clock"></i>&nbsp;<span>14 分钟</span>
+            </span>
+        
+        
+            <span class="meta-info-item post-pv">
+                <i class="icon fas fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    </div>
+
+    
+</div>
+
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="post-content keep-markdown-body ">
+                    
+
+                    
+                         <p>本文章主要提供思路，许多地方都可以根据自定义修改以适配自己的实际情况。</p>
+<span id="more"></span>
+<h2 id="准备好目标平台的交叉编译工具"><a class="markdownIt-Anchor" href="#准备好目标平台的交叉编译工具"></a> 准备好目标平台的交叉编译工具</h2>
+<p>存放在<code>toolchains/</code>文件夹下。</p>
+<p>这个根据自己项目需求，网上或者找厂家获取交叉编译工具。<br />
+比如：</p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/3c0d40e61e2c5e4c0ca26088e72220bd.png"
+                        alt="3c0d40e61e2c5e4c0ca26088e72220bd.png" 
+                 ></p>
+<h2 id="准备好依赖库"><a class="markdownIt-Anchor" href="#准备好依赖库"></a> 准备好依赖库</h2>
+<h3 id="依赖库是二进制库"><a class="markdownIt-Anchor" href="#依赖库是二进制库"></a> 依赖库是二进制库</h3>
+<p>存放在<code>sysroot/</code>文件夹下。<br />
+最好一份是x86，一份是目标平台。</p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/30c2f711c8e7b89c13f4fb45e5e9622d.png"
+                        alt="30c2f711c8e7b89c13f4fb45e5e9622d.png" 
+                 ></p>
+<h3 id="依赖库是源码"><a class="markdownIt-Anchor" href="#依赖库是源码"></a> 依赖库是源码</h3>
+<p>以压缩包形式存放在<code>thirdparty/tarball/</code>文件夹下。</p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/7050601e89ec294d678980973b61619d.png"
+                        alt="7050601e89ec294d678980973b61619d.png" 
+                 ></p>
+<h3 id="cyberrt-v900版本依赖库"><a class="markdownIt-Anchor" href="#cyberrt-v900版本依赖库"></a> CyberRT v9.0.0版本依赖库</h3>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/5cb8f4b4e6418fbfedf45efa2f3b4011.png"
+                        alt="5cb8f4b4e6418fbfedf45efa2f3b4011.png" 
+                 ></p>
+<p>本人梳理了CyberRT v9.0.0版本的依赖库，并从下载地址以压缩包形式下载下来：</p>
+<ul>
+<li><code>fast-rtps-1.5.0</code><br />
+<a class="link"   target="_blank" rel="noopener" href="https://github.com/eProsima/Fast-CDR" >Fast-CDR源码地址<i class="fas fa-external-link-alt"></i></a><br />
+<a class="link"   target="_blank" rel="noopener" href="https://github.com/eProsima/Fast-DDS" >Fast-DDS/Fast-rtps源码地址<i class="fas fa-external-link-alt"></i></a></li>
+<li><code>ncurses-6.4</code>（源码压缩包）<br />
+<a class="link"   target="_blank" rel="noopener" href="https://github.com/mirror/ncurses" >ncurses源码地址<i class="fas fa-external-link-alt"></i></a></li>
+<li><code>util-linux-2.39</code>（源码压缩包）<br />
+<a class="link"   target="_blank" rel="noopener" href="https://www.kernel.org/pub/linux/utils/util-linux/" >util-linux源码地址<i class="fas fa-external-link-alt"></i></a></li>
+<li><code>glog</code>（通过git拉取源码）<a class="link"   target="_blank" rel="noopener" href="https://github.com/google/glog" >源码地址<i class="fas fa-external-link-alt"></i></a></li>
+<li><code>nlohmann_json</code>（通过git拉取源码）<a class="link"   target="_blank" rel="noopener" href="https://github.com/nlohmann/json" >源码地址<i class="fas fa-external-link-alt"></i></a></li>
+<li><code>python</code><a class="link"   target="_blank" rel="noopener" href="https://www.python.org/downloads/source/" >源码压缩包地址<i class="fas fa-external-link-alt"></i></a></li>
+</ul>
+<h2 id="搭建docker镜像"><a class="markdownIt-Anchor" href="#搭建docker镜像"></a> 搭建Docker镜像</h2>
+<h3 id="创建docker_release_xcybersh脚本"><a class="markdownIt-Anchor" href="#创建docker_release_xcybersh脚本"></a> 创建docker_release_xcyber.sh脚本</h3>
+<p>该脚本用于一键创建镜像，<code>bash docker_release_xcyber.sh</code>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash</span></span><br><span class="line"><span class="comment"># 自定义镜像名字</span></span><br><span class="line">DOCKER_REGISTRY=i-nog</span><br><span class="line">IMAGE_REPO=nog-cyber-kit</span><br><span class="line">IMAGE_TAG=<span class="variable">$&#123;1:-&quot;1.1.0&quot;&#125;</span></span><br><span class="line"></span><br><span class="line">PLATFORM_X86=x86</span><br><span class="line">PLATFORM_ORIN=orin</span><br><span class="line"></span><br><span class="line"><span class="comment"># 镜像名称</span></span><br><span class="line">ORIN_IMAGE_REPO=<span class="variable">$&#123;DOCKER_REGISTRY&#125;</span>/<span class="variable">$&#123;IMAGE_REPO&#125;</span>/plat_<span class="variable">$&#123;PLATFORM_ORIN&#125;</span>_dev</span><br><span class="line"></span><br><span class="line">TOP_DIR=<span class="string">&quot;<span class="subst">$(cd <span class="string">&quot;<span class="subst">$(dirname <span class="string">&quot;<span class="variable">$&#123;BASH_SOURCE[0]&#125;</span>&quot;</span>)</span>/..&quot;</span> &amp;&amp; pwd -P)</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定dockerfile文件</span></span><br><span class="line">DOCKERFILE_ORIN_XCYBER=<span class="variable">$&#123;TOP_DIR&#125;</span>/dockerfile/Dockerfile.orin.xcyber</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个文件夹，专门用于docker镜像构建的上下文</span></span><br><span class="line">CYBER_KIT=<span class="variable">$&#123;TOP_DIR&#125;</span>/cyber-kit</span><br><span class="line">ORIN_IMAGE_CONTEXT=<span class="variable">$&#123;CYBER_KIT&#125;</span>-<span class="variable">$&#123;PLATFORM_ORIN&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在上下文中创建所需文件夹，用于存放库和工具链</span></span><br><span class="line"><span class="built_in">mkdir</span> -p <span class="variable">$&#123;ORIN_IMAGE_CONTEXT&#125;</span>/&#123;sysroot,toolchains&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=== prepare cyber-kit files for x86 ... ===&quot;</span></span><br><span class="line"><span class="comment"># 压缩已有的 x86 版本的系统库，并拷贝到上下文中</span></span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$&#123;TOP_DIR&#125;</span>/sysroot</span><br><span class="line">tar czf <span class="variable">$&#123;PLATFORM_X86&#125;</span>.tar.gz <span class="variable">$&#123;PLATFORM_X86&#125;</span></span><br><span class="line"><span class="built_in">cp</span> <span class="variable">$&#123;PLATFORM_X86&#125;</span>.tar.gz <span class="variable">$&#123;ORIN_IMAGE_CONTEXT&#125;</span>/sysroot</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=== prepare cyber-kit files for x86 done ===&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=== prepare cyber-kit files for ORIN ... ===&quot;</span></span><br><span class="line"><span class="comment"># 压缩已有的 orin 版本的系统库，并拷贝到上下文中</span></span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$&#123;TOP_DIR&#125;</span>/sysroot</span><br><span class="line">tar czf <span class="variable">$&#123;PLATFORM_ORIN&#125;</span>.tar.gz <span class="variable">$&#123;PLATFORM_ORIN&#125;</span></span><br><span class="line"><span class="built_in">mv</span> <span class="variable">$&#123;PLATFORM_ORIN&#125;</span>.tar.gz <span class="variable">$&#123;ORIN_IMAGE_CONTEXT&#125;</span>/sysroot</span><br><span class="line"></span><br><span class="line"><span class="comment"># 拷贝交叉编译工具链</span></span><br><span class="line"><span class="built_in">cp</span> -r <span class="variable">$&#123;TOP_DIR&#125;</span>/&#123;cmake,scripts&#125; <span class="variable">$&#123;ORIN_IMAGE_CONTEXT&#125;</span></span><br><span class="line"><span class="built_in">cp</span> -r <span class="variable">$&#123;TOP_DIR&#125;</span>/toolchains/<span class="variable">$&#123;PLATFORM_ORIN&#125;</span> <span class="variable">$&#123;ORIN_IMAGE_CONTEXT&#125;</span>/toolchains</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=== prepare cyber-kit files for ORIN done ===&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除压缩包</span></span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$&#123;TOP_DIR&#125;</span>/sysroot</span><br><span class="line"><span class="built_in">rm</span> *.gz</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=== build platform orin docker images ... ===&quot;</span></span><br><span class="line"><span class="comment"># 基于dockerfile文件创建镜像</span></span><br><span class="line">docker build --network=host \</span><br><span class="line">    --build-arg platform=<span class="variable">$&#123;PLATFORM_ORIN&#125;</span> \</span><br><span class="line">    --build-arg plat_version_value=<span class="variable">$&#123;IMAGE_TAG&#125;</span> \</span><br><span class="line">    <span class="comment"># 同时打两个标签（版本号和latest）</span></span><br><span class="line">    -t <span class="variable">$&#123;ORIN_IMAGE_REPO&#125;</span>:<span class="variable">$&#123;IMAGE_TAG&#125;</span> -t <span class="variable">$&#123;ORIN_IMAGE_REPO&#125;</span>:latest \</span><br><span class="line">    -f <span class="variable">$DOCKERFILE_ORIN_XCYBER</span> <span class="variable">$ORIN_IMAGE_CONTEXT</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;=== build platform orin docker images done ===&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建镜像成功，删除上下文</span></span><br><span class="line"><span class="built_in">rm</span> -rf <span class="variable">$ORIN_IMAGE_CONTEXT</span></span><br></pre></td></tr></table></figure>
+<h3 id="创建dockerfileorinxcyber"><a class="markdownIt-Anchor" href="#创建dockerfileorinxcyber"></a> 创建Dockerfile.orin.xcyber</h3>
+<p><font color=gree size=4>操作的内容都是在上下文里面。</font></p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> ubuntu:<span class="number">20.04</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 传入参数</span></span><br><span class="line"><span class="keyword">ARG</span> platform</span><br><span class="line"><span class="keyword">ARG</span> plat_version_value</span><br><span class="line"><span class="keyword">ARG</span> DEBIAN_FRONTEND=noninteractive</span><br><span class="line"><span class="keyword">USER</span> root <span class="comment"># 以下指令使用root权限</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># stage 1: install dev and debug tools</span></span><br><span class="line"><span class="comment"># 安装必备的基础工具，根据实际需求需要</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> apt-get update &amp;&amp; apt-get install -y --no-install-recommends build-essential cmake \</span></span><br><span class="line"><span class="language-bash">    pkg-config flex bison autoconf m4 gdb <span class="built_in">sudo</span> file ca-certificates lsb-release git vim \</span></span><br><span class="line"><span class="language-bash">    bash-completion &amp;&amp; update-ca-certificates &amp;&amp; apt-get clean</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> apt-get update &amp;&amp; apt-get install -y --no-install-recommends libpng-dev libjpeg-dev \</span></span><br><span class="line"><span class="language-bash">    libopenblas-dev libeigen3-dev libtbb-dev &amp;&amp; apt-get clean</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> apt-get update &amp;&amp; apt-get install -y --no-install-recommends libavcodec-dev \</span></span><br><span class="line"><span class="language-bash">    libavformat-dev libswscale-dev &amp;&amp; apt-get clean</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> apt-get update &amp;&amp; apt-get install -y --no-install-recommends libgstreamer1.0-dev \</span></span><br><span class="line"><span class="language-bash">    libgstreamer-plugins-base1.0-dev &amp;&amp; apt-get clean</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> apt-get update &amp;&amp; apt-get install -y --no-install-recommends libgtk-3-0 librsvg2-2 libgvc6 \</span></span><br><span class="line"><span class="language-bash">    openscenegraph &amp;&amp; apt-get clean</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## Set a passwordless sudoer user</span></span><br><span class="line"><span class="comment"># 创建一个无密码用户</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> adduser --disabled-password --gecos <span class="string">&quot;&quot;</span> autometa &amp;&amp; usermod -aG <span class="built_in">sudo</span> autometa &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">mkdir</span> -p /etc/sudoers.d &amp;&amp; <span class="built_in">touch</span> /etc/sudoers.d/nopasswd &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    <span class="built_in">echo</span> <span class="string">&quot;autometa ALL=(ALL) NOPASSWD: ALL&quot;</span> &gt; /etc/sudoers.d/nopasswd</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># fix LANG for displaying Chinese text</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">echo</span> <span class="string">&quot;export LANG=C.UTF-8&quot;</span> &gt;&gt; <span class="variable">$&#123;HOME&#125;</span>/.bashrc</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># stage 2: add cyber-kit</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> [<span class="string">&quot;/bin/bash&quot;</span>, <span class="string">&quot;-c&quot;</span>, <span class="string">&quot;mkdir -p /opt/cyber-kit/&#123;cmake,scripts,sysroot,toolchains&#125;&quot;</span>]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 拷贝目标平台的工具链</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> toolchains /opt/cyber-kit/toolchains</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 这里其实只拷贝 x86 的系统库</span></span><br><span class="line"><span class="keyword">ADD</span><span class="language-bash"> sysroot/<span class="variable">$&#123;x86&#125;</span>.tar.gz /opt/cyber-kit/sysroot</span></span><br><span class="line"><span class="keyword">ADD</span><span class="language-bash"> sysroot/<span class="variable">$&#123;platform&#125;</span>.tar.gz /opt/cyber-kit/sysroot</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># setup toolchains</span></span><br><span class="line"><span class="comment"># 拷贝工具链环境配置脚本，并执行，这里使用root权限</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> scripts/setup.sh /opt/cyber-kit/scripts</span></span><br><span class="line"><span class="comment"># 主要就是配置环境变量，及解压目标平台的交叉编译工具链</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> /opt/cyber-kit/scripts/setup.sh</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># update cmake files &amp; scripts</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> cmake /opt/cyber-kit/cmake</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> scripts /opt/cyber-kit/scripts</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># setup env for user autometa</span></span><br><span class="line"><span class="keyword">USER</span> autometa</span><br><span class="line"><span class="comment"># 使用用户权限，再执行一遍工具链环境配置脚本</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> /opt/cyber-kit/scripts/setup.sh</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># git config settings</span></span><br><span class="line"><span class="comment"># 配置git命令简写</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> git config --global alias.ci commit &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    git config --global alias.co checkout &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    git config --global alias.br branch &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    git config --global alias.st status &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    git config --global alias.au add -u &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    git config --global alias.ca commit --amend &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">    git config --global core.editor vim</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># set plat version</span></span><br><span class="line"><span class="keyword">ENV</span> PLAT_VERSION <span class="string">&quot;$&#123;plat_version_value&#125;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># docker start command or args</span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;bash&quot;</span>]</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>由于拉取基础镜像要联网，有时不好拉取，所以可以把<font color=gree>基础镜像</font>先保存起来：</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker save -o ubuntu-20.04-base.tar ubuntu:20.04</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>载入镜像</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker load -i ubuntu-20.04-base.tar</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="创建环境配置脚本setupsh"><a class="markdownIt-Anchor" href="#创建环境配置脚本setupsh"></a> <a class="link"   target="_blank" rel="noopener" href="http://xn--setup-ll6hu69aj4ms3rdq3ad90a0gej27d.sh" >创建环境配置脚本setup.sh<i class="fas fa-external-link-alt"></i></a></h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash</span></span><br><span class="line"></span><br><span class="line">platform_array=(all xavier rk356x orin cv22)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">usage</span></span>()</span><br><span class="line">&#123;</span><br><span class="line"><span class="built_in">cat</span> &lt;&lt; <span class="string">EOF</span></span><br><span class="line"><span class="string">Usage: $1 &lt;platform&gt;</span></span><br><span class="line"><span class="string">platform: [$&#123;platform_array[*]&#125;]</span></span><br><span class="line"><span class="string">EOF</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">platform=<span class="variable">$&#123;1:-&quot;all&quot;&#125;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;platform: <span class="variable">$platform</span>&quot;</span></span><br><span class="line"></span><br><span class="line">platform_valid=<span class="literal">false</span></span><br><span class="line"><span class="keyword">for</span> target <span class="keyword">in</span> <span class="variable">$&#123;platform_array[@]&#125;</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    <span class="keyword">if</span> [ x<span class="variable">$target</span> = x<span class="variable">$platform</span> ]; <span class="keyword">then</span></span><br><span class="line">        platform_valid=<span class="literal">true</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ! <span class="variable">$&#123;platform_valid&#125;</span>; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;platform is not valid&quot;</span></span><br><span class="line">    usage <span class="variable">$&#123;BASH_SOURCE[0]&#125;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> [ <span class="variable">$0</span> = <span class="variable">$&#123;BASH_SOURCE[0]&#125;</span> ]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">exit</span> -1</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">return</span> -1</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">KIT_PATH=<span class="string">&quot;<span class="subst">$(cd <span class="string">&quot;<span class="subst">$(dirname <span class="string">&quot;<span class="variable">$&#123;BASH_SOURCE[0]&#125;</span>&quot;</span>)</span>/..&quot;</span> &amp;&amp; pwd -P)</span>&quot;</span>/</span><br><span class="line">ORIGIN_KIT_PATH=<span class="variable">$CYBER_KIT_PATH</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;New cyber kit path is : <span class="variable">$&#123;KIT_PATH&#125;</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Origin cyber kit path is : <span class="variable">$&#123;ORIGIN_KIT_PATH&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line">HOST_ARCH=$(<span class="built_in">arch</span>)</span><br><span class="line"><span class="keyword">if</span> [[ <span class="variable">$&#123;KIT_PATH&#125;</span> != <span class="variable">$&#123;ORIGIN_KIT_PATH&#125;</span> ]]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;*** The Cyber Kit Path is not set or changed!, Now setting...&quot;</span></span><br><span class="line">    BASH_RC=<span class="variable">$&#123;HOME&#125;</span>/.bashrc</span><br><span class="line">    <span class="built_in">touch</span> <span class="variable">$BASH_RC</span></span><br><span class="line">    sed -i <span class="string">&#x27;/CYBER_KIT_PATH/d&#x27;</span> <span class="variable">$&#123;BASH_RC&#125;</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;export CYBER_KIT_PATH=<span class="variable">$&#123;KIT_PATH&#125;</span>&quot;</span> &gt;&gt; <span class="variable">$BASH_RC</span></span><br><span class="line">    <span class="keyword">if</span> [ <span class="variable">$&#123;HOST_ARCH&#125;</span> = <span class="string">&quot;x86&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&#x27;export PATH=$&#123;PATH&#125;:$&#123;CYBER_KIT_PATH&#125;sysroot/x86/bin&#x27;</span> &gt;&gt; <span class="variable">$BASH_RC</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&#x27;export LD_LIBRARY_PATH=$&#123;LD_LIBRARY_PATH&#125;:$&#123;CYBER_KIT_PATH&#125;sysroot/x86/lib&#x27;</span> &gt;&gt; <span class="variable">$BASH_RC</span></span><br><span class="line">        <span class="keyword">if</span> [ <span class="variable">$platform</span> = <span class="string">&quot;orin&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">            <span class="built_in">echo</span> <span class="string">&#x27;export PATH=$&#123;PATH&#125;:$&#123;CYBER_KIT_PATH&#125;sysroot/orin/bin&#x27;</span> &gt;&gt; <span class="variable">$BASH_RC</span></span><br><span class="line">            <span class="built_in">echo</span> <span class="string">&#x27;export LD_LIBRARY_PATH=$&#123;LD_LIBRARY_PATH&#125;:$&#123;CYBER_KIT_PATH&#125;sysroot/orin/lib&#x27;</span> &gt;&gt; <span class="variable">$BASH_RC</span></span><br><span class="line">        <span class="keyword">fi</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    <span class="built_in">source</span> <span class="variable">$BASH_RC</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;*** The Poseidon Kit Path env setting done&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># unpack and install different platform cross toolchains</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># check whether the tar file need to be unpack</span></span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$&#123;HOST_ARCH&#125;</span> = <span class="string">&quot;aarch64&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;The host arch is : <span class="variable">$&#123;HOST_ARCH&#125;</span>, do not need to unpack cross compile toolchains.&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> [ <span class="variable">$0</span> = <span class="variable">$&#123;BASH_SOURCE[0]&#125;</span> ]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">exit</span> 0</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">return</span> 0</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;The host arch is : <span class="variable">$&#123;HOST_ARCH&#125;</span>, need to unpack cross compile toolchains.&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># orin</span></span><br><span class="line">ORIN_GCC_NAME=aarch64--glibc--stable-final</span><br><span class="line">ORIN_TOOLCHAIN_FILE=<span class="variable">$&#123;KIT_PATH&#125;</span>/toolchains/orin/<span class="variable">$&#123;ORIN_GCC_NAME&#125;</span>.tar.gz</span><br><span class="line"><span class="keyword">if</span> [ -f <span class="variable">$ORIN_TOOLCHAIN_FILE</span> ] &amp;&amp; [[ <span class="variable">$platform</span> = <span class="string">&quot;all&quot;</span> || <span class="variable">$platform</span> = <span class="string">&quot;orin&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">    <span class="keyword">if</span> [ ! -d  /opt/toolchains/orin/<span class="variable">$&#123;ORIN_GCC_NAME&#125;</span> ]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> -e <span class="string">&quot;\e[33m############### orin: unpack ###############\e[0m&quot;</span></span><br><span class="line">        <span class="built_in">sudo</span> <span class="built_in">mkdir</span> -p /opt/toolchains/orin/<span class="variable">$&#123;ORIN_GCC_NAME&#125;</span></span><br><span class="line">        <span class="built_in">sudo</span> tar -xvf <span class="variable">$ORIN_TOOLCHAIN_FILE</span> -C /opt/toolchains/orin/<span class="variable">$&#123;ORIN_GCC_NAME&#125;</span></span><br><span class="line">        <span class="built_in">echo</span> -e <span class="string">&quot;\e[33m############### orin: unpack done ###############\e[0m&quot;</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;The orin platform cross compile toolchains is already exists.&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<p><font color=gree size=5>整个流程里<mark>首次</mark>配置环境变量 CYBER_KIT_PATH。</font></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># docker 容器里 $&#123;HOME&#125;/.bashrc</span></span><br><span class="line"><span class="built_in">export</span> CYBER_KIT_PATH=/opt/cyber-kit/</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;PATH&#125;</span>:<span class="variable">$&#123;CYBER_KIT_PATH&#125;</span>sysroot/x86/bin</span><br><span class="line"><span class="built_in">export</span> LD_LIBRARY_PATH=<span class="variable">$&#123;LD_LIBRARY_PATH&#125;</span>:<span class="variable">$&#123;CYBER_KIT_PATH&#125;</span>sysroot/x86/lib</span><br></pre></td></tr></table></figure>
+<h3 id="交叉编译依赖库"><a class="markdownIt-Anchor" href="#交叉编译依赖库"></a> （交叉）编译依赖库</h3>
+<p>创建<code>build_thirdparty.sh</code>用于编译所需依赖库。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 编译安装指定版本的依赖库</span></span><br><span class="line">bash build_thirdparty.sh x86</span><br><span class="line">bash build_thirdparty.sh orin</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">set</span> -o errexit</span><br><span class="line"></span><br><span class="line"><span class="comment"># 这里是这两个依赖库为例</span></span><br><span class="line">GLOG_SOURCE=glog-0.4.0</span><br><span class="line">NLOHMANN_JSON_SOURCE=json-3.12.0</span><br><span class="line"></span><br><span class="line">target_array=(x86 rk356x orin)</span><br><span class="line"></span><br><span class="line">BUILD_TARGET=x86</span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$#</span> -gt 0 ]; <span class="keyword">then</span></span><br><span class="line">    BUILD_TARGET=<span class="variable">$1</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> -e <span class="string">&quot;\e[33m* target arch not given (<span class="variable">$&#123;target_array[*]&#125;</span>), use x86 as default!\e[0m&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">target_valid=<span class="literal">false</span></span><br><span class="line"><span class="keyword">for</span> target <span class="keyword">in</span> <span class="variable">$&#123;target_array[@]&#125;</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    <span class="keyword">if</span> [ x<span class="variable">$&#123;BUILD_TARGET&#125;</span> = x<span class="variable">$target</span> ]; <span class="keyword">then</span></span><br><span class="line">        target_valid=<span class="literal">true</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ! <span class="variable">$&#123;target_valid&#125;</span>; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> -e <span class="string">&quot;\e[33m* target arch should be in (<span class="variable">$&#123;target_array[*]&#125;</span>)\e[0m&quot;</span></span><br><span class="line">    <span class="built_in">exit</span> -1</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;* BUILD_TARGET=<span class="variable">$&#123;BUILD_TARGET&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 1 setup toolchain</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">&quot;\e[33m=== setup toolchain ===\e[0m&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="variable">$&#123;BUILD_TARGET&#125;</span> = <span class="string">&quot;orin&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    COMPILER_PATH=/opt/toolchains/orin/aarch64--glibc--stable-final/bin</span><br><span class="line">    TARGET_HOST=aarch64-buildroot-linux-gnu</span><br><span class="line">    COMPILER_PREFIX=aarch64-linux-</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;COMPILER_PATH&#125;</span>:<span class="variable">$&#123;PATH&#125;</span></span><br><span class="line"><span class="built_in">export</span> CROSS_COMPILE=<span class="variable">$&#123;COMPILER_PREFIX&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2 build packages</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">&quot;\e[33m=== build packages ===\e[0m&quot;</span></span><br><span class="line"></span><br><span class="line">TOP_DIR=<span class="string">&quot;<span class="subst">$(cd <span class="string">&quot;<span class="subst">$(dirname <span class="string">&quot;<span class="variable">$&#123;BASH_SOURCE[0]&#125;</span>&quot;</span>)</span>/..&quot;</span> &amp;&amp; pwd -P)</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 指定安装目录和目标平台的cmake文件</span></span><br><span class="line"><span class="built_in">export</span> CYBER_KIT_PATH=/opt/cyber-kit/</span><br><span class="line">INSTALL_PREFIX=<span class="variable">$&#123;CYBER_KIT_PATH&#125;</span>sysroot/<span class="variable">$BUILD_TARGET</span></span><br><span class="line">TOOLCHAIN_FILE=<span class="variable">$&#123;CYBER_KIT_PATH&#125;</span>cmake/sysroot/<span class="variable">$&#123;BUILD_TARGET&#125;</span>.cmake</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> PKG_CONFIG_PATH=<span class="variable">$&#123;INSTALL_PREFIX&#125;</span>/share/pkgconfig:<span class="variable">$&#123;INSTALL_PREFIX&#125;</span>/lib/pkgconfig</span><br><span class="line"></span><br><span class="line">THIRDPARTY_DIR=<span class="variable">$&#123;TOP_DIR&#125;</span>/thirdparty</span><br><span class="line">PROGRESS_FILE=<span class="variable">$&#123;THIRDPARTY_DIR&#125;</span>/build-log.conf</span><br><span class="line"><span class="built_in">touch</span> <span class="variable">$PROGRESS_FILE</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$THIRDPARTY_DIR</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## glog</span></span><br><span class="line"><span class="keyword">if</span> [[ $(<span class="built_in">cat</span> <span class="variable">$&#123;PROGRESS_FILE&#125;</span> | grep <span class="variable">$&#123;GLOG_SOURCE&#125;</span>-<span class="variable">$&#123;BUILD_TARGET&#125;</span>) ]]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$&#123;GLOG_SOURCE&#125;</span>-<span class="variable">$&#123;BUILD_TARGET&#125;</span> already build&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">rm</span> -rf <span class="variable">$GLOG_SOURCE</span></span><br><span class="line">    tar xf tarball/<span class="variable">$&#123;GLOG_SOURCE&#125;</span>.tar.gz &amp;&amp; <span class="built_in">cd</span> <span class="variable">$GLOG_SOURCE</span></span><br><span class="line">    <span class="built_in">mkdir</span> -p build-<span class="variable">$&#123;BUILD_TARGET&#125;</span> &amp;&amp; <span class="built_in">cd</span> build-<span class="variable">$&#123;BUILD_TARGET&#125;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 使用新的 C++11 ABI（默认 GCC 5+ 的行为）</span></span><br><span class="line">    cmake -DCMAKE_TOOLCHAIN_FILE=<span class="variable">$&#123;TOOLCHAIN_FILE&#125;</span> \</span><br><span class="line">    -DCMAKE_POSITION_INDEPENDENT_CODE=ON \</span><br><span class="line">    -DBUILD_SHARED_LIBS=ON \</span><br><span class="line">    -DCMAKE_CXX_FLAGS=-D_GLIBCXX_USE_CXX11_ABI=1 \</span><br><span class="line">    -DCMAKE_INSTALL_PREFIX=<span class="variable">$&#123;INSTALL_PREFIX&#125;</span> ..</span><br><span class="line">    make -j$(<span class="built_in">nproc</span>) install &amp;&amp; <span class="built_in">echo</span> <span class="variable">$&#123;GLOG_SOURCE&#125;</span>-<span class="variable">$&#123;BUILD_TARGET&#125;</span> &gt;&gt; <span class="variable">$PROGRESS_FILE</span></span><br><span class="line">    </span><br><span class="line">    <span class="built_in">cd</span> ../..</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## nlohmann json</span></span><br><span class="line"><span class="keyword">if</span> [[ $(<span class="built_in">cat</span> <span class="variable">$&#123;PROGRESS_FILE&#125;</span> | grep <span class="variable">$&#123;NLOHMANN_JSON_SOURCE&#125;</span>-<span class="variable">$&#123;BUILD_TARGET&#125;</span>) ]]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$&#123;NLOHMANN_JSON_SOURCE&#125;</span>-<span class="variable">$&#123;BUILD_TARGET&#125;</span> already build&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">rm</span> -rf <span class="variable">$NLOHMANN_JSON_SOURCE</span></span><br><span class="line">    tar xf tarball/<span class="variable">$&#123;NLOHMANN_JSON_SOURCE&#125;</span>.tar.gz &amp;&amp; <span class="built_in">cd</span> <span class="variable">$NLOHMANN_JSON_SOURCE</span></span><br><span class="line">    <span class="built_in">mkdir</span> -p build-<span class="variable">$&#123;BUILD_TARGET&#125;</span> &amp;&amp; <span class="built_in">cd</span> build-<span class="variable">$&#123;BUILD_TARGET&#125;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 使用新的 C++11 ABI（默认 GCC 5+ 的行为）</span></span><br><span class="line">    cmake -DCMAKE_TOOLCHAIN_FILE=<span class="variable">$&#123;TOOLCHAIN_FILE&#125;</span> \</span><br><span class="line">    -DBUILD_SHARED_LIBS=ON \</span><br><span class="line">    -DCMAKE_INSTALL_PREFIX=<span class="variable">$&#123;INSTALL_PREFIX&#125;</span> ..</span><br><span class="line">    make -j$(<span class="built_in">nproc</span>) install &amp;&amp; <span class="built_in">echo</span> <span class="variable">$&#123;NLOHMANN_JSON_SOURCE&#125;</span>-<span class="variable">$&#123;BUILD_TARGET&#125;</span> &gt;&gt; <span class="variable">$PROGRESS_FILE</span></span><br><span class="line">    </span><br><span class="line">    <span class="built_in">cd</span> ../..</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">rm</span> -rf <span class="variable">$GLOG_SOURCE</span></span><br><span class="line"><span class="built_in">rm</span> -rf <span class="variable">$NLOHMANN_JSON_SOURCE</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;all done !&quot;</span></span><br></pre></td></tr></table></figure>
+<h4 id="orincmake文件分析"><a class="markdownIt-Anchor" href="#orincmake文件分析"></a> orin.cmake文件分析</h4>
+<p>交叉编译使用到该脚本，主要用于指定<mark>编译器</mark>以及<mark>编译根目录</mark>。</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="keyword">NOT</span> <span class="keyword">DEFINED</span> ENV&#123;CYBER_KIT_PATH&#125;)</span><br><span class="line">    <span class="keyword">message</span>(FATAL_ERROR <span class="string">&quot;Environment \&quot;CYBER_KIT_PATH\&quot; not set!&quot;</span>)</span><br><span class="line"><span class="keyword">endif</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(TARGET_ARCH aarch64)</span><br><span class="line"><span class="keyword">set</span>(TARGET_PLATFORM orin)</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(CMAKE_SYSTEM_NAME Linux)</span><br><span class="line"><span class="keyword">set</span>(CMAKE_SYSTEM_PROCESSOR aarch64)</span><br><span class="line"><span class="keyword">set</span>(HOST_PROCESSOR <span class="variable">$&#123;CMAKE_HOST_SYSTEM_PROCESSOR&#125;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(TOOLCHAIN_ROOT /usr)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$&#123;HOST_PROCESSOR&#125;</span> <span class="keyword">STREQUAL</span> <span class="string">&quot;x86_64&quot;</span>)</span><br><span class="line">    <span class="keyword">set</span>(TOOLCHAIN_ROOT /opt/toolchains/orin/aarch64--glibc--stable-final)</span><br><span class="line">    <span class="keyword">set</span>(CROSS_COMPILE aarch64-linux-)</span><br><span class="line"><span class="keyword">endif</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(CMAKE_C_COMPILER <span class="variable">$&#123;TOOLCHAIN_ROOT&#125;</span>/bin/<span class="variable">$&#123;CROSS_COMPILE&#125;</span>gcc)</span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_COMPILER <span class="variable">$&#123;TOOLCHAIN_ROOT&#125;</span>/bin/<span class="variable">$&#123;CROSS_COMPILE&#125;</span>g++)</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(CMAKE_FIND_ROOT_PATH $ENV&#123;CYBER_KIT_PATH&#125;sysroot/orin)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$&#123;HOST_PROCESSOR&#125;</span> <span class="keyword">STREQUAL</span> <span class="string">&quot;x86_64&quot;</span>)</span><br><span class="line">    <span class="keyword">set</span>(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)</span><br><span class="line">    <span class="keyword">set</span>(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)</span><br><span class="line">    <span class="keyword">set</span>(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)</span><br><span class="line">    <span class="keyword">set</span>(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)</span><br><span class="line"><span class="keyword">else</span>()</span><br><span class="line">    <span class="keyword">set</span>(CMAKE_SYSROOT /)</span><br><span class="line">    <span class="keyword">set</span>(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY BOTH)</span><br><span class="line">    <span class="keyword">set</span>(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE BOTH)</span><br><span class="line">    <span class="keyword">set</span>(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE BOTH)</span><br><span class="line">    <span class="keyword">set</span>(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)</span><br><span class="line"><span class="keyword">endif</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(CYBER_SYSROOT_LIB_DIR $ENV&#123;CYBER_KIT_PATH&#125;sysroot/orin/lib)</span><br><span class="line"><span class="keyword">set</span>(CYBER_SYSROOT_INCLUDE_DIR $ENV&#123;CYBER_KIT_PATH&#125;sysroot/orin/<span class="keyword">include</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="重新保存镜像"><a class="markdownIt-Anchor" href="#重新保存镜像"></a> 重新保存镜像</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker commit d063a8a6bdd5 i-nog/nog-cyber-kit/plat_orin_dev:v1.1.0</span><br></pre></td></tr></table></figure>
+<p>工作区的改动会被保存进新镜像，前提是这些改动是<font color=gree>在容器的文件系统内</font>进行的。</p>
+<ul>
+<li>
+<p>✅ 情况 1：改动<font color=gree>在容器内部</font><br />
+如果你在容器中运行了如下操作：</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /workspace</span><br><span class="line">apt install ...</span><br><span class="line"><span class="built_in">touch</span> somefile.txt</span><br><span class="line">pip install ...</span><br></pre></td></tr></table></figure>
+<p>然后执行：</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker commit &lt;容器名&gt; &lt;镜像名&gt;</span><br></pre></td></tr></table></figure>
+<p>这些文件、安装的软件、代码改动 都会被保存进新镜像 ✅。</p>
+</li>
+<li>
+<p>❌ 情况 2：挂载的目录（如<code>-v $&#123;WORK_DIR&#125;:/workspace</code>）<br />
+如果启动容器时使用了：</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-v <span class="variable">$&#123;WORK_DIR&#125;</span>:/workspace</span><br></pre></td></tr></table></figure>
+<p>则：</p>
+<ul>
+<li><code>/workspace</code>实际是宿主机的目录；</li>
+<li>改动发生在宿主机，不属于容器文件系统；</li>
+<li><code>docker commit</code>不会保存这些改动 ❌。</li>
+</ul>
+</li>
+</ul>
+<p>📌 举例说明</p>
+<ul>
+<li>有挂载：  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -v /home/lxp/code:/workspace ...</span><br></pre></td></tr></table></figure>
+你在容器内<code>/workspace</code>修改的所有内容，其实是修改的宿主机<code>/home/lxp/code</code>，不属于容器，<code>docker commit</code>不会打包它。</li>
+<li>无挂载（纯容器内）：  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run ...</span><br><span class="line"><span class="comment"># 没有 -v /workspace</span></span><br></pre></td></tr></table></figure>
+创建或修改<code>/workspace</code>的文件，<code>commit</code>后会保存在镜像里。</li>
+</ul>
+
+                    
+                </div>
+
+                
+
+                <div class="post-bottom-tags-and-share border-box">
+                    <div>
+                        
+                    </div>
+                    <div>
+                        
+                            <div class="post-share-container border-box">
+    <ul class="share-list-wrap border-box">
+        <li class="qq share-item border-box flex-center tooltip"
+            data-tooltip-content="分享到 QQ"
+        >
+            <i class="fa-brands fa-qq"></i>
+        </li>
+        <li class="wechat share-item border-box flex-center tooltip tooltip-img"
+            data-tooltip-content="分享到微信"
+            data-tooltip-img-tip="微信扫一扫"
+            data-tooltip-img-style="background-color: #fff; top: -10px; padding: 0.6rem 0.6rem 0.1rem 0.6rem;"
+        >
+            <i class="fa-brands fa-weixin"></i>
+        </li>
+        <li class="weibo share-item border-box flex-center tooltip"
+            data-tooltip-content="分享到微博"
+        >
+            <i class="fa-brands fa-weibo"></i>
+        </li>
+    </ul>
+</div>
+
+                        
+                    </div>
+                </div>
+
+                
+                    
+
+<div class="reward-author-container border-box flex-center">
+    <div class="reward-btn border-box flex-center tooltip tooltip-img"
+            data-tooltip-img-url="/images/i-nog-avatar.jpg"
+            data-tooltip-img-trigger="click"
+            data-tooltip-img-style="top: -6px;"
+    >
+        <i class="fa-solid fa-gift"></i>&nbsp;请作者吃姜饼
+    </div>
+</div>
+
+                
+
+                
+                    <div class="post-nav border-box">
+                        
+                            <div class="prev-post">
+                                <a class="prev"
+                                   rel="prev"
+                                   href="/2025/07/11/CyberRT%E8%87%AA%E5%AE%9A%E4%B9%89%E9%83%A8%E7%BD%B2%E6%B5%81%E7%A8%8B%E4%B9%8B%E9%83%A8%E7%BD%B2cyber%20Cmake%E5%B7%A5%E7%A8%8B/"
+                                   title="CyberRT自定义部署流程 之 部署cyber Cmake工程"
+                                >
+                                    <span class="left arrow-icon flex-center">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">CyberRT自定义部署流程 之 部署cyber Cmake工程</span>
+                                        <span class="post-nav-item">上一篇</span>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                        
+                            <div class="next-post">
+                                <a class="next"
+                                   rel="next"
+                                   href="/2025/07/03/Latex%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F%E6%B5%8B%E8%AF%95%E6%B5%8B%E8%AF%95/"
+                                   title="Latex数学公式测试"
+                                >
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">Latex数学公式测试</span>
+                                        <span class="post-nav-item">下一篇</span>
+                                    </span>
+                                    <span class="right arrow-icon flex-center">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                    </div>
+                
+
+                
+                    
+
+
+    <div class="comments-container border-box">
+        <div id="comments-anchor" class="comment-area-title border-box">
+            <i class="fas fa-comments"></i>&nbsp;评论
+        </div>
+        <div class="comment-plugin-fail border-box">
+    <span class="fail-tip">评论插件加载失败</span>
+    <button class="reload keep-button">点击重新加载</button>
+</div>
+<div class="comment-plugin-loading flex-center border-box">
+    <i class="loading-icon fa-solid fa-spinner fa-spin"></i>
+    <span class="load-tip">正在加载评论插件</span>
+</div>
+<script data-pjax>
+  window.KeepCommentPlugin = {}
+  window.KeepCommentPlugin.hideLoading = () => {
+    const cplDom = document.querySelector('.comments-container .comment-plugin-loading')
+    cplDom.style.display = 'none'
+  }
+  window.KeepCommentPlugin.loadFailHandle = () => {
+    window.KeepCommentPlugin.hideLoading()
+    const cpfDom = document.querySelector('.comments-container .comment-plugin-fail')
+    cpfDom.style.display = 'flex'
+    cpfDom.querySelector('.reload').addEventListener('click', () => {
+      window.location.reload()
+    })
+  }
+</script>
+
+        
+            
+
+    <div class="giscus-comments-container">
+        <div class="giscus" id="giscus"></div>
+        <script data-pjax
+                onerror="window.KeepCommentPlugin.loadFailHandle()"
+        >
+          if (!window.KeepCommentPlugin?.getGiscusTheme) {
+            window.KeepCommentPlugin.getGiscusTheme = () => {
+              return document.documentElement.classList.contains('dark-mode') ? 'dark_dimmed' : 'light_tritanopia'
+            }
+          }
+
+          if (!window.KeepCommentPlugin?.changeGiscusTheme) {
+            window.KeepCommentPlugin.changeGiscusTheme = () => {
+              const iframe = document.querySelector('iframe.giscus-frame')
+              iframe && iframe.contentWindow.postMessage({
+                giscus: {
+                  setConfig: {
+                    theme: window.KeepCommentPlugin.getGiscusTheme()
+                  }
+                }
+              }, 'https://giscus.app')
+            }
+          }
+
+          if (!window.KeepCommentPlugin?.initGiscus) {
+            window.KeepCommentPlugin.initGiscus = () => {
+              const script = document.createElement('script')
+              script.async = true
+              script.src = 'https://giscus.app/client.js'
+              script.setAttribute('data-repo', 'i-Nog/iNog-blog-comments')
+              script.setAttribute('data-repo-id', 'R_kgDOPF7ymg')
+              script.setAttribute('data-category', 'Announcements')
+              script.setAttribute('data-category-id', 'DIC_kwDOPF7yms4Cscff')
+              script.setAttribute('data-reactions-enabled', '0')
+              script.setAttribute('data-lang', 'zh-CN')
+              script.setAttribute('data-mapping', 'pathname')
+              script.setAttribute('data-strict', '0')
+              script.setAttribute('data-emit-metadata', '0')
+              script.setAttribute('data-input-position', 'top')
+              script.setAttribute('crossorigin', 'anonymous')
+              script.setAttribute('loading', 'lazy')
+              script.setAttribute('data-theme', window.KeepCommentPlugin.getGiscusTheme())
+              document.querySelector('.giscus-comments-container').appendChild(script)
+              script.onerror = () => {
+                window.KeepCommentPlugin.loadFailHandle()
+              }
+              script.onload = () => {
+                window.KeepCommentPlugin.hideLoading()
+              }
+              const toggleThemeBtn = document.querySelector('.tool-toggle-theme-mode')
+              toggleThemeBtn && toggleThemeBtn.addEventListener('click', () => {
+                window.KeepCommentPlugin.changeGiscusTheme()
+              })
+            }
+          }
+
+          if ('true' === "true") {
+            setTimeout(() => {
+              window.KeepCommentPlugin.initGiscus()
+            }, 1000)
+          } else {
+            window.addEventListener("DOMContentLoaded", window.KeepCommentPlugin.initGiscus)
+          }
+        </script>
+    </div>
+
+
+        
+    </div>
+
+
+
+
+
+                
+            </div>
+        </div>
+
+        
+            <div class="pc-post-toc right-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E5%A5%BD%E7%9B%AE%E6%A0%87%E5%B9%B3%E5%8F%B0%E7%9A%84%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7"><span class="nav-text"> 准备好目标平台的交叉编译工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E5%A5%BD%E4%BE%9D%E8%B5%96%E5%BA%93"><span class="nav-text"> 准备好依赖库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E5%BA%93%E6%98%AF%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%BA%93"><span class="nav-text"> 依赖库是二进制库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E5%BA%93%E6%98%AF%E6%BA%90%E7%A0%81"><span class="nav-text"> 依赖库是源码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cyberrt-v900%E7%89%88%E6%9C%AC%E4%BE%9D%E8%B5%96%E5%BA%93"><span class="nav-text"> CyberRT v9.0.0版本依赖库</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%90%AD%E5%BB%BAdocker%E9%95%9C%E5%83%8F"><span class="nav-text"> 搭建Docker镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAdocker_release_xcybersh%E8%84%9A%E6%9C%AC"><span class="nav-text"> 创建docker_release_xcyber.sh脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAdockerfileorinxcyber"><span class="nav-text"> 创建Dockerfile.orin.xcyber</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%84%9A%E6%9C%ACsetupsh"><span class="nav-text"> 创建环境配置脚本setup.sh</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E4%BE%9D%E8%B5%96%E5%BA%93"><span class="nav-text"> （交叉）编译依赖库</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#orincmake%E6%96%87%E4%BB%B6%E5%88%86%E6%9E%90"><span class="nav-text"> orin.cmake文件分析</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E6%96%B0%E4%BF%9D%E5%AD%98%E9%95%9C%E5%83%8F"><span class="nav-text"> 重新保存镜像</span></a></li></ol>
+    </div>
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+        </div>
+
+        <div class="page-main-content-bottom border-box">
+            
+<footer class="footer border-box">
+    <div class="copyright-info info-item">
+    &copy;&nbsp;<span>2021</span>&nbsp;-&nbsp;2025
+    
+            &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/">i-Nog</a>
+        
+    </div>
+
+    <div class="theme-info info-item">
+        由&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;驱动&nbsp;&&nbsp;主题&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
+    </div>
+
+    
+        
+        <div class="deploy-info info-item">
+            
+            本站由 <span class="tooltip" data-tooltip-content="GitHub Pages"><img src="/images/brands/github.png"></span> 提供部署服务
+            
+        </div>
+    
+
+    
+        <div class="count-info info-item">
+            
+                <span class="count-item border-box word">
+                    <span class="item-type border-box">总字数</span>
+                    <span class="item-value border-box word">20.7k</span>
+                </span>
+            
+
+            
+                <span class="count-item border-box uv">
+                    <span class="item-type border-box">访客数</span>
+                    <span class="item-value border-box uv" id="busuanzi_value_site_uv"></span>
+                </span>
+            
+
+            
+                <span class="count-item border-box pv">
+                    <span class="item-type border-box">访问量</span>
+                    <span class="item-value border-box pv" id="busuanzi_value_site_pv"></span>
+                </span>
+            
+        </div>
+    
+
+    
+</footer>
+
+        </div>
+    </div>
+
+    <!-- post tools -->
+    
+        <div class="post-tools right-toc">
+            <div class="post-tools-container border-box">
+    <ul class="post-tools-list border-box">
+        <!-- PC encrypt again -->
+        
+
+        <!-- PC TOC show toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- PC go comment -->
+        
+            <li class="tools-item flex-center go-to-comments">
+                <i class="fas fa-comment"></i>
+                <span class="post-comments-count"></span>
+            </li>
+        
+
+        <!-- PC full screen -->
+        <li class="tools-item flex-center full-screen">
+            <i class="fa-solid fa-expand"></i>
+        </li>
+    </ul>
+</div>
+
+        </div>
+    
+
+    <!-- side tools -->
+    <div class="side-tools">
+        <div class="side-tools-container border-box ">
+    <ul class="side-tools-list side-tools-show-handle border-box">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <!-- toggle mode -->
+        
+            <li class="tools-item tool-toggle-theme-mode flex-center">
+                <i class="fas fa-moon"></i>
+            </li>
+        
+
+        <!-- rss -->
+        
+
+        <!-- to bottom -->
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list border-box">
+        
+            <li class="tools-item toggle-show-toc-tablet flex-center">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        
+            <li class="tools-item go-to-comments-tablet flex-center">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+        <li class="tools-item tool-scroll-to-top flex-center show-arrow">
+            <i class="arrow fas fa-arrow-up"></i>
+            <span class="percent"></span>
+        </li>
+    </ul>
+</div>
+
+    </div>
+
+    <!-- image mask -->
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
+</div>
+
+
+    <!-- local search -->
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+    <!-- tablet toc -->
+    
+        <div class="tablet-post-toc-mask">
+            <div class="tablet-post-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E5%A5%BD%E7%9B%AE%E6%A0%87%E5%B9%B3%E5%8F%B0%E7%9A%84%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7"><span class="nav-text"> 准备好目标平台的交叉编译工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E5%A5%BD%E4%BE%9D%E8%B5%96%E5%BA%93"><span class="nav-text"> 准备好依赖库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E5%BA%93%E6%98%AF%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%BA%93"><span class="nav-text"> 依赖库是二进制库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E5%BA%93%E6%98%AF%E6%BA%90%E7%A0%81"><span class="nav-text"> 依赖库是源码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cyberrt-v900%E7%89%88%E6%9C%AC%E4%BE%9D%E8%B5%96%E5%BA%93"><span class="nav-text"> CyberRT v9.0.0版本依赖库</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%90%AD%E5%BB%BAdocker%E9%95%9C%E5%83%8F"><span class="nav-text"> 搭建Docker镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAdocker_release_xcybersh%E8%84%9A%E6%9C%AC"><span class="nav-text"> 创建docker_release_xcyber.sh脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAdockerfileorinxcyber"><span class="nav-text"> 创建Dockerfile.orin.xcyber</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%84%9A%E6%9C%ACsetupsh"><span class="nav-text"> 创建环境配置脚本setup.sh</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E4%BE%9D%E8%B5%96%E5%BA%93"><span class="nav-text"> （交叉）编译依赖库</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#orincmake%E6%96%87%E4%BB%B6%E5%88%86%E6%9E%90"><span class="nav-text"> orin.cmake文件分析</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E6%96%B0%E4%BF%9D%E5%AD%98%E9%95%9C%E5%83%8F"><span class="nav-text"> 重新保存镜像</span></a></li></ol>
+    </div>
+</div>
+
+            </div>
+        </div>
+    
+</main>
+
+
+
+
+
+<!-- common js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/header-shrink.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/back2top.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/toggle-theme.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/code-block.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/main.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/libs/anime.min.js"></script>
+
+<!-- local search -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/local-search.min.js"></script>
+
+
+<!-- lazyload -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/lazyload.min.js"></script>
+
+
+<div class="pjax">
+    <!-- home page -->
+    
+
+    <!-- post page -->
+    
+        <!-- post-helper -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/post/post-helper.min.js"></script>
+
+        <!-- toc -->
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/post/toc.min.js"></script>
+        
+
+        <!-- copyright-info -->
+        
+
+        <!-- share -->
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/post/share.min.js"></script>
+        
+    
+
+    <!-- categories page -->
+    
+
+    <!-- links page -->
+    
+
+    <!-- photos page -->
+    
+
+    <!-- tools page -->
+    
+</div>
+
+<!-- mermaid -->
+
+
+<!-- pjax -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/libs/pjax.min.js"></script>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart()
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd()
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'))
+            KEEP.initExecute()
+        });
+    });
+</script>
+
+
+
+
+    
+        
+    
+
+</body>
+</html>
