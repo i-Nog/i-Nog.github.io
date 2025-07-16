@@ -690,6 +690,74 @@
                          style="height: 300px"
                     >
                         
+                        <img class="home-cover" src="/images/posts/linux_so.jpeg"
+                             onerror="this.style.display='none'"
+                        >
+                    </div>
+                
+
+                <div class="home-post-item-bottom border-box">
+                    
+                    <h3 class="home-post-title border-box">
+                        <a href="/2025/04/14/%E5%85%B1%E4%BA%AB%E5%BA%93%EF%BC%88.so%E6%96%87%E4%BB%B6%EF%BC%89%E7%9A%84%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86/">
+                            共享库（.so文件）的版本管理
+                        </a>
+                    </h3>
+
+                    <div class="home-post-content keep-markdown-body">
+                        
+                            <p>在 Linux 系统中，共享库（<code>.so</code> 文件）的版本管理通常通过软链接（符号链接）实现层级式的版本指向机制。你提到的 <code>.so</code>、<code>.so.5</code> 和 <code>.so.5.58</code> 之间的软链接关系，实际是一种标准化的版本控制策略，<strong>并非真正的“相互链接”</strong>，而是通过层级指向最终的具体版本文件。以下是其作用和原理的详细解释：</p>
+                        
+                    </div>
+
+                    
+
+<div class="post-meta-info-container border-box home">
+    <div class="post-meta-info border-box">
+        
+            <span class="meta-info-item border-box">
+                <i class="icon fa-solid fa-history"></i>&nbsp;<span class="home-post-history"
+                                                                                data-updated="Wed Jul 16 2025 14:44:46 GMT+0800"
+                >2025-07-16 14:44:46</span>
+            </span>
+        
+
+        
+
+        
+            <span class="meta-info-item post-category border-box"><i class="icon fas fa-folder"></i>&nbsp;
+                <ul class="post-category-ul">
+                    
+                            <li class="category-item"><a href="/categories/Linux%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">Linux软件开发</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+
+        
+        
+        
+        
+    </div>
+
+    
+        <a class="home-read-more" href="/2025/04/14/%E5%85%B1%E4%BA%AB%E5%BA%93%EF%BC%88.so%E6%96%87%E4%BB%B6%EF%BC%89%E7%9A%84%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86/">阅读全文&nbsp;<i class="icon fas fa-angle-right"></i></a>
+    
+</div>
+
+                </div>
+            </li>
+        
+            <li class="home-post-item">
+
+                
+                    <div class="home-post-item-top border-box"
+                         style="height: 300px"
+                    >
+                        
                         <img class="home-cover" src="/images/posts/Ipoppt.jpeg"
                              onerror="this.style.display='none'"
                         >
@@ -961,134 +1029,6 @@
                 </div>
             </li>
         
-            <li class="home-post-item">
-
-                
-                    <div class="home-post-item-top border-box"
-                         style="height: 250px"
-                    >
-                        
-                        <img class="home-cover" src="/images/posts/osqp.jpeg"
-                             onerror="this.style.display='none'"
-                        >
-                    </div>
-                
-
-                <div class="home-post-item-bottom border-box">
-                    
-                    <h3 class="home-post-title border-box">
-                        <a href="/2022/04/01/%E5%88%86%E6%AE%B5%E5%8A%A0%E5%8A%A0%E9%80%9F%E5%BA%A6%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92OSQP%E4%BB%BF%E7%9C%9F%E5%8F%82%E6%95%B0%E5%88%86%E6%9E%90/">
-                            分段加加速度路径规划OSQP仿真参数分析
-                        </a>
-                    </h3>
-
-                    <div class="home-post-content keep-markdown-body">
-                        
-                            <h2 id="分段加加速度路径规划osqp仿真参数分析"><a class="markdownIt-Anchor" href="#分段加加速度路径规划osqp仿真参数分析"></a> 分段加加速度路径规划OSQP仿真参数分析</h2>
-<p>在自动驾驶横向路径规划中，分段加加速度模型（最小 jerk）常用于生成平滑轨迹，并以 OSQP 作为优化求解器。本文通过系统性仿真实验，分析路径规划中各种参数对轨迹形状与可行性的影响，并总结出一套实用的参数调试指南。</p>
-<table>
-<thead>
-<tr>
-<th>参数名</th>
-<th>默认值</th>
-<th>建议范围</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>l_weight</code></td>
-<td>1.0</td>
-<td><code>[10, 33]</code></td>
-<td>越大越贴中心线，过大不自然</td>
-</tr>
-<tr>
-<td><code>dl_weight</code></td>
-<td>max(5.0, 初始dl²)</td>
-<td><code>[0, 10000]</code></td>
-<td>越大越直，对结果影响小</td>
-</tr>
-<tr>
-<td><code>ddl_weight</code></td>
-<td>1000.0</td>
-<td>任意</td>
-<td>影响极小</td>
-</tr>
-<tr>
-<td><code>dddl_weight</code></td>
-<td>50000.0</td>
-<td><code>[50000, 500000]</code></td>
-<td>控制曲线“硬直”程度</td>
-</tr>
-<tr>
-<td><code>x_ref_weight</code></td>
-<td>10.0</td>
-<td><code>[10, 30]</code></td>
-<td>越大越接近目标线，但存在跳变</td>
-</tr>
-<tr>
-<td><code>end_state_weight_l</code></td>
-<td>1000.0</td>
-<td><code>[1000, 10000]</code></td>
-<td>控制终点位置贴合度</td>
-</tr>
-<tr>
-<td><code>end_state_weight_dl/ddl</code></td>
-<td>0.0</td>
-<td>任意</td>
-<td>基本无影响</td>
-</tr>
-</tbody>
-</table>
-<p>跳变提示：</p>
-<ul>
-<li>多个权重参数（如 l_weight、x_ref_weight）在某些区间会出现“跳变点”，即微小调整导致轨迹急剧变化，建议避开。</li>
-<li>x_ref_weight 在 [8.8, 9.0] 存在跳变，l_weight 在 [9, 10]、[33, 34]、[43, 44] 存在跳变。</li>
-</ul>
-                        
-                    </div>
-
-                    
-
-<div class="post-meta-info-container border-box home">
-    <div class="post-meta-info border-box">
-        
-            <span class="meta-info-item border-box">
-                <i class="icon fa-solid fa-history"></i>&nbsp;<span class="home-post-history"
-                                                                                data-updated="Mon Jul 14 2025 09:29:32 GMT+0800"
-                >2025-07-14 09:29:32</span>
-            </span>
-        
-
-        
-
-        
-            <span class="meta-info-item post-category border-box"><i class="icon fas fa-folder"></i>&nbsp;
-                <ul class="post-category-ul">
-                    
-                            <li class="category-item"><a href="/categories/%E7%AE%97%E6%B3%95/">算法</a></li>
-                        
-                    
-                </ul>
-            </span>
-        
-
-        
-
-        
-        
-        
-        
-    </div>
-
-    
-        <a class="home-read-more" href="/2022/04/01/%E5%88%86%E6%AE%B5%E5%8A%A0%E5%8A%A0%E9%80%9F%E5%BA%A6%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92OSQP%E4%BB%BF%E7%9C%9F%E5%8F%82%E6%95%B0%E5%88%86%E6%9E%90/">阅读全文&nbsp;<i class="icon fas fa-angle-right"></i></a>
-    
-</div>
-
-                </div>
-            </li>
-        
     </ul>
     
     <div class="paginator border-box flex-center">
@@ -1162,7 +1102,7 @@
             
                 <span class="count-item border-box word">
                     <span class="item-type border-box">总字数</span>
-                    <span class="item-value border-box word">45.1k</span>
+                    <span class="item-value border-box word">45.9k</span>
                 </span>
             
 
