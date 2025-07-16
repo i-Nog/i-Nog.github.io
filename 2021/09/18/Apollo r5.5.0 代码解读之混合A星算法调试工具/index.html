@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="i-Nog">
+    
+    <title>
+        
+            Apollo r5.5.0 代码解读 之 混合A星算法调试工具 |
+        
+        Lernen Forschen Machen
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+        <link rel="shortcut icon" href="/images/i-nog-logo.png">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/font/css/fontawesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/font/css/regular.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/font/css/solid.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/font/css/brands.min.css">
+    
+        
+            
+        
+            
+                
+<link rel="stylesheet" href="/css/custom-1.css">
+
+            
+        
+    
+    <script class="keep-theme-configurations">
+    const KEEP = window.KEEP || {}
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN","path":"search.json"}
+    KEEP.theme_config = {"base_info":{"primary_color":"#FF9900","title":"Lernen Forschen Machen","author":"i-Nog","avatar":"/images/i-nog-avatar.jpg","logo":"/images/i-nog-logo.png","favicon":"/images/i-nog-logo.png"},"menu":{"home":"/ || fa-solid fa-home","archives":"/archives || fa-solid fa-box-archive","categories":"/categories || fa-solid fa-layer-group","tools":"/tools || fa-solid fa-tools","about":"/about || fa-solid fa-user-graduate"},"first_screen":{"enable":true,"background_img":"/images/bg.svg","background_img_dark":"/images/bg.svg","description":"Keep writing and Keep loving.","hitokoto":true},"social_contact":{"enable":true,"links":{"github":null,"weixin":null,"qq":null,"weibo":null,"zhihu":null,"twitter":null,"x":null,"facebook":null,"email":"linxiaopeng-nog@qq.com"}},"scroll":{"progress_bar":false,"percent":true,"hide_header":true},"home":{"announcement":"转载请注明出处，尊重原创，从我做起。","category":true,"tag":false,"post_datetime":"updated","post_datetime_format":"YYYY-MM-DD HH:mm:ss"},"post":{"author_badge":{"enable":true,"level_badge":true,"custom_badge":["One","Two","Three"]},"word_count":{"wordcount":true,"min2read":true},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":false,"share":true,"reward":{"enable":true,"img_link":"/images/i-nog-avatar.jpg","text":"请作者吃姜饼","icon":null}},"code_block":{"tools":{"enable":true,"style":"default"},"highlight_theme":"obsidian"},"toc":{"enable":true,"number":false,"expand_all":false,"init_open":true,"layout":"right"},"website_count":{"busuanzi_count":{"enable":false,"site_uv":true,"site_pv":true,"page_pv":true}},"local_search":{"enable":true,"preload":true},"comment":{"enable":true,"use":"giscus","valine":{"appid":null,"appkey":null,"server_urls":null,"placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.39"},"waline":{"server_url":null,"reaction":false,"version":"3.3.2"},"giscus":{"repo":"i-Nog/iNog-blog-comments","repo_id":"R_kgDOPF7ymg","category":"Announcements","category_id":"DIC_kwDOPF7yms4Cscff","reactions_enabled":false},"artalk":{"server":null},"disqus":{"shortname":null}},"rss":{"enable":false},"lazyload":{"enable":true},"cdn":{"enable":true,"provider":"cdnjs"},"pjax":{"enable":true},"footer":{"since":2021,"word_count":true,"site_deploy":{"enable":true,"provider":"github","url":null},"record":{"enable":true,"list":[{"code":null,"link":null}]}},"inject":{"enable":true,"css":[null,"/css/custom-1.css"],"js":[null]},"root":"","source_data":{"tools":[{"category":"AI 工具汇总","anchorId":"QUklMjAlRTUlQjclQTUlRTUlODUlQjclRTYlQjElODclRTYlODAlQkI0"},{"name":"AI 工具集","link":"https://ai-bot.cn/","description":"AI工具集导航收录了国内外数百个不同类型的AI工具","image":"/images/tools/ai-bot-logo-black.png"},{"name":"Leaderboard Overview","link":"https://lmarena.ai/leaderboard","description":"See how leading models stack up across text, image, vision, and beyond.","image":"/images/tools/lmarena.png"},{"category":"聊天 AI","anchorId":"JUU4JTgxJThBJUU1JUE0JUE5JTIwQUk3"},{"name":"ChatGPT","link":"https://chatgpt.com/","description":"OpenAI 旗下 AI 聊天对话工具","image":"/images/tools/chatgpt-icon.png"},{"name":"Claude","link":"https://claude.ai/","description":"Anthropic公司推出的对话式AI智能助手","image":"/images/tools/anthropic-icon.png"},{"name":"DeepSeek","link":"https://chat.deepseek.com/","description":"幻方量化推出的AI智能助手和开源大模型","image":"/images/tools/deepseek-chat-icon.png"},{"category":"绘画 AI","anchorId":"JUU3JUJCJTk4JUU3JTk0JUJCJTIwQUk7"},{"name":"即梦AI","link":"https://jimeng.jianying.com/ai-tool/home","description":"字节跳动推出的一站式AI创作平台","image":"/images/tools/jimeng-logo-1.png"},{"name":"Bing Image Creator","link":"https://www.bing.com/images/create","description":"微软必应推出的基于DALL·E的AI图像生成工具","image":"/images/tools/new-bing-icon.png"},{"category":"几何绘图工具","anchorId":"JUU1JTg3JUEwJUU0JUJEJTk1JUU3JUJCJTk4JUU1JTlCJUJFJUU1JUI3JUE1JUU1JTg1JUI310"},{"name":"GeoGebra","link":"https://www.geogebra.org/calculator","description":"以更为灵活的方式进行数学的教授与学习","image":"/images/tools/geogebra.png"},{"name":"desmos","link":"https://www.desmos.com/calculator?lang=zh-CN","description":"Desmos是一款十分实用的函数绘图工具。","image":"/images/tools/desmos.png"},{"category":"博客工具","anchorId":"JUU1JThEJTlBJUU1JUFFJUEyJUU1JUI3JUE1JUU1JTg1JUI313"},{"name":"Hexo","link":"https://hexo.io/zh-cn/","description":"快速、简洁且高效的博客框架","image":"/images/tools/hexo.png"},{"name":"Keep主题","link":"https://keep-docs.xpoet.cn/","description":"Keep 主题使用手册","image":"/images/logo.svg"}]},"version":"4.2.5"}
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"}
+    KEEP.language_code_block = {"copy":"复制代码","copied":"已复制","fold":"折叠代码块","folded":"已折叠"}
+    KEEP.language_copy_copyright = {"copy":"复制版权信息","copied":"已复制","title":"原文标题","author":"原文作者","link":"原文链接"}
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <i class="pjax-progress-icon fas fa-circle-notch fa-spin"></i>
+    
+</div>
+
+
+
+<main class="page-container border-box">
+    <!-- home first screen  -->
+    
+
+    <!-- page content -->
+    <div class="page-main-content border-box">
+        <div class="page-main-content-top">
+            
+<header class="header-wrapper">
+
+    <div class="border-box header-content">
+        <div class="left flex-start border-box">
+            
+                <a class="logo-image border-box" href="/">
+                    <img src="/images/i-nog-logo.png">
+                </a>
+            
+            <a class="site-name border-box" href="/">
+               Lernen Forschen Machen
+            </a>
+        </div>
+
+        <div class="right border-box">
+            <div class="pc border-box">
+                <ul class="menu-list border-box">
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-home"></i>
+                                
+                                首页
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/archives">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-box-archive"></i>
+                                
+                                归档
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/categories">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-layer-group"></i>
+                                
+                                分类
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/tools">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-tools"></i>
+                                
+                                工具
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/about">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-user-graduate"></i>
+                                
+                                关于
+                                
+                            </a>
+                            
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="menu-text-color fas search fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile border-box flex-start">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list border-box">
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-home"></i>
+                                </span>
+                            
+                            首页
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/archives">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-box-archive"></i>
+                                </span>
+                            
+                            归档
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/categories">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-layer-group"></i>
+                                </span>
+                            
+                            分类
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/tools">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-tools"></i>
+                                </span>
+                            
+                            工具
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/about">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-user-graduate"></i>
+                                </span>
+                            
+                            关于
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle border-box">
+
+            <div class="main-content border-box">
+                
+
+                    
+<div class="fade-in-down-animation">
+    <div class="post-page-container border-box">
+        <div class="post-content-container border-box">
+            
+                <div class="post-content-top border-box"
+                     style="height: 300px"
+                >
+                    <div class="cover-post-title">
+                        Apollo r5.5.0 代码解读 之 混合A星算法调试工具
+                    </div>
+                    <img class="post-cover" src="/images/posts/hybrid_a_debug.jpeg"
+                         onerror="this.style.display='none'"
+                    >
+                </div>
+            
+
+            <div class="post-content-bottom border-box has-cover">
+                
+
+                
+                    <div class="post-header border-box">
+                        
+                            <div class="avatar-box border-box">
+                                <img src="/images/i-nog-avatar.jpg">
+                            </div>
+                        
+                        <div class="info-box">
+                            <div class="author border-box">
+                                <span class="name">i-Nog</span>
+                                
+                                    <span class="author-badge">Lv2</span>
+                                
+                            </div>
+                            <div class="meta-info border-box">
+                                
+
+<div class="post-meta-info-container border-box post">
+    <div class="post-meta-info border-box">
+        
+
+        
+            <span class="meta-info-item post-create-date">
+                <i class="icon fa-solid fa-calendar-plus"></i>&nbsp;
+                <span class="datetime">2021-09-18 09:41:00</span>
+            </span>
+
+            
+                <span class="meta-info-item post-update-date">
+                    <i class="icon fa-solid fa-file-pen"></i>&nbsp;
+                    <span class="datetime" data-updated="Wed Jul 16 2025 09:43:51 GMT+0800">2025-07-16 09:43:51</span>
+                </span>
+            
+        
+
+        
+            <span class="meta-info-item post-category border-box"><i class="icon fas fa-folder"></i>&nbsp;
+                <ul class="post-category-ul">
+                    
+                            <li class="category-item"><a href="/categories/%E7%AE%97%E6%B3%95/">算法</a></li>
+                        
+                    
+                            <li class="category-item">&nbsp;<i class="icon fas fa-angle-right"></i>&nbsp;<a href="/categories/Apollo%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB/">Apollo源码解读</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+
+        
+        
+            <span class="meta-info-item post-wordcount">
+                <i class="icon fas fa-file-word"></i>&nbsp;<span>2.5k 字</span>
+            </span>
+        
+        
+            <span class="meta-info-item post-min2read">
+                <i class="icon fas fa-clock"></i>&nbsp;<span>12 分钟</span>
+            </span>
+        
+        
+    </div>
+
+    
+</div>
+
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="post-content keep-markdown-body ">
+                    
+
+                    
+                         <p>这篇博客介绍了 Apollo r5.5.0 中混合 A* 路径规划算法的调试工具实现。通过 C++ 类封装障碍物与结果容器，并通过 extern “C” 接口实现 Python 与 C++ 的调用对接。文中还详细解析了关键参数如 step_size、delta_t 等对轨迹质量与计算效率的影响，并展示了不同配置下的可视化效果，帮助读者深入理解混合 A* 算法的内部机制与调试方法。</p>
+<span id="more"></span>
+<h2 id="代码分析"><a class="markdownIt-Anchor" href="#代码分析"></a> 代码分析</h2>
+<p>在<code>hybrid_a_star_wrapper.cc</code>定义了两个类，用于存储障碍物(<code>HybridAObstacleContainer</code>)和计算结果(<code>HybridAResultContainer</code>)。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// hybrid_a_star_wrapper.cc</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">HybridAObstacleContainer</span> &#123;</span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="built_in">HybridAObstacleContainer</span>() = <span class="keyword">default</span>;</span><br><span class="line">  <span class="comment">// 输入是double类型的指针，所以可以是一个数列</span></span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">AddVirtualObstacle</span><span class="params">(<span class="type">double</span>* obstacle_x, <span class="type">double</span>* obstacle_y,</span></span></span><br><span class="line"><span class="params"><span class="function">                          <span class="type">int</span> vertice_num)</span> </span>&#123;</span><br><span class="line">    std::vector&lt;common::math::Vec2d&gt; obstacle_vertices;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; vertice_num; i++) &#123;</span><br><span class="line">      common::<span class="function">math::Vec2d <span class="title">vertice</span><span class="params">(obstacle_x[i], obstacle_y[i])</span></span>;</span><br><span class="line">      obstacle_vertices.<span class="built_in">emplace_back</span>(vertice);</span><br><span class="line">    &#125;</span><br><span class="line">    obstacles_list.<span class="built_in">emplace_back</span>(obstacle_vertices);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">const</span> std::vector&lt;std::vector&lt;common::math::Vec2d&gt;&gt;&amp;</span><br><span class="line">  <span class="comment">// 返回障碍物线段集合</span></span><br><span class="line">  <span class="built_in">GetObstaclesVerticesVec</span>() &#123;</span><br><span class="line">    <span class="keyword">return</span> obstacles_list;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span>:</span><br><span class="line">  std::vector&lt;std::vector&lt;common::math::Vec2d&gt;&gt; obstacles_list;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/fuseline.png"
+                        alt="fuseline.png" 
+                 ></p>
+<p><span style="color: gree;">如果是Box障碍物，则输入五个点，第一个点和最后一个点一致。</span></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// hybrid_a_star_wrapper.cc</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">HybridAResultContainer</span> &#123;</span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="built_in">HybridAResultContainer</span>() = <span class="keyword">default</span>;</span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">LoadResult</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 输出结果</span></span><br><span class="line">    x_ = std::<span class="built_in">move</span>(result_.x);</span><br><span class="line">    y_ = std::<span class="built_in">move</span>(result_.y);</span><br><span class="line">    phi_ = std::<span class="built_in">move</span>(result_.phi);</span><br><span class="line">    v_ = std::<span class="built_in">move</span>(result_.v);</span><br><span class="line">    a_ = std::<span class="built_in">move</span>(result_.a);</span><br><span class="line">    steer_ = std::<span class="built_in">move</span>(result_.steer);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function">std::vector&lt;<span class="type">double</span>&gt;* <span class="title">GetX</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> &amp;x_; &#125;</span><br><span class="line">  <span class="function">std::vector&lt;<span class="type">double</span>&gt;* <span class="title">GetY</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> &amp;y_; &#125;</span><br><span class="line">  <span class="function">std::vector&lt;<span class="type">double</span>&gt;* <span class="title">GetPhi</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> &amp;phi_; &#125;</span><br><span class="line">  <span class="function">std::vector&lt;<span class="type">double</span>&gt;* <span class="title">GetV</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> &amp;v_; &#125;</span><br><span class="line">  <span class="function">std::vector&lt;<span class="type">double</span>&gt;* <span class="title">GetA</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> &amp;a_; &#125;</span><br><span class="line">  <span class="function">std::vector&lt;<span class="type">double</span>&gt;* <span class="title">GetSteer</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> &amp;steer_; &#125;</span><br><span class="line">  <span class="function">HybridAStartResult* <span class="title">PrepareResult</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> &amp;result_; &#125;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span>:</span><br><span class="line">  HybridAStartResult result_;</span><br><span class="line">  std::vector&lt;<span class="type">double</span>&gt; x_;</span><br><span class="line">  std::vector&lt;<span class="type">double</span>&gt; y_;</span><br><span class="line">  std::vector&lt;<span class="type">double</span>&gt; phi_;</span><br><span class="line">  std::vector&lt;<span class="type">double</span>&gt; v_;</span><br><span class="line">  std::vector&lt;<span class="type">double</span>&gt; a_;</span><br><span class="line">  std::vector&lt;<span class="type">double</span>&gt; steer_;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="类c和c的混合编成"><a class="markdownIt-Anchor" href="#类c和c的混合编成"></a> 类C和C++的混合编成</h3>
+<p><span style="color: gree;"><code>extern &quot;C&quot; &#123; &#125;</code>的真实目的是实现 <mark>类C</mark> 和 <mark>C++</mark> 的混合编程。在C<ins>源文件中的语句前面加上<code>extern &quot;C&quot;</code>，表明它按照 <mark>类C</mark> 的编译和连接规约来编译和连接，而不是C</ins>的编译的连接规约。这样在 <mark>类C</mark> 的代码中就可以调用C++的函数or变量等。（注：我在这里所说的类C，代表的是跟C语言的编译和连接方式一致的所有语言）</span></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// hybrid_a_star_wrapper.cc</span></span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> &#123;</span><br><span class="line"><span class="comment">// 创建混合A星解决器指针</span></span><br><span class="line"><span class="function">HybridAStar* <span class="title">CreatePlannerPtr</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  apollo::planning::PlannerOpenSpaceConfig planner_open_space_config_;</span><br><span class="line">  <span class="comment">// 导入配置参数</span></span><br><span class="line">  <span class="built_in">CHECK</span>(apollo::cyber::common::<span class="built_in">GetProtoFromFile</span>(</span><br><span class="line">      FLAGS_hybrid_a_star_test_config_filename, &amp;planner_open_space_config_))</span><br><span class="line">      &lt;&lt; <span class="string">&quot;Failed to load open space config file &quot;</span></span><br><span class="line">      &lt;&lt; FLAGS_hybrid_a_star_test_config_filename;</span><br><span class="line">  AERROR &lt;&lt; FLAGS_hybrid_a_star_test_config_filename;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">HybridAStar</span>(planner_open_space_config_);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 创建装载输入障碍物容器，返回指针类型</span></span><br><span class="line"><span class="function">HybridAObstacleContainer* <span class="title">CreateObstaclesPtr</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">HybridAObstacleContainer</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 创建装载计算结果容器，返回指针类型</span></span><br><span class="line"><span class="function">HybridAResultContainer* <span class="title">CreateResultPtr</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">HybridAResultContainer</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 往障碍物容器里面添加障碍物函数</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">AddVirtualObstacle</span><span class="params">(HybridAObstacleContainer* obstacles_ptr,</span></span></span><br><span class="line"><span class="params"><span class="function">                        <span class="type">double</span>* obstacle_x, <span class="type">double</span>* obstacle_y,</span></span></span><br><span class="line"><span class="params"><span class="function">                        <span class="type">int</span> vertice_num)</span> </span>&#123;</span><br><span class="line">  obstacles_ptr-&gt;<span class="built_in">AddVirtualObstacle</span>(obstacle_x, obstacle_y, vertice_num);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 关键函数，输入混合A星解决器以及其他条件进行轨迹计算</span></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">Plan</span><span class="params">(HybridAStar* planner_ptr, HybridAObstacleContainer* obstacles_ptr,</span></span></span><br><span class="line"><span class="params"><span class="function">          HybridAResultContainer* result_ptr, <span class="type">double</span> sx, <span class="type">double</span> sy, <span class="type">double</span> sphi,</span></span></span><br><span class="line"><span class="params"><span class="function">          <span class="type">double</span> ex, <span class="type">double</span> ey, <span class="type">double</span> ephi, <span class="type">double</span>* XYbounds)</span> </span>&#123;</span><br><span class="line">  <span class="function">std::vector&lt;<span class="type">double</span>&gt; <span class="title">XYbounds_</span><span class="params">(XYbounds, XYbounds + <span class="number">4</span>)</span></span>;</span><br><span class="line">  <span class="keyword">return</span> planner_ptr-&gt;<span class="built_in">Plan</span>(sx, sy, sphi, ex, ey, ephi, XYbounds_,</span><br><span class="line">                           obstacles_ptr-&gt;<span class="built_in">GetObstaclesVerticesVec</span>(),</span><br><span class="line">                           result_ptr-&gt;<span class="built_in">PrepareResult</span>());</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 结果输出函数，将结果分解到对应的数列集里面</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">GetResult</span><span class="params">(HybridAResultContainer* result_ptr, <span class="type">double</span>* x, <span class="type">double</span>* y,</span></span></span><br><span class="line"><span class="params"><span class="function">               <span class="type">double</span>* phi, <span class="type">double</span>* v, <span class="type">double</span>* a, <span class="type">double</span>* steer,</span></span></span><br><span class="line"><span class="params"><span class="function">               <span class="type">size_t</span>* output_size)</span> </span>&#123;</span><br><span class="line">  result_ptr-&gt;<span class="built_in">LoadResult</span>();</span><br><span class="line">  <span class="type">size_t</span> size = result_ptr-&gt;<span class="built_in">GetX</span>()-&gt;<span class="built_in">size</span>();</span><br><span class="line">  std::cout &lt;&lt; <span class="string">&quot;return size is &quot;</span> &lt;&lt; size &lt;&lt; std::endl;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">size_t</span> i = <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">    x[i] = result_ptr-&gt;<span class="built_in">GetX</span>()-&gt;<span class="built_in">at</span>(i);</span><br><span class="line">    y[i] = result_ptr-&gt;<span class="built_in">GetY</span>()-&gt;<span class="built_in">at</span>(i);</span><br><span class="line">    phi[i] = result_ptr-&gt;<span class="built_in">GetPhi</span>()-&gt;<span class="built_in">at</span>(i);</span><br><span class="line">    v[i] = result_ptr-&gt;<span class="built_in">GetV</span>()-&gt;<span class="built_in">at</span>(i);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">size_t</span> i = <span class="number">0</span>; i &lt; size - <span class="number">1</span>; i++) &#123;</span><br><span class="line">    a[i] = result_ptr-&gt;<span class="built_in">GetA</span>()-&gt;<span class="built_in">at</span>(i);</span><br><span class="line">    steer[i] = result_ptr-&gt;<span class="built_in">GetSteer</span>()-&gt;<span class="built_in">at</span>(i);</span><br><span class="line">  &#125;</span><br><span class="line">  *output_size = size;</span><br><span class="line">&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="python与c交互"><a class="markdownIt-Anchor" href="#python与c交互"></a> python与c交互</h3>
+<p><span style="color: red;">怎么告诉 Python 一个外来函数的形参类型和返回的值的类型呢？</span></p>
+<p><strong><span style="color: gree;">这就要需要给函数的两个属性 restype 和 argtypes 赋值了。它们分别对应返回类型和参数类型。</span></strong></p>
+<p>如果返回类型是<code>void</code>，可以不用说明。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># hybrid_a_star_python_interface.py</span></span><br><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="keyword">import</span> ctypes</span><br><span class="line"><span class="keyword">from</span> ctypes <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="comment"># 加载需要引用的c++库</span></span><br><span class="line">lib = cdll.LoadLibrary(</span><br><span class="line">    <span class="string">&#x27;/apollo/lib/libmodules_planning_open_space_tools_hybrid_a_star_wrapper.so&#x27;</span>)</span><br><span class="line"><span class="comment"># python需要调用到c++库里面的函数，都需要说明下函数的返回类型和参数类型</span></span><br><span class="line"><span class="comment"># CreatePlannerPtr()没有输入参数，为空，所以使用[]，或者赋值为 None</span></span><br><span class="line"><span class="comment"># CreatePlannerPtr()返回一个类的指针，所以使用c_void_p</span></span><br><span class="line">lib.CreatePlannerPtr.argtypes = []</span><br><span class="line">lib.CreatePlannerPtr.restype = c_void_p</span><br><span class="line">lib.CreateResultPtr.argtypes = []</span><br><span class="line">lib.CreateResultPtr.restype = c_void_p</span><br><span class="line">lib.CreateObstaclesPtr.argtypes = []</span><br><span class="line">lib.CreateObstaclesPtr.restype = c_void_p</span><br><span class="line"><span class="comment"># AddVirtualObstacle()输入参数指定类型，注意：指针使用</span></span><br><span class="line"><span class="comment"># AddVirtualObstacle()返回是void，所以没有赋值</span></span><br><span class="line">lib.AddVirtualObstacle.argtypes = [c_void_p, POINTER(c_double), POINTER(c_double), c_int]</span><br><span class="line"><span class="comment"># Plan()函数的返回类型是布尔类型</span></span><br><span class="line">lib.Plan.restype = c_bool</span><br><span class="line"><span class="comment"># Plan()输入参数类型指定与c++里面代码一一对应</span></span><br><span class="line">lib.Plan.argtypes = [c_void_p, c_void_p, c_void_p, c_double, c_double, c_double, c_double,</span><br><span class="line">                     c_double, c_double, POINTER(c_double)]</span><br><span class="line">lib.GetResult.argtypes = [c_void_p, POINTER(c_double), POINTER(c_double), POINTER(c_double),</span><br><span class="line">            POINTER(c_double), POINTER(c_double), POINTER(c_double), POINTER(c_ushort)]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义pytho的一个类，用于外部调用</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">HybridAStarPlanner</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.planner = lib.CreatePlannerPtr()</span><br><span class="line">        <span class="variable language_">self</span>.obstacles = lib.CreateObstaclesPtr()</span><br><span class="line">        <span class="variable language_">self</span>.result = lib.CreateResultPtr()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">AddVirtualObstacle</span>(<span class="params">self, obstacle_x, obstacle_y, vertice_num</span>):</span><br><span class="line">        lib.AddVirtualObstacle(<span class="variable language_">self</span>.obstacles, POINTER(c_double)(obstacle_x),</span><br><span class="line">                               POINTER(c_double)(obstacle_y), (c_int)(vertice_num))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">Plan</span>(<span class="params">self, sx, sy, sphi, ex, ey, ephi, XYbounds</span>):</span><br><span class="line">        <span class="keyword">return</span> lib.Plan(<span class="variable language_">self</span>.planner, <span class="variable language_">self</span>.obstacles, <span class="variable language_">self</span>.result, c_double(sx),</span><br><span class="line">                        c_double(sy), c_double(sphi), c_double(ex), c_double(ey),</span><br><span class="line">                        c_double(ephi), POINTER(c_double)(XYbounds))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">GetResult</span>(<span class="params">self, x, y, phi, v, a, steer, output_size</span>):</span><br><span class="line">        lib.GetResult(<span class="variable language_">self</span>.result, POINTER(c_double)(x), POINTER(c_double)(y),</span><br><span class="line">                      POINTER(c_double)(phi), POINTER(c_double)(v), POINTER(c_double)(a),</span><br><span class="line">                      POINTER(c_double)(steer), POINTER(c_ushort)(output_size))</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># hybrid_a_star_visualizer.py</span></span><br><span class="line"><span class="comment"># 先定以一个解决器</span></span><br><span class="line">HybridAStar = HybridAStarPlanner()</span><br><span class="line"><span class="comment"># 然后通过AddVirtualObstacle()函数增加障碍物约束</span></span><br><span class="line"><span class="comment"># 三点是折线，两条线段，三个点</span></span><br><span class="line">HybridAStar.AddVirtualObstacle(left_boundary_x_c, left_boundary_y_c, <span class="number">3</span>)</span><br><span class="line"><span class="comment"># 紧接通过Plan()函数进行轨迹规划</span></span><br><span class="line">HybridAStar.Plan(sx, sy, sphi, ex, ey, ephi, XYbounds_ctype)</span><br><span class="line"><span class="comment"># 最后通过GetResult()函数获得计算结果</span></span><br><span class="line">HybridAStar.GetResult(x, y, phi, v, a, steer, size)</span><br></pre></td></tr></table></figure>
+<p><span style="color: gree;">需要留意：python类型数据作为c++库里函数输入参数时，需要进行数据转换；反之，输出也是。</span></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">left_boundary_x = [-<span class="number">30.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>]</span><br><span class="line">left_boundary_x_c = (c_double * <span class="number">3</span>)(*left_boundary_x)</span><br><span class="line"></span><br><span class="line">num_output_buffer = <span class="number">100000</span></span><br><span class="line">x = (c_double * num_output_buffer)()</span><br><span class="line">y = (c_double * num_output_buffer)()</span><br></pre></td></tr></table></figure>
+<h2 id="配置参数分析"><a class="markdownIt-Anchor" href="#配置参数分析"></a> 配置参数分析</h2>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">roi_config &#123;</span><br><span class="line">  roi_longitudinal_range: <span class="number">15.0</span></span><br><span class="line">  parking_start_range: <span class="number">12.0</span></span><br><span class="line">  parking_inwards: <span class="literal">false</span></span><br><span class="line">&#125;</span><br><span class="line">warm_start_config &#123;</span><br><span class="line">  xy_grid_resolution: <span class="number">1.5</span></span><br><span class="line">  phi_grid_resolution: <span class="number">0.6</span></span><br><span class="line">  next_node_num: <span class="number">10</span></span><br><span class="line">  step_size: <span class="number">1.5</span></span><br><span class="line">  traj_forward_penalty: <span class="number">1.0</span></span><br><span class="line">  traj_back_penalty: <span class="number">1.0</span></span><br><span class="line">  traj_gear_switch_penalty: <span class="number">10.0</span></span><br><span class="line">  traj_steer_penalty: <span class="number">1.5</span></span><br><span class="line">  traj_steer_change_penalty: <span class="number">0.0</span></span><br><span class="line">  grid_a_star_xy_resolution: <span class="number">1.5</span></span><br><span class="line">  node_radius: <span class="number">0.25</span></span><br><span class="line">  s_curve_config &#123;</span><br><span class="line">    acc_weight: <span class="number">1.0</span></span><br><span class="line">    jerk_weight: <span class="number">0.0</span></span><br><span class="line">    kappa_penalty_weight: <span class="number">100.0</span></span><br><span class="line">    ref_s_weight: <span class="number">0.1</span></span><br><span class="line">    ref_v_weight: <span class="number">0.0</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">trajectory_partition_config &#123;</span><br><span class="line">  interpolated_pieces_num: <span class="number">50</span></span><br><span class="line">  initial_gear_check_horizon: <span class="number">3</span></span><br><span class="line">  heading_searching_range: <span class="number">0.3</span></span><br><span class="line">  gear_shift_period_duration: <span class="number">2.0</span></span><br><span class="line">  <span class="type">gear_shift_max_t</span>: <span class="number">3.0</span></span><br><span class="line">  <span class="type">gear_shift_unit_t</span>: <span class="number">0.02</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="type">delta_t</span>: <span class="number">0.5</span></span><br><span class="line">is_near_destination_threshold: <span class="number">0.05</span></span><br><span class="line">enable_check_parallel_trajectory: <span class="literal">false</span></span><br><span class="line">enable_linear_interpolation: <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+<h3 id="warm_start_config"><a class="markdownIt-Anchor" href="#warm_start_config"></a> warm_start_config</h3>
+<h4 id="xy_grid_resolution"><a class="markdownIt-Anchor" href="#xy_grid_resolution"></a> xy_grid_resolution</h4>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">x_grid_ = <span class="built_in">static_cast</span>&lt;<span class="type">int</span>&gt;(</span><br><span class="line">    (x_ - XYbounds[<span class="number">0</span>]) /</span><br><span class="line">    open_space_conf.<span class="built_in">warm_start_config</span>().<span class="built_in">xy_grid_resolution</span>());</span><br><span class="line">y_grid_ = <span class="built_in">static_cast</span>&lt;<span class="type">int</span>&gt;(</span><br><span class="line">    (y_ - XYbounds[<span class="number">2</span>]) /</span><br><span class="line">    open_space_conf.<span class="built_in">warm_start_config</span>().<span class="built_in">xy_grid_resolution</span>());</span><br></pre></td></tr></table></figure>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/xy_grid_resolution.png"
+                        alt="xy_grid_resolution.png" 
+                 ></p>
+<h4 id="phi_grid_resolution"><a class="markdownIt-Anchor" href="#phi_grid_resolution"></a> phi_grid_resolution</h4>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">phi_grid_ = <span class="built_in">static_cast</span>&lt;<span class="type">int</span>&gt;(</span><br><span class="line">      (phi_ - (-M_PI)) /</span><br><span class="line">      open_space_conf.<span class="built_in">warm_start_config</span>().<span class="built_in">phi_grid_resolution</span>());</span><br></pre></td></tr></table></figure>
+<h4 id="next_node_num"><a class="markdownIt-Anchor" href="#next_node_num"></a> next_node_num</h4>
+<p>混合A星当前点往外拓展点的数量，例字如下(next_node_num: 10)</p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/next_node_num.png"
+                        alt="next_node_num.png" 
+                 ></p>
+<h4 id="step_size"><a class="markdownIt-Anchor" href="#step_size"></a> step_size</h4>
+<p>基本点之间的距离，决定了输出结果点的数量。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">traveled_distance = step_size_;</span><br><span class="line"><span class="type">double</span> arc = std::<span class="built_in">sqrt</span>(<span class="number">2</span>) * xy_grid_resolution_;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">size_t</span> i = <span class="number">0</span>; i &lt; arc / step_size_; ++i) &#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">double</span> next_x = last_x + traveled_distance * std::<span class="built_in">cos</span>(last_phi);</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/step_size.png"
+                        alt="step_size.png" 
+                 ></p>
+<p>比如：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># step_size: 1.5 输出结果如下</span></span><br><span class="line">planning <span class="keyword">time</span> is 0.00040459632873535156</span><br><span class="line"><span class="built_in">return</span> size is 29</span><br></pre></td></tr></table></figure>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/step_size_1_5_traj.png"
+                        alt="step_size_1_5_traj.png" 
+                 ></p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/step_size_1_5_v.png"
+                        alt="step_size_1_5_v.png" 
+                 ></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># step_size: 0.5 输出结果如下</span></span><br><span class="line">planning <span class="keyword">time</span> is 0.0005877017974853516</span><br><span class="line"><span class="built_in">return</span> size is 75</span><br></pre></td></tr></table></figure>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/step_size_0_5_traj.png"
+                        alt="step_size_0_5_traj.png" 
+                 ></p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/step_size_0_5_v.png"
+                        alt="step_size_0_5_v.png" 
+                 ></p>
+<h4 id="traj_forward_penalty"><a class="markdownIt-Anchor" href="#traj_forward_penalty"></a> traj_forward_penalty</h4>
+<p>主要是针对混合A星（非RS曲线算法）算法，往前移动一个步长(<code>step_size_</code>)的惩罚系数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">piecewise_cost += <span class="built_in">static_cast</span>&lt;<span class="type">double</span>&gt;(next_node-&gt;<span class="built_in">GetStepSize</span>() - <span class="number">1</span>) *</span><br><span class="line">                  step_size_ * traj_forward_penalty_;</span><br></pre></td></tr></table></figure>
+<h4 id="traj_back_penalty"><a class="markdownIt-Anchor" href="#traj_back_penalty"></a> traj_back_penalty</h4>
+<p>主要是针对混合A星（非RS曲线算法）算法，往后移动一个步长(<code>step_size_</code>)的惩罚系数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">piecewise_cost += <span class="built_in">static_cast</span>&lt;<span class="type">double</span>&gt;(next_node-&gt;<span class="built_in">GetStepSize</span>() - <span class="number">1</span>) *</span><br><span class="line">                  step_size_ * traj_back_penalty_;</span><br></pre></td></tr></table></figure>
+<h4 id="traj_gear_switch_penalty"><a class="markdownIt-Anchor" href="#traj_gear_switch_penalty"></a> traj_gear_switch_penalty</h4>
+<p>主要是针对混合A星（非RS曲线算法）算法，前进后退档位切换的惩罚系数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (current_node-&gt;<span class="built_in">GetDirec</span>() != next_node-&gt;<span class="built_in">GetDirec</span>()) &#123;</span><br><span class="line">  piecewise_cost += traj_gear_switch_penalty_;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="traj_steer_penalty"><a class="markdownIt-Anchor" href="#traj_steer_penalty"></a> traj_steer_penalty</h4>
+<p>主要是针对混合A星（非RS曲线算法）算法，对方向盘转角惩罚系数，也就是尽量地保持直行</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (current_node-&gt;<span class="built_in">GetDirec</span>() != next_node-&gt;<span class="built_in">GetDirec</span>()) &#123;</span><br><span class="line">  piecewise_cost += traj_gear_switch_penalty_;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="traj_steer_change_penalty"><a class="markdownIt-Anchor" href="#traj_steer_change_penalty"></a> traj_steer_change_penalty</h4>
+<p>主要是针对混合A星（非RS曲线算法）算法，对方向盘变化的惩罚系数，也就是要尽量地保持方向盘方向不变</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">piecewise_cost += traj_steer_change_penalty_ *</span><br><span class="line">                  std::<span class="built_in">abs</span>(next_node-&gt;<span class="built_in">GetSteer</span>() - current_node-&gt;<span class="built_in">GetSteer</span>());</span><br></pre></td></tr></table></figure>
+<h4 id="enable_dp_map"><a class="markdownIt-Anchor" href="#enable_dp_map"></a> enable_dp_map</h4>
+<p>设置为<code>true</code>时，<mark>启发H值</mark>采用<mark>动态规划</mark>算法计算；设置为<code>false</code>时，采用<mark>曼哈顿距离</mark>或者<mark>欧氏距离</mark>。</p>
+<h4 id="enable_euler_distance"><a class="markdownIt-Anchor" href="#enable_euler_distance"></a> enable_euler_distance</h4>
+<p>设置为<code>true</code>时，使用欧氏距离作为H值；设置为<code>false</code>时，采用曼哈顿距离最为H值。</p>
+<h4 id="grid_a_star_xy_resolution"><a class="markdownIt-Anchor" href="#grid_a_star_xy_resolution"></a> grid_a_star_xy_resolution</h4>
+<p>通过<mark>动态规划</mark>获得启发H值，用于计算cost，类似配置参数<code>xy_grid_resolution</code></p>
+<h4 id="node_radius"><a class="markdownIt-Anchor" href="#node_radius"></a> node_radius</h4>
+<p>在<mark>动态规划</mark>算法里，判断与障碍物碰撞的阈值。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (linesegment.<span class="built_in">DistanceTo</span>(&#123;node-&gt;<span class="built_in">GetGridX</span>(), node-&gt;<span class="built_in">GetGridY</span>()&#125;) &lt;</span><br><span class="line">    node_radius_) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="required_size_of_rs_segs"><a class="markdownIt-Anchor" href="#required_size_of_rs_segs"></a> required_size_of_rs_segs</h4>
+<p>限制最短RS曲线的段数。段数不大于设定值。</p>
+<h3 id="delta_t"><a class="markdownIt-Anchor" href="#delta_t"></a> delta_t</h3>
+<p>混合A星算法得到的路径点，点与点的时间间隔，通过这个参数以及<code>step_size</code>影响速度的计算。</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi mathvariant="normal">∣</mi><mi>m</mi><mi>a</mi><mi>x</mi><mo stretchy="false">(</mo><mi>v</mi><mi>e</mi><mi>l</mi><mi>o</mi><mi>c</mi><mi>i</mi><mi>t</mi><mi>y</mi><mo stretchy="false">)</mo><mi mathvariant="normal">∣</mi><mo>≤</mo><mfrac><mrow><mi>s</mi><mi>t</mi><mi>e</mi><mi>p</mi><mi mathvariant="normal">_</mi><mi>s</mi><mi>i</mi><mi>z</mi><mi>e</mi></mrow><mrow><mi>d</mi><mi>e</mi><mi>l</mi><mi>t</mi><mi>a</mi><mi mathvariant="normal">_</mi><mi>t</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">|max(velocity)|\leq \frac{step\_size}{delta\_t}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∣</span><span class="mord mathnormal">m</span><span class="mord mathnormal">a</span><span class="mord mathnormal">x</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal">c</span><span class="mord mathnormal">i</span><span class="mord mathnormal">t</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span><span class="mord">∣</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.35552em;vertical-align:-0.996em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3595199999999998em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">t</span><span class="mord mathnormal">a</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal">t</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.6999999999999997em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mord mathnormal">e</span><span class="mord mathnormal">p</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal">s</span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.04398em;">z</span><span class="mord mathnormal">e</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.996em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">double</span> discrete_v = (((result-&gt;x[i + <span class="number">1</span>] - result-&gt;x[i]) / delta_t_) *</span><br><span class="line">                         std::<span class="built_in">cos</span>(result-&gt;phi[i]) +</span><br><span class="line">                     ((result-&gt;x[i] - result-&gt;x[i - <span class="number">1</span>]) / delta_t_) *</span><br><span class="line">                         std::<span class="built_in">cos</span>(result-&gt;phi[i])) /</span><br><span class="line">                        <span class="number">2.0</span> +</span><br><span class="line">                    (((result-&gt;y[i + <span class="number">1</span>] - result-&gt;y[i]) / delta_t_) *</span><br><span class="line">                         std::<span class="built_in">sin</span>(result-&gt;phi[i]) +</span><br><span class="line">                     ((result-&gt;y[i] - result-&gt;y[i - <span class="number">1</span>]) / delta_t_) *</span><br><span class="line">                         std::<span class="built_in">sin</span>(result-&gt;phi[i])) /</span><br><span class="line">                        <span class="number">2.0</span>;</span><br></pre></td></tr></table></figure>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/SpeedACC.png"
+                        alt="SpeedACC.png" 
+                 ></p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/delta_t-1.png"
+                        alt="delta_t.png" 
+                 ></p>
+<p><code>step_size:1.5 delta_t: 0.3</code></p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/delta_t_0_3.png"
+                        alt="delta_t_0_3.png" 
+                 ></p>
+<p><code>step_size:1.5 delta_t: 0.5</code></p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/delta_t_0_5.png"
+                        alt="delta_t_0_5.png" 
+                 ></p>
+<h3 id="flags_use_s_curve_speed_smooth"><a class="markdownIt-Anchor" href="#flags_use_s_curve_speed_smooth"></a> FLAGS_use_s_curve_speed_smooth</h3>
+<p>为<code>true</code>时，使用二次规划算法(<code>GenerateSCurveSpeedAcceleration()</code>)生成速度加速度。为<code>false</code>时，使用位置差除时间(<code>GenerateSpeedAcceleration()</code>)得到速度，再求加速度。</p>
+<ul>
+<li>
+<p>使用<code>GenerateSpeedAcceleration()</code></p>
+  <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">I0911 <span class="number">17</span>:<span class="number">28</span>:<span class="number">25.671339</span> <span class="number">570808</span> hybrid_a_star.cc:<span class="number">906</span>] [planning]searched RS num is <span class="number">23</span></span><br><span class="line">I0911 <span class="number">17</span>:<span class="number">28</span>:<span class="number">25.671344</span> <span class="number">570808</span> hybrid_a_star.cc:<span class="number">907</span>] [planning]explored node num is <span class="number">59</span></span><br><span class="line">E0911 <span class="number">17</span>:<span class="number">28</span>:<span class="number">25.671348</span> <span class="number">570808</span> hybrid_a_star.cc:<span class="number">910</span>] [planning]hybrid astar total time is <span class="number">0.00175691</span></span><br><span class="line">planning time is <span class="number">0.0018563270568847656</span></span><br><span class="line"><span class="keyword">return</span> size is <span class="number">38</span></span><br></pre></td></tr></table></figure>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/delta_t.png"
+                        alt="delta_t.png" 
+                 ></p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/delta_t_0_5-1.png"
+                        alt="delta_t_0_5.png" 
+                 ></p>
+</li>
+<li>
+<p>使用<code>GenerateSCurveSpeedAcceleration()</code></p>
+  <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">I0911 <span class="number">17</span>:<span class="number">54</span>:<span class="number">39.282204</span> <span class="number">578265</span> hybrid_a_star.cc:<span class="number">906</span>] [planning]searched RS num is <span class="number">23</span></span><br><span class="line">I0911 <span class="number">17</span>:<span class="number">54</span>:<span class="number">39.282224</span> <span class="number">578265</span> hybrid_a_star.cc:<span class="number">907</span>] [planning]explored node num is <span class="number">59</span></span><br><span class="line">E0911 <span class="number">17</span>:<span class="number">54</span>:<span class="number">39.282227</span> <span class="number">578265</span> hybrid_a_star.cc:<span class="number">910</span>] [planning]hybrid astar total time is <span class="number">0.0897994</span></span><br><span class="line">planning time is <span class="number">0.08991193771362305</span></span><br><span class="line"><span class="keyword">return</span> size is <span class="number">81</span></span><br></pre></td></tr></table></figure>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/osqp_traj.png"
+                        alt="osqp_traj.png" 
+                 ></p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/osqp_v.png"
+                        alt="osqp_v.png" 
+                 ></p>
+</li>
+</ul>
+<h3 id="flags_enable_parallel_hybrid_a"><a class="markdownIt-Anchor" href="#flags_enable_parallel_hybrid_a"></a> FLAGS_enable_parallel_hybrid_a</h3>
+<p>采用多线程形式进行计算RS曲线。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (FLAGS_enable_parallel_hybrid_a) &#123;</span><br><span class="line">  <span class="comment">// AINFO &lt;&lt; &quot;parallel hybrid a*&quot;;</span></span><br><span class="line">  <span class="keyword">if</span> (!<span class="built_in">GenerateRSPPar</span>(start_node, end_node, all_possible_paths)) &#123;</span><br><span class="line">    ADEBUG &lt;&lt; <span class="string">&quot;Fail to generate general profile of different RSPs&quot;</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (!<span class="built_in">GenerateRSP</span>(start_node, end_node, all_possible_paths)) &#123;</span><br><span class="line">    AERROR &lt;&lt; <span class="string">&quot;Fail to generate general profile of different RSPs&quot;</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+                    
+                </div>
+
+                
+
+                <div class="post-bottom-tags-and-share border-box">
+                    <div>
+                        
+                    </div>
+                    <div>
+                        
+                            <div class="post-share-container border-box">
+    <ul class="share-list-wrap border-box">
+        <li class="qq share-item border-box flex-center tooltip"
+            data-tooltip-content="分享到 QQ"
+        >
+            <i class="fa-brands fa-qq"></i>
+        </li>
+        <li class="wechat share-item border-box flex-center tooltip tooltip-img"
+            data-tooltip-content="分享到微信"
+            data-tooltip-img-tip="微信扫一扫"
+            data-tooltip-img-style="background-color: #fff; top: -10px; padding: 0.6rem 0.6rem 0.1rem 0.6rem;"
+        >
+            <i class="fa-brands fa-weixin"></i>
+        </li>
+        <li class="weibo share-item border-box flex-center tooltip"
+            data-tooltip-content="分享到微博"
+        >
+            <i class="fa-brands fa-weibo"></i>
+        </li>
+    </ul>
+</div>
+
+                        
+                    </div>
+                </div>
+
+                
+                    
+
+<div class="reward-author-container border-box flex-center">
+    <div class="reward-btn border-box flex-center tooltip tooltip-img"
+            data-tooltip-img-url="/images/i-nog-avatar.jpg"
+            data-tooltip-img-trigger="click"
+            data-tooltip-img-style="top: -6px;"
+    >
+        <i class="fa-solid fa-gift"></i>&nbsp;请作者吃姜饼
+    </div>
+</div>
+
+                
+
+                
+                    <div class="post-nav border-box">
+                        
+                            <div class="prev-post">
+                                <a class="prev"
+                                   rel="prev"
+                                   href="/2022/04/01/%E5%88%86%E6%AE%B5%E5%8A%A0%E5%8A%A0%E9%80%9F%E5%BA%A6%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92OSQP%E4%BB%BF%E7%9C%9F%E5%8F%82%E6%95%B0%E5%88%86%E6%9E%90/"
+                                   title="分段加加速度路径规划OSQP仿真参数分析"
+                                >
+                                    <span class="left arrow-icon flex-center">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">分段加加速度路径规划OSQP仿真参数分析</span>
+                                        <span class="post-nav-item">上一篇</span>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                        
+                            <div class="next-post">
+                                <a class="next"
+                                   rel="next"
+                                   href="/2021/09/14/%E5%88%86%E6%AE%B5%E5%8A%A0%E5%8A%A0%E9%80%9F%E5%BA%A6%E7%AE%97%E6%B3%95%EF%BC%88PiecewiseJerk%EF%BC%89%E4%B9%8B%20%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/"
+                                   title="（二）分段加加速度算法（PiecewiseJerk）之 路径规划代码实现"
+                                >
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">（二）分段加加速度算法（PiecewiseJerk）之 路径规划代码实现</span>
+                                        <span class="post-nav-item">下一篇</span>
+                                    </span>
+                                    <span class="right arrow-icon flex-center">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                    </div>
+                
+
+                
+                    
+
+
+    <div class="comments-container border-box">
+        <div id="comments-anchor" class="comment-area-title border-box">
+            <i class="fas fa-comments"></i>&nbsp;评论
+        </div>
+        <div class="comment-plugin-fail border-box">
+    <span class="fail-tip">评论插件加载失败</span>
+    <button class="reload keep-button">点击重新加载</button>
+</div>
+<div class="comment-plugin-loading flex-center border-box">
+    <i class="loading-icon fa-solid fa-spinner fa-spin"></i>
+    <span class="load-tip">正在加载评论插件</span>
+</div>
+<script data-pjax>
+  window.KeepCommentPlugin = {}
+  window.KeepCommentPlugin.hideLoading = () => {
+    const cplDom = document.querySelector('.comments-container .comment-plugin-loading')
+    cplDom.style.display = 'none'
+  }
+  window.KeepCommentPlugin.loadFailHandle = () => {
+    window.KeepCommentPlugin.hideLoading()
+    const cpfDom = document.querySelector('.comments-container .comment-plugin-fail')
+    cpfDom.style.display = 'flex'
+    cpfDom.querySelector('.reload').addEventListener('click', () => {
+      window.location.reload()
+    })
+  }
+</script>
+
+        
+            
+
+    <div class="giscus-comments-container">
+        <div class="giscus" id="giscus"></div>
+        <script data-pjax
+                onerror="window.KeepCommentPlugin.loadFailHandle()"
+        >
+          if (!window.KeepCommentPlugin?.getGiscusTheme) {
+            window.KeepCommentPlugin.getGiscusTheme = () => {
+              return document.documentElement.classList.contains('dark-mode') ? 'dark_dimmed' : 'light_tritanopia'
+            }
+          }
+
+          if (!window.KeepCommentPlugin?.changeGiscusTheme) {
+            window.KeepCommentPlugin.changeGiscusTheme = () => {
+              const iframe = document.querySelector('iframe.giscus-frame')
+              iframe && iframe.contentWindow.postMessage({
+                giscus: {
+                  setConfig: {
+                    theme: window.KeepCommentPlugin.getGiscusTheme()
+                  }
+                }
+              }, 'https://giscus.app')
+            }
+          }
+
+          if (!window.KeepCommentPlugin?.initGiscus) {
+            window.KeepCommentPlugin.initGiscus = () => {
+              const script = document.createElement('script')
+              script.async = true
+              script.src = 'https://giscus.app/client.js'
+              script.setAttribute('data-repo', 'i-Nog/iNog-blog-comments')
+              script.setAttribute('data-repo-id', 'R_kgDOPF7ymg')
+              script.setAttribute('data-category', 'Announcements')
+              script.setAttribute('data-category-id', 'DIC_kwDOPF7yms4Cscff')
+              script.setAttribute('data-reactions-enabled', '0')
+              script.setAttribute('data-lang', 'zh-CN')
+              script.setAttribute('data-mapping', 'pathname')
+              script.setAttribute('data-strict', '0')
+              script.setAttribute('data-emit-metadata', '0')
+              script.setAttribute('data-input-position', 'top')
+              script.setAttribute('crossorigin', 'anonymous')
+              script.setAttribute('loading', 'lazy')
+              script.setAttribute('data-theme', window.KeepCommentPlugin.getGiscusTheme())
+              document.querySelector('.giscus-comments-container').appendChild(script)
+              script.onerror = () => {
+                window.KeepCommentPlugin.loadFailHandle()
+              }
+              script.onload = () => {
+                window.KeepCommentPlugin.hideLoading()
+              }
+              const toggleThemeBtn = document.querySelector('.tool-toggle-theme-mode')
+              toggleThemeBtn && toggleThemeBtn.addEventListener('click', () => {
+                window.KeepCommentPlugin.changeGiscusTheme()
+              })
+            }
+          }
+
+          if ('true' === "true") {
+            setTimeout(() => {
+              window.KeepCommentPlugin.initGiscus()
+            }, 1000)
+          } else {
+            window.addEventListener("DOMContentLoaded", window.KeepCommentPlugin.initGiscus)
+          }
+        </script>
+    </div>
+
+
+        
+    </div>
+
+
+
+
+
+                
+            </div>
+        </div>
+
+        
+            <div class="pc-post-toc right-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90"><span class="nav-text"> 代码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B1%BBc%E5%92%8Cc%E7%9A%84%E6%B7%B7%E5%90%88%E7%BC%96%E6%88%90"><span class="nav-text"> 类C和C++的混合编成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#python%E4%B8%8Ec%E4%BA%A4%E4%BA%92"><span class="nav-text"> python与c交互</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0%E5%88%86%E6%9E%90"><span class="nav-text"> 配置参数分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#warm_start_config"><span class="nav-text"> warm_start_config</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#xy_grid_resolution"><span class="nav-text"> xy_grid_resolution</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#phi_grid_resolution"><span class="nav-text"> phi_grid_resolution</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#next_node_num"><span class="nav-text"> next_node_num</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#step_size"><span class="nav-text"> step_size</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#traj_forward_penalty"><span class="nav-text"> traj_forward_penalty</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#traj_back_penalty"><span class="nav-text"> traj_back_penalty</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#traj_gear_switch_penalty"><span class="nav-text"> traj_gear_switch_penalty</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#traj_steer_penalty"><span class="nav-text"> traj_steer_penalty</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#traj_steer_change_penalty"><span class="nav-text"> traj_steer_change_penalty</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#enable_dp_map"><span class="nav-text"> enable_dp_map</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#enable_euler_distance"><span class="nav-text"> enable_euler_distance</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#grid_a_star_xy_resolution"><span class="nav-text"> grid_a_star_xy_resolution</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#node_radius"><span class="nav-text"> node_radius</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#required_size_of_rs_segs"><span class="nav-text"> required_size_of_rs_segs</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#delta_t"><span class="nav-text"> delta_t</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flags_use_s_curve_speed_smooth"><span class="nav-text"> FLAGS_use_s_curve_speed_smooth</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flags_enable_parallel_hybrid_a"><span class="nav-text"> FLAGS_enable_parallel_hybrid_a</span></a></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+        </div>
+
+        <div class="page-main-content-bottom border-box">
+            
+<footer class="footer border-box">
+    <div class="copyright-info info-item">
+    &copy;&nbsp;<span>2021</span>&nbsp;-&nbsp;2025
+    
+            &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/">i-Nog</a>
+        
+    </div>
+
+    <div class="theme-info info-item">
+        由&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;驱动&nbsp;&&nbsp;主题&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
+    </div>
+
+    
+        
+        <div class="deploy-info info-item">
+            
+            本站由 <span class="tooltip" data-tooltip-content="GitHub Pages"><img src="/images/brands/github.png"></span> 提供部署服务
+            
+        </div>
+    
+
+    
+        <div class="count-info info-item">
+            
+                <span class="count-item border-box word">
+                    <span class="item-type border-box">总字数</span>
+                    <span class="item-value border-box word">45.1k</span>
+                </span>
+            
+
+            
+
+            
+        </div>
+    
+
+    
+        <div class="record-info info-item">
+            
+                
+            
+        </div>
+    
+</footer>
+
+        </div>
+    </div>
+
+    <!-- post tools -->
+    
+        <div class="post-tools right-toc">
+            <div class="post-tools-container border-box">
+    <ul class="post-tools-list border-box">
+        <!-- PC encrypt again -->
+        
+
+        <!-- PC TOC show toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- PC go comment -->
+        
+            <li class="tools-item flex-center go-to-comments">
+                <i class="fas fa-comment"></i>
+                <span class="post-comments-count"></span>
+            </li>
+        
+
+        <!-- PC full screen -->
+        <li class="tools-item flex-center full-screen">
+            <i class="fa-solid fa-expand"></i>
+        </li>
+    </ul>
+</div>
+
+        </div>
+    
+
+    <!-- side tools -->
+    <div class="side-tools">
+        <div class="side-tools-container border-box ">
+    <ul class="side-tools-list side-tools-show-handle border-box">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <!-- toggle mode -->
+        
+            <li class="tools-item tool-toggle-theme-mode flex-center">
+                <i class="fas fa-moon"></i>
+            </li>
+        
+
+        <!-- rss -->
+        
+
+        <!-- to bottom -->
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list border-box">
+        
+            <li class="tools-item toggle-show-toc-tablet flex-center">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        
+            <li class="tools-item go-to-comments-tablet flex-center">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+        <li class="tools-item tool-scroll-to-top flex-center show-arrow">
+            <i class="arrow fas fa-arrow-up"></i>
+            <span class="percent"></span>
+        </li>
+    </ul>
+</div>
+
+    </div>
+
+    <!-- image mask -->
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
+</div>
+
+
+    <!-- local search -->
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+    <!-- tablet toc -->
+    
+        <div class="tablet-post-toc-mask">
+            <div class="tablet-post-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90"><span class="nav-text"> 代码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B1%BBc%E5%92%8Cc%E7%9A%84%E6%B7%B7%E5%90%88%E7%BC%96%E6%88%90"><span class="nav-text"> 类C和C++的混合编成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#python%E4%B8%8Ec%E4%BA%A4%E4%BA%92"><span class="nav-text"> python与c交互</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0%E5%88%86%E6%9E%90"><span class="nav-text"> 配置参数分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#warm_start_config"><span class="nav-text"> warm_start_config</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#xy_grid_resolution"><span class="nav-text"> xy_grid_resolution</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#phi_grid_resolution"><span class="nav-text"> phi_grid_resolution</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#next_node_num"><span class="nav-text"> next_node_num</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#step_size"><span class="nav-text"> step_size</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#traj_forward_penalty"><span class="nav-text"> traj_forward_penalty</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#traj_back_penalty"><span class="nav-text"> traj_back_penalty</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#traj_gear_switch_penalty"><span class="nav-text"> traj_gear_switch_penalty</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#traj_steer_penalty"><span class="nav-text"> traj_steer_penalty</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#traj_steer_change_penalty"><span class="nav-text"> traj_steer_change_penalty</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#enable_dp_map"><span class="nav-text"> enable_dp_map</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#enable_euler_distance"><span class="nav-text"> enable_euler_distance</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#grid_a_star_xy_resolution"><span class="nav-text"> grid_a_star_xy_resolution</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#node_radius"><span class="nav-text"> node_radius</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#required_size_of_rs_segs"><span class="nav-text"> required_size_of_rs_segs</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#delta_t"><span class="nav-text"> delta_t</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flags_use_s_curve_speed_smooth"><span class="nav-text"> FLAGS_use_s_curve_speed_smooth</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flags_enable_parallel_hybrid_a"><span class="nav-text"> FLAGS_enable_parallel_hybrid_a</span></a></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        </div>
+    
+</main>
+
+
+
+
+
+<!-- common js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/header-shrink.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/back2top.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/toggle-theme.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/code-block.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/main.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/libs/anime.min.js"></script>
+
+<!-- local search -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/local-search.min.js"></script>
+
+
+<!-- lazyload -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/lazyload.min.js"></script>
+
+
+<div class="pjax">
+    <!-- home page -->
+    
+
+    <!-- post page -->
+    
+        <!-- post-helper -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/post/post-helper.min.js"></script>
+
+        <!-- toc -->
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/post/toc.min.js"></script>
+        
+
+        <!-- copyright-info -->
+        
+
+        <!-- share -->
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/post/share.min.js"></script>
+        
+    
+
+    <!-- categories page -->
+    
+
+    <!-- links page -->
+    
+
+    <!-- photos page -->
+    
+
+    <!-- tools page -->
+    
+</div>
+
+<!-- mermaid -->
+
+
+<!-- pjax -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/libs/pjax.min.js"></script>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart()
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd()
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'))
+            KEEP.initExecute()
+        });
+    });
+</script>
+
+
+
+
+    
+        
+    
+
+</body>
+</html>
