@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="i-Nog">
+    
+    <title>
+        
+            NFS挂载 |
+        
+        Lernen Forschen Machen
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+        <link rel="shortcut icon" href="/images/i-nog-logo.png">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/font/css/fontawesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/font/css/regular.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/font/css/solid.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/font/css/brands.min.css">
+    
+        
+            
+        
+            
+                
+<link rel="stylesheet" href="/css/custom-1.css">
+
+            
+        
+    
+    <script class="keep-theme-configurations">
+    const KEEP = window.KEEP || {}
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN","path":"search.json"}
+    KEEP.theme_config = {"base_info":{"primary_color":"#FF9900","title":"Lernen Forschen Machen","author":"i-Nog","avatar":"/images/i-nog-avatar.jpg","logo":"/images/i-nog-logo.png","favicon":"/images/i-nog-logo.png"},"menu":{"home":"/ || fa-solid fa-home","archives":"/archives || fa-solid fa-box-archive","categories":"/categories || fa-solid fa-layer-group","tools":"/tools || fa-solid fa-tools","about":"/about || fa-solid fa-user-graduate"},"first_screen":{"enable":true,"background_img":"/images/bg.svg","background_img_dark":"/images/bg.svg","description":"Keep writing and Keep loving.","hitokoto":true},"social_contact":{"enable":true,"links":{"github":null,"weixin":null,"qq":null,"weibo":null,"zhihu":null,"twitter":null,"x":null,"facebook":null,"email":"linxiaopeng-nog@qq.com"}},"scroll":{"progress_bar":false,"percent":true,"hide_header":true},"home":{"announcement":"转载请注明出处，尊重原创，从我做起。","category":true,"tag":false,"post_datetime":"updated","post_datetime_format":"YYYY-MM-DD HH:mm:ss"},"post":{"author_badge":{"enable":true,"level_badge":true,"custom_badge":["One","Two","Three"]},"word_count":{"wordcount":true,"min2read":true},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":false,"share":true,"reward":{"enable":true,"img_link":"/images/pay/pay.png","text":"请作者吃姜饼","icon":null}},"code_block":{"tools":{"enable":true,"style":"default"},"highlight_theme":"obsidian"},"toc":{"enable":true,"number":false,"expand_all":false,"init_open":true,"layout":"right"},"website_count":{"busuanzi_count":{"enable":false,"site_uv":true,"site_pv":true,"page_pv":true}},"local_search":{"enable":true,"preload":true},"comment":{"enable":true,"use":"giscus","valine":{"appid":null,"appkey":null,"server_urls":null,"placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.39"},"waline":{"server_url":null,"reaction":false,"version":"3.3.2"},"giscus":{"repo":"i-Nog/iNog-blog-comments","repo_id":"R_kgDOPF7ymg","category":"Announcements","category_id":"DIC_kwDOPF7yms4Cscff","reactions_enabled":false},"artalk":{"server":null},"disqus":{"shortname":null}},"rss":{"enable":false},"lazyload":{"enable":true},"cdn":{"enable":true,"provider":"cdnjs"},"pjax":{"enable":true},"footer":{"since":2021,"word_count":true,"site_deploy":{"enable":true,"provider":"github","url":null},"record":{"enable":true,"list":[{"code":null,"link":null}]}},"inject":{"enable":true,"css":[null,"/css/custom-1.css"],"js":[null]},"root":"","source_data":{"tools":[{"category":"AI 工具汇总","anchorId":"QUklMjAlRTUlQjclQTUlRTUlODUlQjclRTYlQjElODclRTYlODAlQkI0"},{"name":"AI 工具集","link":"https://ai-bot.cn/","description":"AI工具集导航收录了国内外数百个不同类型的AI工具","image":"/images/tools/ai-bot-logo-black.png"},{"name":"Leaderboard Overview","link":"https://lmarena.ai/leaderboard","description":"See how leading models stack up across text, image, vision, and beyond.","image":"/images/tools/lmarena.png"},{"category":"聊天 AI","anchorId":"JUU4JTgxJThBJUU1JUE0JUE5JTIwQUk3"},{"name":"ChatGPT","link":"https://chatgpt.com/","description":"OpenAI 旗下 AI 聊天对话工具","image":"/images/tools/chatgpt-icon.png"},{"name":"Claude","link":"https://claude.ai/","description":"Anthropic公司推出的对话式AI智能助手","image":"/images/tools/anthropic-icon.png"},{"name":"DeepSeek","link":"https://chat.deepseek.com/","description":"幻方量化推出的AI智能助手和开源大模型","image":"/images/tools/deepseek-chat-icon.png"},{"category":"绘画 AI","anchorId":"JUU3JUJCJTk4JUU3JTk0JUJCJTIwQUk7"},{"name":"即梦AI","link":"https://jimeng.jianying.com/ai-tool/home","description":"字节跳动推出的一站式AI创作平台","image":"/images/tools/jimeng-logo-1.png"},{"name":"Bing Image Creator","link":"https://www.bing.com/images/create","description":"微软必应推出的基于DALL·E的AI图像生成工具","image":"/images/tools/new-bing-icon.png"},{"category":"几何绘图工具","anchorId":"JUU1JTg3JUEwJUU0JUJEJTk1JUU3JUJCJTk4JUU1JTlCJUJFJUU1JUI3JUE1JUU1JTg1JUI310"},{"name":"GeoGebra","link":"https://www.geogebra.org/calculator","description":"以更为灵活的方式进行数学的教授与学习","image":"/images/tools/geogebra.png"},{"name":"desmos","link":"https://www.desmos.com/calculator?lang=zh-CN","description":"Desmos是一款十分实用的函数绘图工具。","image":"/images/tools/desmos.png"},{"category":"博客工具","anchorId":"JUU1JThEJTlBJUU1JUFFJUEyJUU1JUI3JUE1JUU1JTg1JUI313"},{"name":"Hexo","link":"https://hexo.io/zh-cn/","description":"快速、简洁且高效的博客框架","image":"/images/tools/hexo.png"},{"name":"Keep主题","link":"https://keep-docs.xpoet.cn/","description":"Keep 主题使用手册","image":"/images/logo.svg"}]},"version":"4.2.5"}
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"}
+    KEEP.language_code_block = {"copy":"复制代码","copied":"已复制","fold":"折叠代码块","folded":"已折叠"}
+    KEEP.language_copy_copyright = {"copy":"复制版权信息","copied":"已复制","title":"原文标题","author":"原文作者","link":"原文链接"}
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <i class="pjax-progress-icon fas fa-circle-notch fa-spin"></i>
+    
+</div>
+
+
+
+<main class="page-container border-box">
+    <!-- home first screen  -->
+    
+
+    <!-- page content -->
+    <div class="page-main-content border-box">
+        <div class="page-main-content-top">
+            
+<header class="header-wrapper">
+
+    <div class="border-box header-content">
+        <div class="left flex-start border-box">
+            
+                <a class="logo-image border-box" href="/">
+                    <img src="/images/i-nog-logo.png">
+                </a>
+            
+            <a class="site-name border-box" href="/">
+               Lernen Forschen Machen
+            </a>
+        </div>
+
+        <div class="right border-box">
+            <div class="pc border-box">
+                <ul class="menu-list border-box">
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-home"></i>
+                                
+                                首页
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/archives">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-box-archive"></i>
+                                
+                                归档
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/categories">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-layer-group"></i>
+                                
+                                分类
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/tools">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-tools"></i>
+                                
+                                工具
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/about">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-user-graduate"></i>
+                                
+                                关于
+                                
+                            </a>
+                            
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="menu-text-color fas search fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile border-box flex-start">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list border-box">
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-home"></i>
+                                </span>
+                            
+                            首页
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/archives">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-box-archive"></i>
+                                </span>
+                            
+                            归档
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/categories">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-layer-group"></i>
+                                </span>
+                            
+                            分类
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/tools">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-tools"></i>
+                                </span>
+                            
+                            工具
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/about">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-user-graduate"></i>
+                                </span>
+                            
+                            关于
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle border-box">
+
+            <div class="main-content border-box">
+                
+
+                    
+<div class="fade-in-down-animation">
+    <div class="post-page-container border-box">
+        <div class="post-content-container border-box">
+            
+                <div class="post-content-top border-box"
+                     style="height: 300px"
+                >
+                    <div class="cover-post-title">
+                        NFS挂载
+                    </div>
+                    <img class="post-cover" src="/images/posts/nfs.jpeg"
+                         onerror="this.style.display='none'"
+                    >
+                </div>
+            
+
+            <div class="post-content-bottom border-box has-cover">
+                
+
+                
+                    <div class="post-header border-box">
+                        
+                            <div class="avatar-box border-box">
+                                <img src="/images/i-nog-avatar.jpg">
+                            </div>
+                        
+                        <div class="info-box">
+                            <div class="author border-box">
+                                <span class="name">i-Nog</span>
+                                
+                                    <span class="author-badge">Lv3</span>
+                                
+                            </div>
+                            <div class="meta-info border-box">
+                                
+
+<div class="post-meta-info-container border-box post">
+    <div class="post-meta-info border-box">
+        
+
+        
+            <span class="meta-info-item post-create-date">
+                <i class="icon fa-solid fa-calendar-plus"></i>&nbsp;
+                <span class="datetime">2024-02-15 16:52:00</span>
+            </span>
+
+            
+                <span class="meta-info-item post-update-date">
+                    <i class="icon fa-solid fa-file-pen"></i>&nbsp;
+                    <span class="datetime" data-updated="Mon Jul 21 2025 11:41:56 GMT+0800">2025-07-21 11:41:56</span>
+                </span>
+            
+        
+
+        
+            <span class="meta-info-item post-category border-box"><i class="icon fas fa-folder"></i>&nbsp;
+                <ul class="post-category-ul">
+                    
+                            <li class="category-item"><a href="/categories/Linux%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">Linux软件开发</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+
+        
+        
+            <span class="meta-info-item post-wordcount">
+                <i class="icon fas fa-file-word"></i>&nbsp;<span>1.1k 字</span>
+            </span>
+        
+        
+            <span class="meta-info-item post-min2read">
+                <i class="icon fas fa-clock"></i>&nbsp;<span>4 分钟</span>
+            </span>
+        
+        
+    </div>
+
+    
+</div>
+
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="post-content keep-markdown-body ">
+                    
+
+                    
+                         <h2 id="nfs介绍"><a class="markdownIt-Anchor" href="#nfs介绍"></a> NFS介绍</h2>
+<p><code>NFS</code>（<code>Network File System</code>的简称，即网络文件系统）可以通过网络，让不同的机器、不同的操作系统可以共享彼此的文件。NFS可以将远程的计算机磁盘挂载到本地，读写文件像访问本地磁盘一样操作。<code>NFS</code>只是一种文件系统，本身并没有传输功能，是基于<code>RPC</code>（远程过程调用）协议实现的，采用<code>C/S</code>架构。</p>
+<span id="more"></span>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/20962dcae28c20d539c4e71a24225726.png"
+                        alt="20962dcae28c20d539c4e71a24225726.png" 
+                 ></p>
+<ol>
+<li>首先服务器端启动<code>RPC</code>服务，并开启<code>111</code>端口</li>
+<li>服务器端启动<code>NFS</code>服务，并向<code>RPC</code>注册登记端口信息</li>
+<li>客户端启动<code>RPC</code>，向服务端的<code>RPC</code>服务请求服务端的<code>NFS</code>端口</li>
+<li>服务端的<code>RPC</code>服务反馈<code>NFS</code>端口信息给客户端</li>
+<li>客户端通过获取的<code>NFS</code>端口来建立和服务端的<code>NFS</code>连接并进行数据的传输</li>
+</ol>
+<h2 id="安装nfs软件包"><a class="markdownIt-Anchor" href="#安装nfs软件包"></a> 安装NFS软件包</h2>
+<p><font color=red>服务端是自己笔记本，客户端是计算机平台。也就是客户端将服务端的文件目录挂载在自己文件系统里。</font><font color=gree>可用于不同平台间共享文件，在<code>ARM</code>平台编译<code>x86</code>平台上的代码，生成<code>ARM</code>库。</font></p>
+<p><code>sudo apt-get update</code></p>
+<p><code>sudo apt-get install nfs-kernel-server</code> 安装NFS服务器</p>
+<p><code>sudo apt-get install nfs-common</code>安装NFS客户端</p>
+<h2 id="添加nfs共享目录在服务端上处理也就是自己电脑"><a class="markdownIt-Anchor" href="#添加nfs共享目录在服务端上处理也就是自己电脑"></a> 添加NFS共享目录(在服务端上处理，也就是自己电脑)</h2>
+<p>服务端开放自己的文件目录。</p>
+<p><code style="color: green;">sudo vim /etc/exports</code></p>
+<p>增加下面一行代码</p>
+<p><code style="color: green;">/home/apollo/SanyAutoDrive/   *(rw,sync,fsid=0,crossmnt,no_subtree_check,no_root_squash)</code></p>
+<p>第一个字段总是表示<font color=gree>需要共享的文件系统</font>，之后列举可以访问该文件系统的<mark>客户机</mark>。每个客户机之后紧跟用括号括起来、以逗号分隔的一系列选项。</p>
+<p>我这里共享文件夹是<code>/home/apollo/SanyAutoDrive/</code></p>
+<p>可以访问该文件系统的客户机为<code>*</code>，表示允许任何网段IP的系统访问该NFS目录。</p>
+<p>括弧里面参数含义：</p>
+<table>
+<thead>
+<tr>
+<th>参数参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ro</td>
+<td>该共享目录的权限是只读（read-only）</td>
+</tr>
+<tr>
+<td>rw</td>
+<td>该共享目录的权限是可读写（read-write）</td>
+</tr>
+<tr>
+<td>hide</td>
+<td>隐藏文件系统。</td>
+</tr>
+<tr>
+<td>noaccess</td>
+<td>阻止访问这个目录及其子目录</td>
+</tr>
+<tr>
+<td>wdelay</td>
+<td>为合并多次更新而延迟写入磁盘</td>
+</tr>
+<tr>
+<td>no_wdelay</td>
+<td>尽可能快地把数据写入磁盘</td>
+</tr>
+<tr>
+<td>sync</td>
+<td>将数据同步写入内存缓冲区与磁盘中（同步模式）</td>
+</tr>
+<tr>
+<td>async</td>
+<td>将数据线暂存在内存缓冲区中，而非直接写入磁盘（非同步模式）</td>
+</tr>
+<tr>
+<td>subtree_check</td>
+<td>验证每个被请求的文件都在导出的目录树中</td>
+</tr>
+<tr>
+<td>no_subtree_check</td>
+<td>只验证涉及被导出的文件系统的文件请求</td>
+</tr>
+<tr>
+<td>all_squash</td>
+<td>将所有本地和远程账户映射到匿名用户</td>
+</tr>
+<tr>
+<td>root_squash</td>
+<td>将根用户及所属组都映射为匿名用户或用户组（nfsnobody），为默认设置</td>
+</tr>
+<tr>
+<td>no_root_squash</td>
+<td>将远程根用户当成本地根用户，即不压制root</td>
+</tr>
+<tr>
+<td>anonuid</td>
+<td>为匿名用户账户指定组ID</td>
+</tr>
+<tr>
+<td>anongid</td>
+<td>为匿名用户账户指定用户ID</td>
+</tr>
+</tbody>
+</table>
+<p><font color=red>注：服务端应给予共享文件系统相对应的权限，否则客户端无法进行写操作</font></p>
+<p><code style="color: green;">sudo chmod -R 777 /home/apollo/SanyAutoDrive/planning_group/</code>这步骤不要随意操作，吃过大亏。<font color=gree>如果权限不够，在客户端执行指令时加<code>sudo</code></font>。</p>
+<h2 id="服务器端查看nfs连接情况"><a class="markdownIt-Anchor" href="#服务器端查看nfs连接情况"></a> 服务器(端)查看NFS连接情况</h2>
+<p><code>sudo exportfs</code>查看共享文件系统是哪个</p>
+<p><code>showmount [-ae] [hostname | IP]</code></p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/NFS_1.png"
+                        alt="NFS_1.png" 
+                 ></p>
+<h2 id="nfs服务的启动和停止"><a class="markdownIt-Anchor" href="#nfs服务的启动和停止"></a> NFS服务的启动和停止</h2>
+<p><code style="color: green;">systemctl start nfs</code></p>
+<p><code style="color: green;">system stop nfs</code></p>
+<p><code style="color: green;">sudo /etc/init.d/nfs-kernel-server start</code>或者<code style="color: green;">sudo /etc/init.d/nfs-kernel-server restart</code></p>
+<p>在 NFS 服务已经启动的情况下，<mark>如果修改了 “/etc/exports” 文件</mark>，需要重启 NFS 服务，以刷新 NFS 的共享目录。</p>
+<h2 id="nfs客户端配置"><a class="markdownIt-Anchor" href="#nfs客户端配置"></a> NFS客户端配置</h2>
+<p><font color=red>在客户端下，即在计算机平台上。</font></p>
+<p><code style="color: green;">sudo mount -t nfs 192.168.188.101:/home/apollo/SanyAutoDrive /mnt -o nolock</code>或者<code style="color: green;">sudo mount.nfs 192.168.188.101:/home/apollo/SanyAutoDrive /mnt -o nolock</code></p>
+<p><code>192.168.188.101</code>是服务器(端)地址，<code>/mnt</code>是挂载在客户端的位置，如果指令运行没有出错，则<code>NFS</code>挂载成功。</p>
+<h2 id="nfsstat指令"><a class="markdownIt-Anchor" href="#nfsstat指令"></a> nfsstat指令</h2>
+<p><code>nfsstat</code>命令用于列出NFS客户端和服务器的工作状态。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-s：仅列出NFS服务器端状态；</span><br><span class="line">-c：仅列出NFS客户端状态；</span><br><span class="line">-n：仅列出NFS状态，默认显示nfs客户端和服务器的状态；</span><br><span class="line">-2：仅列出NFS版本2的状态；</span><br><span class="line">-3：仅列出NFS版本3的状态；</span><br><span class="line">-4：仅列出NFS版本4的状态；</span><br><span class="line">-m：打印以加载的nfs文件系统状态；</span><br><span class="line">-r：仅打印rpc状态。</span><br></pre></td></tr></table></figure>
+
+                    
+                </div>
+
+                
+
+                <div class="post-bottom-tags-and-share border-box">
+                    <div>
+                        
+                    </div>
+                    <div>
+                        
+                            <div class="post-share-container border-box">
+    <ul class="share-list-wrap border-box">
+        <li class="qq share-item border-box flex-center tooltip"
+            data-tooltip-content="分享到 QQ"
+        >
+            <i class="fa-brands fa-qq"></i>
+        </li>
+        <li class="wechat share-item border-box flex-center tooltip tooltip-img"
+            data-tooltip-content="分享到微信"
+            data-tooltip-img-tip="微信扫一扫"
+            data-tooltip-img-style="background-color: #fff; top: -10px; padding: 0.6rem 0.6rem 0.1rem 0.6rem;"
+        >
+            <i class="fa-brands fa-weixin"></i>
+        </li>
+        <li class="weibo share-item border-box flex-center tooltip"
+            data-tooltip-content="分享到微博"
+        >
+            <i class="fa-brands fa-weibo"></i>
+        </li>
+    </ul>
+</div>
+
+                        
+                    </div>
+                </div>
+
+                
+                    
+
+<div class="reward-author-container border-box flex-center">
+    <div class="reward-btn border-box flex-center tooltip tooltip-img"
+            data-tooltip-img-url="/images/pay/pay.png"
+            data-tooltip-img-trigger="click"
+            data-tooltip-img-style="top: -6px;"
+    >
+        <i class="fa-solid fa-gift"></i>&nbsp;请作者吃姜饼
+    </div>
+</div>
+
+                
+
+                
+                    <div class="post-nav border-box">
+                        
+                            <div class="prev-post">
+                                <a class="prev"
+                                   rel="prev"
+                                   href="/2024/08/05/Linux%E4%B8%8BQT%E4%BD%BF%E7%94%A8appimage%E6%89%93%E5%8C%85%E7%A8%8B%E5%BA%8F/"
+                                   title="Linux下QT使用appimage打包程序"
+                                >
+                                    <span class="left arrow-icon flex-center">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">Linux下QT使用appimage打包程序</span>
+                                        <span class="post-nav-item">上一篇</span>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                        
+                            <div class="next-post">
+                                <a class="next"
+                                   rel="next"
+                                   href="/2023/07/19/ip%E5%9C%B0%E5%9D%80%E8%AF%A6%E8%A7%A3/"
+                                   title="Ip地址详解"
+                                >
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">Ip地址详解</span>
+                                        <span class="post-nav-item">下一篇</span>
+                                    </span>
+                                    <span class="right arrow-icon flex-center">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                    </div>
+                
+
+                
+                    
+
+
+    <div class="comments-container border-box">
+        <div id="comments-anchor" class="comment-area-title border-box">
+            <i class="fas fa-comments"></i>&nbsp;评论
+        </div>
+        <div class="comment-plugin-fail border-box">
+    <span class="fail-tip">评论插件加载失败</span>
+    <button class="reload keep-button">点击重新加载</button>
+</div>
+<div class="comment-plugin-loading flex-center border-box">
+    <i class="loading-icon fa-solid fa-spinner fa-spin"></i>
+    <span class="load-tip">正在加载评论插件</span>
+</div>
+<script data-pjax>
+  window.KeepCommentPlugin = {}
+  window.KeepCommentPlugin.hideLoading = () => {
+    const cplDom = document.querySelector('.comments-container .comment-plugin-loading')
+    cplDom.style.display = 'none'
+  }
+  window.KeepCommentPlugin.loadFailHandle = () => {
+    window.KeepCommentPlugin.hideLoading()
+    const cpfDom = document.querySelector('.comments-container .comment-plugin-fail')
+    cpfDom.style.display = 'flex'
+    cpfDom.querySelector('.reload').addEventListener('click', () => {
+      window.location.reload()
+    })
+  }
+</script>
+
+        
+            
+
+    <div class="giscus-comments-container">
+        <div class="giscus" id="giscus"></div>
+        <script data-pjax
+                onerror="window.KeepCommentPlugin.loadFailHandle()"
+        >
+          if (!window.KeepCommentPlugin?.getGiscusTheme) {
+            window.KeepCommentPlugin.getGiscusTheme = () => {
+              return document.documentElement.classList.contains('dark-mode') ? 'dark_dimmed' : 'light_tritanopia'
+            }
+          }
+
+          if (!window.KeepCommentPlugin?.changeGiscusTheme) {
+            window.KeepCommentPlugin.changeGiscusTheme = () => {
+              const iframe = document.querySelector('iframe.giscus-frame')
+              iframe && iframe.contentWindow.postMessage({
+                giscus: {
+                  setConfig: {
+                    theme: window.KeepCommentPlugin.getGiscusTheme()
+                  }
+                }
+              }, 'https://giscus.app')
+            }
+          }
+
+          if (!window.KeepCommentPlugin?.initGiscus) {
+            window.KeepCommentPlugin.initGiscus = () => {
+              const script = document.createElement('script')
+              script.async = true
+              script.src = 'https://giscus.app/client.js'
+              script.setAttribute('data-repo', 'i-Nog/iNog-blog-comments')
+              script.setAttribute('data-repo-id', 'R_kgDOPF7ymg')
+              script.setAttribute('data-category', 'Announcements')
+              script.setAttribute('data-category-id', 'DIC_kwDOPF7yms4Cscff')
+              script.setAttribute('data-reactions-enabled', '0')
+              script.setAttribute('data-lang', 'zh-CN')
+              script.setAttribute('data-mapping', 'pathname')
+              script.setAttribute('data-strict', '0')
+              script.setAttribute('data-emit-metadata', '0')
+              script.setAttribute('data-input-position', 'top')
+              script.setAttribute('crossorigin', 'anonymous')
+              script.setAttribute('loading', 'lazy')
+              script.setAttribute('data-theme', window.KeepCommentPlugin.getGiscusTheme())
+              document.querySelector('.giscus-comments-container').appendChild(script)
+              script.onerror = () => {
+                window.KeepCommentPlugin.loadFailHandle()
+              }
+              script.onload = () => {
+                window.KeepCommentPlugin.hideLoading()
+              }
+              const toggleThemeBtn = document.querySelector('.tool-toggle-theme-mode')
+              toggleThemeBtn && toggleThemeBtn.addEventListener('click', () => {
+                window.KeepCommentPlugin.changeGiscusTheme()
+              })
+            }
+          }
+
+          if ('true' === "true") {
+            setTimeout(() => {
+              window.KeepCommentPlugin.initGiscus()
+            }, 1000)
+          } else {
+            window.addEventListener("DOMContentLoaded", window.KeepCommentPlugin.initGiscus)
+          }
+        </script>
+    </div>
+
+
+        
+    </div>
+
+
+
+
+
+                
+            </div>
+        </div>
+
+        
+            <div class="pc-post-toc right-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#nfs%E4%BB%8B%E7%BB%8D"><span class="nav-text"> NFS介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85nfs%E8%BD%AF%E4%BB%B6%E5%8C%85"><span class="nav-text"> 安装NFS软件包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0nfs%E5%85%B1%E4%BA%AB%E7%9B%AE%E5%BD%95%E5%9C%A8%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%B8%8A%E5%A4%84%E7%90%86%E4%B9%9F%E5%B0%B1%E6%98%AF%E8%87%AA%E5%B7%B1%E7%94%B5%E8%84%91"><span class="nav-text"> 添加NFS共享目录(在服务端上处理，也就是自己电脑)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E6%9F%A5%E7%9C%8Bnfs%E8%BF%9E%E6%8E%A5%E6%83%85%E5%86%B5"><span class="nav-text"> 服务器(端)查看NFS连接情况</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nfs%E6%9C%8D%E5%8A%A1%E7%9A%84%E5%90%AF%E5%8A%A8%E5%92%8C%E5%81%9C%E6%AD%A2"><span class="nav-text"> NFS服务的启动和停止</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nfs%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%85%8D%E7%BD%AE"><span class="nav-text"> NFS客户端配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nfsstat%E6%8C%87%E4%BB%A4"><span class="nav-text"> nfsstat指令</span></a></li></ol>
+    </div>
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+        </div>
+
+        <div class="page-main-content-bottom border-box">
+            
+<footer class="footer border-box">
+    <div class="copyright-info info-item">
+    &copy;&nbsp;<span>2021</span>&nbsp;-&nbsp;2025
+    
+            &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/">i-Nog</a>
+        
+    </div>
+
+    <div class="theme-info info-item">
+        由&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;驱动&nbsp;&&nbsp;主题&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
+    </div>
+
+    
+        
+        <div class="deploy-info info-item">
+            
+            本站由 <span class="tooltip" data-tooltip-content="GitHub Pages"><img src="/images/brands/github.png"></span> 提供部署服务
+            
+        </div>
+    
+
+    
+        <div class="count-info info-item">
+            
+                <span class="count-item border-box word">
+                    <span class="item-type border-box">总字数</span>
+                    <span class="item-value border-box word">83.4k</span>
+                </span>
+            
+
+            
+
+            
+        </div>
+    
+
+    
+        <div class="record-info info-item">
+            
+                
+            
+        </div>
+    
+</footer>
+
+        </div>
+    </div>
+
+    <!-- post tools -->
+    
+        <div class="post-tools right-toc">
+            <div class="post-tools-container border-box">
+    <ul class="post-tools-list border-box">
+        <!-- PC encrypt again -->
+        
+
+        <!-- PC TOC show toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- PC go comment -->
+        
+            <li class="tools-item flex-center go-to-comments">
+                <i class="fas fa-comment"></i>
+                <span class="post-comments-count"></span>
+            </li>
+        
+
+        <!-- PC full screen -->
+        <li class="tools-item flex-center full-screen">
+            <i class="fa-solid fa-expand"></i>
+        </li>
+    </ul>
+</div>
+
+        </div>
+    
+
+    <!-- side tools -->
+    <div class="side-tools">
+        <div class="side-tools-container border-box ">
+    <ul class="side-tools-list side-tools-show-handle border-box">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <!-- toggle mode -->
+        
+            <li class="tools-item tool-toggle-theme-mode flex-center">
+                <i class="fas fa-moon"></i>
+            </li>
+        
+
+        <!-- rss -->
+        
+
+        <!-- to bottom -->
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list border-box">
+        
+            <li class="tools-item toggle-show-toc-tablet flex-center">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        
+            <li class="tools-item go-to-comments-tablet flex-center">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+        <li class="tools-item tool-scroll-to-top flex-center show-arrow">
+            <i class="arrow fas fa-arrow-up"></i>
+            <span class="percent"></span>
+        </li>
+    </ul>
+</div>
+
+    </div>
+
+    <!-- image mask -->
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
+</div>
+
+
+    <!-- local search -->
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+    <!-- tablet toc -->
+    
+        <div class="tablet-post-toc-mask">
+            <div class="tablet-post-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#nfs%E4%BB%8B%E7%BB%8D"><span class="nav-text"> NFS介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85nfs%E8%BD%AF%E4%BB%B6%E5%8C%85"><span class="nav-text"> 安装NFS软件包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0nfs%E5%85%B1%E4%BA%AB%E7%9B%AE%E5%BD%95%E5%9C%A8%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%B8%8A%E5%A4%84%E7%90%86%E4%B9%9F%E5%B0%B1%E6%98%AF%E8%87%AA%E5%B7%B1%E7%94%B5%E8%84%91"><span class="nav-text"> 添加NFS共享目录(在服务端上处理，也就是自己电脑)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E6%9F%A5%E7%9C%8Bnfs%E8%BF%9E%E6%8E%A5%E6%83%85%E5%86%B5"><span class="nav-text"> 服务器(端)查看NFS连接情况</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nfs%E6%9C%8D%E5%8A%A1%E7%9A%84%E5%90%AF%E5%8A%A8%E5%92%8C%E5%81%9C%E6%AD%A2"><span class="nav-text"> NFS服务的启动和停止</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nfs%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%85%8D%E7%BD%AE"><span class="nav-text"> NFS客户端配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nfsstat%E6%8C%87%E4%BB%A4"><span class="nav-text"> nfsstat指令</span></a></li></ol>
+    </div>
+</div>
+
+            </div>
+        </div>
+    
+</main>
+
+
+
+
+
+<!-- common js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/header-shrink.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/back2top.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/toggle-theme.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/code-block.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/main.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/libs/anime.min.js"></script>
+
+<!-- local search -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/local-search.min.js"></script>
+
+
+<!-- lazyload -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/lazyload.min.js"></script>
+
+
+<div class="pjax">
+    <!-- home page -->
+    
+
+    <!-- post page -->
+    
+        <!-- post-helper -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/post/post-helper.min.js"></script>
+
+        <!-- toc -->
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/post/toc.min.js"></script>
+        
+
+        <!-- copyright-info -->
+        
+
+        <!-- share -->
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/post/share.min.js"></script>
+        
+    
+
+    <!-- categories page -->
+    
+
+    <!-- links page -->
+    
+
+    <!-- photos page -->
+    
+
+    <!-- tools page -->
+    
+</div>
+
+<!-- mermaid -->
+
+
+<!-- pjax -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/libs/pjax.min.js"></script>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart()
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd()
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'))
+            KEEP.initExecute()
+        });
+    });
+</script>
+
+
+
+
+    
+        
+    
+
+</body>
+</html>

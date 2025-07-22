@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="i-Nog">
+    
+    <title>
+        
+            Apollo v8.0.0 代码解读 之 Docker启动脚本 |
+        
+        Lernen Forschen Machen
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+        <link rel="shortcut icon" href="/images/i-nog-logo.png">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/font/css/fontawesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/font/css/regular.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/font/css/solid.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/font/css/brands.min.css">
+    
+        
+            
+        
+            
+                
+<link rel="stylesheet" href="/css/custom-1.css">
+
+            
+        
+    
+    <script class="keep-theme-configurations">
+    const KEEP = window.KEEP || {}
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN","path":"search.json"}
+    KEEP.theme_config = {"base_info":{"primary_color":"#FF9900","title":"Lernen Forschen Machen","author":"i-Nog","avatar":"/images/i-nog-avatar.jpg","logo":"/images/i-nog-logo.png","favicon":"/images/i-nog-logo.png"},"menu":{"home":"/ || fa-solid fa-home","archives":"/archives || fa-solid fa-box-archive","categories":"/categories || fa-solid fa-layer-group","tools":"/tools || fa-solid fa-tools","about":"/about || fa-solid fa-user-graduate"},"first_screen":{"enable":true,"background_img":"/images/bg.svg","background_img_dark":"/images/bg.svg","description":"Keep writing and Keep loving.","hitokoto":true},"social_contact":{"enable":true,"links":{"github":null,"weixin":null,"qq":null,"weibo":null,"zhihu":null,"twitter":null,"x":null,"facebook":null,"email":"linxiaopeng-nog@qq.com"}},"scroll":{"progress_bar":false,"percent":true,"hide_header":true},"home":{"announcement":"转载请注明出处，尊重原创，从我做起。","category":true,"tag":false,"post_datetime":"updated","post_datetime_format":"YYYY-MM-DD HH:mm:ss"},"post":{"author_badge":{"enable":true,"level_badge":true,"custom_badge":["One","Two","Three"]},"word_count":{"wordcount":true,"min2read":true},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":false,"share":true,"reward":{"enable":true,"img_link":"/images/pay/pay.png","text":"请作者吃姜饼","icon":null}},"code_block":{"tools":{"enable":true,"style":"default"},"highlight_theme":"obsidian"},"toc":{"enable":true,"number":false,"expand_all":false,"init_open":true,"layout":"right"},"website_count":{"busuanzi_count":{"enable":false,"site_uv":true,"site_pv":true,"page_pv":true}},"local_search":{"enable":true,"preload":true},"comment":{"enable":true,"use":"giscus","valine":{"appid":null,"appkey":null,"server_urls":null,"placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.39"},"waline":{"server_url":null,"reaction":false,"version":"3.3.2"},"giscus":{"repo":"i-Nog/iNog-blog-comments","repo_id":"R_kgDOPF7ymg","category":"Announcements","category_id":"DIC_kwDOPF7yms4Cscff","reactions_enabled":false},"artalk":{"server":null},"disqus":{"shortname":null}},"rss":{"enable":false},"lazyload":{"enable":true},"cdn":{"enable":true,"provider":"cdnjs"},"pjax":{"enable":true},"footer":{"since":2021,"word_count":true,"site_deploy":{"enable":true,"provider":"github","url":null},"record":{"enable":true,"list":[{"code":null,"link":null}]}},"inject":{"enable":true,"css":[null,"/css/custom-1.css"],"js":[null]},"root":"","source_data":{"tools":[{"category":"AI 工具汇总","anchorId":"QUklMjAlRTUlQjclQTUlRTUlODUlQjclRTYlQjElODclRTYlODAlQkI0"},{"name":"AI 工具集","link":"https://ai-bot.cn/","description":"AI工具集导航收录了国内外数百个不同类型的AI工具","image":"/images/tools/ai-bot-logo-black.png"},{"name":"Leaderboard Overview","link":"https://lmarena.ai/leaderboard","description":"See how leading models stack up across text, image, vision, and beyond.","image":"/images/tools/lmarena.png"},{"category":"聊天 AI","anchorId":"JUU4JTgxJThBJUU1JUE0JUE5JTIwQUk3"},{"name":"ChatGPT","link":"https://chatgpt.com/","description":"OpenAI 旗下 AI 聊天对话工具","image":"/images/tools/chatgpt-icon.png"},{"name":"Claude","link":"https://claude.ai/","description":"Anthropic公司推出的对话式AI智能助手","image":"/images/tools/anthropic-icon.png"},{"name":"DeepSeek","link":"https://chat.deepseek.com/","description":"幻方量化推出的AI智能助手和开源大模型","image":"/images/tools/deepseek-chat-icon.png"},{"category":"绘画 AI","anchorId":"JUU3JUJCJTk4JUU3JTk0JUJCJTIwQUk7"},{"name":"即梦AI","link":"https://jimeng.jianying.com/ai-tool/home","description":"字节跳动推出的一站式AI创作平台","image":"/images/tools/jimeng-logo-1.png"},{"name":"Bing Image Creator","link":"https://www.bing.com/images/create","description":"微软必应推出的基于DALL·E的AI图像生成工具","image":"/images/tools/new-bing-icon.png"},{"category":"几何绘图工具","anchorId":"JUU1JTg3JUEwJUU0JUJEJTk1JUU3JUJCJTk4JUU1JTlCJUJFJUU1JUI3JUE1JUU1JTg1JUI310"},{"name":"GeoGebra","link":"https://www.geogebra.org/calculator","description":"以更为灵活的方式进行数学的教授与学习","image":"/images/tools/geogebra.png"},{"name":"desmos","link":"https://www.desmos.com/calculator?lang=zh-CN","description":"Desmos是一款十分实用的函数绘图工具。","image":"/images/tools/desmos.png"},{"category":"博客工具","anchorId":"JUU1JThEJTlBJUU1JUFFJUEyJUU1JUI3JUE1JUU1JTg1JUI313"},{"name":"Hexo","link":"https://hexo.io/zh-cn/","description":"快速、简洁且高效的博客框架","image":"/images/tools/hexo.png"},{"name":"Keep主题","link":"https://keep-docs.xpoet.cn/","description":"Keep 主题使用手册","image":"/images/logo.svg"}]},"version":"4.2.5"}
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"}
+    KEEP.language_code_block = {"copy":"复制代码","copied":"已复制","fold":"折叠代码块","folded":"已折叠"}
+    KEEP.language_copy_copyright = {"copy":"复制版权信息","copied":"已复制","title":"原文标题","author":"原文作者","link":"原文链接"}
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <i class="pjax-progress-icon fas fa-circle-notch fa-spin"></i>
+    
+</div>
+
+
+
+<main class="page-container border-box">
+    <!-- home first screen  -->
+    
+
+    <!-- page content -->
+    <div class="page-main-content border-box">
+        <div class="page-main-content-top">
+            
+<header class="header-wrapper">
+
+    <div class="border-box header-content">
+        <div class="left flex-start border-box">
+            
+                <a class="logo-image border-box" href="/">
+                    <img src="/images/i-nog-logo.png">
+                </a>
+            
+            <a class="site-name border-box" href="/">
+               Lernen Forschen Machen
+            </a>
+        </div>
+
+        <div class="right border-box">
+            <div class="pc border-box">
+                <ul class="menu-list border-box">
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-home"></i>
+                                
+                                首页
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/archives">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-box-archive"></i>
+                                
+                                归档
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/categories">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-layer-group"></i>
+                                
+                                分类
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/tools">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-tools"></i>
+                                
+                                工具
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/about">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-user-graduate"></i>
+                                
+                                关于
+                                
+                            </a>
+                            
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="menu-text-color fas search fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile border-box flex-start">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list border-box">
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-home"></i>
+                                </span>
+                            
+                            首页
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/archives">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-box-archive"></i>
+                                </span>
+                            
+                            归档
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/categories">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-layer-group"></i>
+                                </span>
+                            
+                            分类
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/tools">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-tools"></i>
+                                </span>
+                            
+                            工具
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/about">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-user-graduate"></i>
+                                </span>
+                            
+                            关于
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle border-box">
+
+            <div class="main-content border-box">
+                
+
+                    
+<div class="fade-in-down-animation">
+    <div class="post-page-container border-box">
+        <div class="post-content-container border-box">
+            
+                <div class="post-content-top border-box"
+                     style="height: 300px"
+                >
+                    <div class="cover-post-title">
+                        Apollo v8.0.0 代码解读 之 Docker启动脚本
+                    </div>
+                    <img class="post-cover" src="/images/posts/apollo_docker.jpeg"
+                         onerror="this.style.display='none'"
+                    >
+                </div>
+            
+
+            <div class="post-content-bottom border-box has-cover">
+                
+
+                
+                    <div class="post-header border-box">
+                        
+                            <div class="avatar-box border-box">
+                                <img src="/images/i-nog-avatar.jpg">
+                            </div>
+                        
+                        <div class="info-box">
+                            <div class="author border-box">
+                                <span class="name">i-Nog</span>
+                                
+                                    <span class="author-badge">Lv3</span>
+                                
+                            </div>
+                            <div class="meta-info border-box">
+                                
+
+<div class="post-meta-info-container border-box post">
+    <div class="post-meta-info border-box">
+        
+
+        
+            <span class="meta-info-item post-create-date">
+                <i class="icon fa-solid fa-calendar-plus"></i>&nbsp;
+                <span class="datetime">2023-01-29 22:18:00</span>
+            </span>
+
+            
+                <span class="meta-info-item post-update-date">
+                    <i class="icon fa-solid fa-file-pen"></i>&nbsp;
+                    <span class="datetime" data-updated="Mon Jul 21 2025 15:21:25 GMT+0800">2025-07-21 15:21:25</span>
+                </span>
+            
+        
+
+        
+            <span class="meta-info-item post-category border-box"><i class="icon fas fa-folder"></i>&nbsp;
+                <ul class="post-category-ul">
+                    
+                            <li class="category-item"><a href="/categories/%E7%AE%97%E6%B3%95/">算法</a></li>
+                        
+                    
+                            <li class="category-item">&nbsp;<i class="icon fas fa-angle-right"></i>&nbsp;<a href="/categories/Apollo%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB/">Apollo源码解读</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+
+        
+        
+            <span class="meta-info-item post-wordcount">
+                <i class="icon fas fa-file-word"></i>&nbsp;<span>8.3k 字</span>
+            </span>
+        
+        
+            <span class="meta-info-item post-min2read">
+                <i class="icon fas fa-clock"></i>&nbsp;<span>39 分钟</span>
+            </span>
+        
+        
+    </div>
+
+    
+</div>
+
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="post-content keep-markdown-body ">
+                    
+
+                    
+                         <p>这篇博客深入解析了 Apollo v8.0.0 中用于启动开发环境的 Docker 启动脚本，包括 dev_start.sh 的执行流程、环境变量设置、镜像选择逻辑、数据卷挂载、GPU检测与配置等关键机制。通过逐步剖析 shell 脚本结构，帮助读者全面理解 Apollo 启动容器的底层逻辑与自动化设计思路，为二次开发和调试提供了坚实基础。</p>
+<span id="more"></span>
+<h1 id="启动流程"><a class="markdownIt-Anchor" href="#启动流程"></a> 启动流程</h1>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/mermaid-1753081364641.png"
+                        alt="启动流程" 
+                 ></p>
+<h2 id="dev_startsh"><a class="markdownIt-Anchor" href="#dev_startsh"></a> dev_start.sh</h2>
+<h3 id="变量定义"><a class="markdownIt-Anchor" href="#变量定义"></a> 变量定义</h3>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取该文件所在位置的绝对路径</span></span><br><span class="line">CURR_DIR=<span class="string">&quot;<span class="subst">$(cd <span class="string">&quot;<span class="subst">$(dirname <span class="string">&quot;<span class="variable">$&#123;BASH_SOURCE[0]&#125;</span>&quot;</span>)</span>&quot;</span> &amp;&amp; pwd -P)</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行指定脚本</span></span><br><span class="line"><span class="built_in">source</span> <span class="string">&quot;<span class="variable">$&#123;CURR_DIR&#125;</span>/docker_base.sh&quot;</span></span><br><span class="line"></span><br><span class="line">CACHE_ROOT_DIR=<span class="string">&quot;<span class="variable">$&#123;APOLLO_ROOT_DIR&#125;</span>/.cache&quot;</span></span><br><span class="line"></span><br><span class="line">DOCKER_REPO=<span class="string">&quot;apolloauto/apollo&quot;</span></span><br><span class="line">DEV_CONTAINER=<span class="string">&quot;apollo_dev_<span class="variable">$&#123;USER&#125;</span>&quot;</span></span><br><span class="line">DEV_INSIDE=<span class="string">&quot;in-dev-docker&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个数组</span></span><br><span class="line"><span class="comment"># 读取数组方式：$&#123;数组名[下标]&#125;</span></span><br><span class="line">SUPPORTED_ARCHS=(x86_64 aarch64)</span><br><span class="line"><span class="comment"># 电脑架构类型：x86_64还是aarch64</span></span><br><span class="line">TARGET_ARCH=<span class="string">&quot;<span class="subst">$(uname -m)</span>&quot;</span></span><br><span class="line"></span><br><span class="line">VERSION_X86_64=<span class="string">&quot;dev-x86_64-18.04-20221124_1708&quot;</span></span><br><span class="line">TESTING_VERSION_X86_64=<span class="string">&quot;dev-x86_64-18.04-testing-20210112_0008&quot;</span></span><br><span class="line"></span><br><span class="line">VERSION_AARCH64=<span class="string">&quot;dev-aarch64-18.04-20201218_0030&quot;</span></span><br><span class="line">USER_VERSION_OPT=</span><br><span class="line"></span><br><span class="line">FAST_MODE=<span class="string">&quot;no&quot;</span></span><br><span class="line"><span class="comment"># 地理位置</span></span><br><span class="line">GEOLOC=</span><br><span class="line"></span><br><span class="line">USE_LOCAL_IMAGE=0</span><br><span class="line">CUSTOM_DIST=</span><br><span class="line">USER_AGREED=<span class="string">&quot;no&quot;</span></span><br><span class="line"></span><br><span class="line">VOLUME_VERSION=<span class="string">&quot;latest&quot;</span></span><br><span class="line">SHM_SIZE=<span class="string">&quot;2G&quot;</span></span><br><span class="line">USER_SPECIFIED_MAPS=</span><br><span class="line">MAP_VOLUMES_CONF=</span><br><span class="line">OTHER_VOLUMES_CONF=</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个数组</span></span><br><span class="line">DEFAULT_MAPS=(</span><br><span class="line">    sunnyvale_big_loop</span><br><span class="line">    sunnyvale_loop</span><br><span class="line">    sunnyvale_with_two_offices</span><br><span class="line">    san_mateo</span><br><span class="line">    apollo_virutal_map</span><br><span class="line">)</span><br><span class="line"><span class="comment"># 定义一个数组</span></span><br><span class="line">DEFAULT_TEST_MAPS=(</span><br><span class="line">    sunnyvale_big_loop</span><br><span class="line">    sunnyvale_loop</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h3 id="main函数"><a class="markdownIt-Anchor" href="#main函数"></a> main函数</h3>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 传递给函数或脚本的所有参数</span></span><br><span class="line">main <span class="string">&quot;<span class="variable">$@</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">main</span></span>() &#123;</span><br><span class="line">    check_host_environment</span><br><span class="line">    check_target_arch</span><br><span class="line"></span><br><span class="line">    parse_arguments <span class="string">&quot;<span class="variable">$@</span>&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$&#123;USER_AGREED&#125;</span>&quot;</span> != <span class="string">&quot;yes&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">        check_agreement</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">    determine_dev_image <span class="string">&quot;<span class="variable">$&#123;USER_VERSION_OPT&#125;</span>&quot;</span></span><br><span class="line">    geo_specific_config <span class="string">&quot;<span class="variable">$&#123;GEOLOC&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$&#123;USE_LOCAL_IMAGE&#125;</span>&quot;</span> -gt 0 ]]; <span class="keyword">then</span></span><br><span class="line">        info <span class="string">&quot;Start docker container based on local image : <span class="variable">$&#123;DEV_IMAGE&#125;</span>&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> ! docker_pull <span class="string">&quot;<span class="variable">$&#123;DEV_IMAGE&#125;</span>&quot;</span>; <span class="keyword">then</span></span><br><span class="line">        error <span class="string">&quot;Failed to pull docker image <span class="variable">$&#123;DEV_IMAGE&#125;</span>&quot;</span></span><br><span class="line">        <span class="built_in">exit</span> 1</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">    info <span class="string">&quot;Remove existing Apollo Development container ...&quot;</span></span><br><span class="line">    remove_container_if_exists <span class="variable">$&#123;DEV_CONTAINER&#125;</span></span><br><span class="line"></span><br><span class="line">    info <span class="string">&quot;Determine whether host GPU is available ...&quot;</span></span><br><span class="line">    determine_gpu_use_host</span><br><span class="line">    info <span class="string">&quot;USE_GPU_HOST: <span class="variable">$&#123;USE_GPU_HOST&#125;</span>&quot;</span></span><br><span class="line">		</span><br><span class="line">	<span class="comment"># 设定数据卷，必须执行</span></span><br><span class="line">    <span class="built_in">local</span> local_volumes=</span><br><span class="line">    setup_devices_and_mount_local_volumes local_volumes</span><br><span class="line"></span><br><span class="line">    mount_map_volumes</span><br><span class="line">    mount_other_volumes</span><br><span class="line"></span><br><span class="line">    info <span class="string">&quot;Starting Docker container \&quot;<span class="variable">$&#123;DEV_CONTAINER&#125;</span>\&quot; ...&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">local</span> local_host=<span class="string">&quot;<span class="subst">$(hostname)</span>&quot;</span> <span class="comment"># 主机名字</span></span><br><span class="line">    <span class="built_in">local</span> display=<span class="string">&quot;<span class="variable">$&#123;DISPLAY:-:0&#125;</span>&quot;</span></span><br><span class="line">    <span class="built_in">local</span> user=<span class="string">&quot;<span class="variable">$&#123;USER&#125;</span>&quot;</span></span><br><span class="line">    <span class="built_in">local</span> uid=<span class="string">&quot;<span class="subst">$(id -u)</span>&quot;</span></span><br><span class="line">    <span class="built_in">local</span> group=<span class="string">&quot;<span class="subst">$(id -g -n)</span>&quot;</span></span><br><span class="line">    <span class="built_in">local</span> gid=<span class="string">&quot;<span class="subst">$(id -g)</span>&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">set</span> -x</span><br><span class="line"></span><br><span class="line">    <span class="variable">$&#123;DOCKER_RUN_CMD&#125;</span> -itd \ <span class="comment"># -i:打开容器的标准输入，打开STDIN，用于控制台交互  -t:告诉docker为容器建立一个命令行终端，分配tty设备，该可以支持终端登录  -d:使容器在后台运行</span></span><br><span class="line">        --privileged \ <span class="comment"># 赋予此容器扩展的特权</span></span><br><span class="line">        --name <span class="string">&quot;<span class="variable">$&#123;DEV_CONTAINER&#125;</span>&quot;</span> \ <span class="comment"># 为容器设置一个名字</span></span><br><span class="line">        -e DISPLAY=<span class="string">&quot;<span class="variable">$&#123;display&#125;</span>&quot;</span> \</span><br><span class="line">        -e DOCKER_USER=<span class="string">&quot;<span class="variable">$&#123;user&#125;</span>&quot;</span> \</span><br><span class="line">        -e USER=<span class="string">&quot;<span class="variable">$&#123;user&#125;</span>&quot;</span> \ <span class="comment"># 设定容器用户</span></span><br><span class="line">        -e DOCKER_USER_ID=<span class="string">&quot;<span class="variable">$&#123;uid&#125;</span>&quot;</span> \ <span class="comment"># 设定用户ID</span></span><br><span class="line">        -e DOCKER_GRP=<span class="string">&quot;<span class="variable">$&#123;group&#125;</span>&quot;</span> \ <span class="comment"># 设定用户组名字</span></span><br><span class="line">        -e DOCKER_GRP_ID=<span class="string">&quot;<span class="variable">$&#123;gid&#125;</span>&quot;</span> \ <span class="comment"># 设定用户组ID</span></span><br><span class="line">        -e DOCKER_IMG=<span class="string">&quot;<span class="variable">$&#123;DEV_IMAGE&#125;</span>&quot;</span> \ <span class="comment"># 设置容器镜像</span></span><br><span class="line">        -e USE_GPU_HOST=<span class="string">&quot;<span class="variable">$&#123;USE_GPU_HOST&#125;</span>&quot;</span> \</span><br><span class="line">        -e NVIDIA_VISIBLE_DEVICES=all \</span><br><span class="line">        -e NVIDIA_DRIVER_CAPABILITIES=compute,video,graphics,utility \</span><br><span class="line">        <span class="variable">$&#123;MAP_VOLUMES_CONF&#125;</span> \ <span class="comment"># 挂载地图数据卷</span></span><br><span class="line">        <span class="variable">$&#123;OTHER_VOLUMES_CONF&#125;</span> \ <span class="comment"># 挂载其他数据卷</span></span><br><span class="line">        <span class="variable">$&#123;local_volumes&#125;</span> \ <span class="comment"># 挂载本地数据卷，最关键</span></span><br><span class="line">        --net host \ <span class="comment"># 指定容器的网络连接类型，支持bridge/host/none/container四种类型</span></span><br><span class="line">        -w /apollo \ <span class="comment"># 指定容器的工作目录，也就是一进入容器就在这目录下</span></span><br><span class="line">        --add-host <span class="string">&quot;<span class="variable">$&#123;DEV_INSIDE&#125;</span>:127.0.0.1&quot;</span> \ <span class="comment"># 添加自定义主机到IP的映射（host：ip）</span></span><br><span class="line">        --add-host <span class="string">&quot;<span class="variable">$&#123;local_host&#125;</span>:127.0.0.1&quot;</span> \</span><br><span class="line">        --hostname <span class="string">&quot;<span class="variable">$&#123;DEV_INSIDE&#125;</span>&quot;</span> \ <span class="comment"># 容器的主机名字</span></span><br><span class="line">        --shm-size <span class="string">&quot;<span class="variable">$&#123;SHM_SIZE&#125;</span>&quot;</span> \ <span class="comment"># 设置共享内存大小</span></span><br><span class="line">        --pid=host \ <span class="comment"># 使用PID命名空间</span></span><br><span class="line">        -v /dev/null:/dev/raw1394 \</span><br><span class="line">        <span class="string">&quot;<span class="variable">$&#123;DEV_IMAGE&#125;</span>&quot;</span> \ <span class="comment"># 基于哪个镜像创建的容器</span></span><br><span class="line">        /bin/bash <span class="comment"># /bin/bash:告诉docker要在容器里面执行此命令</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> [ $? -ne 0 ]; <span class="keyword">then</span></span><br><span class="line">        error <span class="string">&quot;Failed to start docker container \&quot;<span class="variable">$&#123;DEV_CONTAINER&#125;</span>\&quot; based on image: <span class="variable">$&#123;DEV_IMAGE&#125;</span>&quot;</span></span><br><span class="line">        <span class="built_in">exit</span> 1</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    <span class="built_in">set</span> +x</span><br><span class="line"></span><br><span class="line">    postrun_start_user <span class="string">&quot;<span class="variable">$&#123;DEV_CONTAINER&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line">    ok <span class="string">&quot;Congratulations! You have successfully finished setting up Apollo Dev Environment.&quot;</span></span><br><span class="line">    ok <span class="string">&quot;To login into the newly created <span class="variable">$&#123;DEV_CONTAINER&#125;</span> container, please run the following command:&quot;</span></span><br><span class="line">    ok <span class="string">&quot;  bash docker/scripts/dev_into.sh&quot;</span></span><br><span class="line">    ok <span class="string">&quot;Enjoy!&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>id</code>命令用于显示用户的 ID，以及所属群组的ID。</p>
+<ul>
+<li><code>-u</code>显示用户ID</li>
+<li><code>-g</code>显示用户所属群组的ID</li>
+<li><code>-n</code>显示用户，所属群组 , 附加群组的名称</li>
+</ul>
+<p><code>set -x</code>显示脚本执行过程，并显示脚本对变量的处理结果。如果，某一个脚本使用了大量的变量，而我们希望能看到这些变量的传递，使用是否正确，那么，set -x 将是你很好的选择。（快速定位问题，尤其是变量所产生的问题）。<br />
+一个显示脚本执行过程并将脚本内的变量的值暴露出来的一个开关，-x 是开，+x等于是默认的关闭，一般情况下，脚本是关闭这个显示过程的。</p>
+<p>与<mark>PID命名空间</mark>相关的全局资源就是进程 ID 数字空间。这意味着在不同 PID 命名空间中的进程可以有相同的进程 ID。PID 命名空间实现的容器可在主机之间迁移，并保持容器内的进程 ID 不变。<br />
+对于传统 Linux （或 UNIX）系统，PID 命名空间内的进程 ID 是唯一的，从 1 开始依次分配，对于传统 Linux 系统，<code>PID 1</code>是 init 进程，比较特殊：它是第一个在命名空间内创建的进程，在命名空间内执行特定的管理任务。</p>
+<h4 id="check_host_environment"><a class="markdownIt-Anchor" href="#check_host_environment"></a> check_host_environment</h4>
+<p>判断电脑系统</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">check_host_environment</span></span>() &#123;</span><br><span class="line">    <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$&#123;HOST_OS&#125;</span>&quot;</span> != <span class="string">&quot;Linux&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">        warning <span class="string">&quot;Running Apollo dev container on <span class="variable">$&#123;HOST_OS&#125;</span> is UNTESTED, exiting...&quot;</span></span><br><span class="line">        <span class="built_in">exit</span> 1</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>Host OS (Host Operating System)</code>中<code>host</code>是主人的意思，那<code>Host OS</code>可以粗暴地翻译成主人操作系统，而<code>Guest OS</code>也可直译为客人操作系统。</p>
+<p><code>Host OS</code>(主人操作系统）就是安装在你硬件设备上的系统，而<code>Guest OS</code>(客人操作系统）则是安装在虚拟机（VM）上面的系统。</p>
+<p><code>exit</code>退出状态只能是一个介于 0~255 之间的整数，其中只有 0 表示成功，其它值都表示失败。</p>
+<h4 id="check_target_arch"><a class="markdownIt-Anchor" href="#check_target_arch"></a> check_target_arch</h4>
+<p>判断电脑架构类型</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">check_target_arch</span></span>() &#123;</span><br><span class="line">    <span class="built_in">local</span> <span class="built_in">arch</span>=<span class="string">&quot;<span class="variable">$&#123;TARGET_ARCH&#125;</span>&quot;</span></span><br><span class="line">    <span class="keyword">for</span> ent <span class="keyword">in</span> <span class="string">&quot;<span class="variable">$&#123;SUPPORTED_ARCHS[@]&#125;</span>&quot;</span>; <span class="keyword">do</span></span><br><span class="line">        <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$&#123;ent&#125;</span>&quot;</span> == <span class="string">&quot;<span class="variable">$&#123;TARGET_ARCH&#125;</span>&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">            <span class="built_in">return</span> 0</span><br><span class="line">        <span class="keyword">fi</span></span><br><span class="line">    <span class="keyword">done</span></span><br><span class="line">    error <span class="string">&quot;Unsupported target architecture: <span class="variable">$&#123;TARGET_ARCH&#125;</span>.&quot;</span></span><br><span class="line">    <span class="built_in">exit</span> 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>local</code>一般用于局部变量声明，多在在函数内部使用。<br />
+1. <code>Shell</code>脚本中定义的变量是<code>global</code>的，其作用域从被定义的地方开始，到<code>shell</code>结束或被显示删除的地方为止。<br />
+2. <code>Shell</code>函数定义的变量默认是<code>global</code>的，其作用域从“函数被调用时执行变量定义的地方”开始，到<code>shell</code>结束或被显示删除处为止。函数定义的变量可以被显示定义成<code>local</code>的，其作用域局限于函数内。但请注意，函数的参数是<code>local</code>的。<br />
+3. 如果同名，<code>Shell</code>函数定义的<code>local</code>变量会屏蔽脚本定义的<code>global</code>变量。</p>
+<p><code>$&#123;SUPPORTED_ARCHS[@]&#125;</code>: 数组所有元素，没有元素的下标省略。</p>
+<h4 id="parse_arguments"><a class="markdownIt-Anchor" href="#parse_arguments"></a> parse_arguments</h4>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">parse_arguments</span></span>() &#123;</span><br><span class="line">    <span class="built_in">local</span> custom_version=<span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="built_in">local</span> custom_dist=<span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="built_in">local</span> shm_size=<span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="built_in">local</span> geo=<span class="string">&quot;&quot;</span></span><br><span class="line">		</span><br><span class="line">	<span class="comment"># $#传入参数个数</span></span><br><span class="line">    <span class="keyword">while</span> [ <span class="variable">$#</span> -gt 0 ]; <span class="keyword">do</span> <span class="comment"># 如果传入参数个数大于0</span></span><br><span class="line">        <span class="built_in">local</span> opt=<span class="string">&quot;<span class="variable">$1</span>&quot;</span> <span class="comment"># 获取第一个参数</span></span><br><span class="line">        <span class="built_in">shift</span> <span class="comment"># 平移参数列表，即清除第一个参数，也就是原来的$2变成现在的$1</span></span><br><span class="line">        <span class="keyword">case</span> <span class="string">&quot;<span class="variable">$&#123;opt&#125;</span>&quot;</span> <span class="keyword">in</span></span><br><span class="line">            -t | --tag)</span><br><span class="line">                <span class="keyword">if</span> [ -n <span class="string">&quot;<span class="variable">$&#123;custom_version&#125;</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">                    warning <span class="string">&quot;Multiple option <span class="variable">$&#123;opt&#125;</span> specified, only the last one will take effect.&quot;</span></span><br><span class="line">                <span class="keyword">fi</span></span><br><span class="line">				<span class="comment"># 设置版本名字</span></span><br><span class="line">                custom_version=<span class="string">&quot;<span class="variable">$1</span>&quot;</span></span><br><span class="line">                <span class="built_in">shift</span> <span class="comment"># 把版本参数移除</span></span><br><span class="line">                optarg_check_for_opt <span class="string">&quot;<span class="variable">$&#123;opt&#125;</span>&quot;</span> <span class="string">&quot;<span class="variable">$&#123;custom_version&#125;</span>&quot;</span></span><br><span class="line">                ;;</span><br><span class="line"></span><br><span class="line">            -d | --dist)</span><br><span class="line">                custom_dist=<span class="string">&quot;<span class="variable">$1</span>&quot;</span></span><br><span class="line">                <span class="built_in">shift</span></span><br><span class="line">                optarg_check_for_opt <span class="string">&quot;<span class="variable">$&#123;opt&#125;</span>&quot;</span> <span class="string">&quot;<span class="variable">$&#123;custom_dist&#125;</span>&quot;</span></span><br><span class="line">                ;;</span><br><span class="line"></span><br><span class="line">            -h | --<span class="built_in">help</span>)</span><br><span class="line">                show_usage</span><br><span class="line">                <span class="built_in">exit</span> 1</span><br><span class="line">                ;;</span><br><span class="line"></span><br><span class="line">            -f | --fast)</span><br><span class="line">                FAST_MODE=<span class="string">&quot;yes&quot;</span></span><br><span class="line">                ;;</span><br><span class="line"></span><br><span class="line">            -g | --geo)</span><br><span class="line">                geo=<span class="string">&quot;<span class="variable">$1</span>&quot;</span></span><br><span class="line">                <span class="built_in">shift</span></span><br><span class="line">                optarg_check_for_opt <span class="string">&quot;<span class="variable">$&#123;opt&#125;</span>&quot;</span> <span class="string">&quot;<span class="variable">$&#123;geo&#125;</span>&quot;</span></span><br><span class="line">                ;;</span><br><span class="line"></span><br><span class="line">            -l | --<span class="built_in">local</span>)</span><br><span class="line">                USE_LOCAL_IMAGE=1</span><br><span class="line">                ;;</span><br><span class="line"></span><br><span class="line">            --shm-size)</span><br><span class="line">                shm_size=<span class="string">&quot;<span class="variable">$1</span>&quot;</span></span><br><span class="line">                <span class="built_in">shift</span></span><br><span class="line">                optarg_check_for_opt <span class="string">&quot;<span class="variable">$&#123;opt&#125;</span>&quot;</span> <span class="string">&quot;<span class="variable">$&#123;shm_size&#125;</span>&quot;</span></span><br><span class="line">                ;;</span><br><span class="line"></span><br><span class="line">            --map)</span><br><span class="line">                map_name=<span class="string">&quot;<span class="variable">$1</span>&quot;</span></span><br><span class="line">                <span class="built_in">shift</span></span><br><span class="line">                USER_SPECIFIED_MAPS=<span class="string">&quot;<span class="variable">$&#123;USER_SPECIFIED_MAPS&#125;</span> <span class="variable">$&#123;map_name&#125;</span>&quot;</span></span><br><span class="line">                ;;</span><br><span class="line">            -y)</span><br><span class="line">                USER_AGREED=<span class="string">&quot;yes&quot;</span></span><br><span class="line">                ;;</span><br><span class="line">            stop)</span><br><span class="line">                info <span class="string">&quot;Now, stop all Apollo containers created by <span class="variable">$&#123;USER&#125;</span> ...&quot;</span></span><br><span class="line">                stop_all_apollo_containers <span class="string">&quot;-f&quot;</span> <span class="comment"># 入参带强制值令</span></span><br><span class="line">                <span class="built_in">exit</span> 0</span><br><span class="line">                ;;</span><br><span class="line">            *)</span><br><span class="line">                warning <span class="string">&quot;Unknown option: <span class="variable">$&#123;opt&#125;</span>&quot;</span></span><br><span class="line">                <span class="built_in">exit</span> 2</span><br><span class="line">                ;;</span><br><span class="line">        <span class="keyword">esac</span></span><br><span class="line">    <span class="keyword">done</span> <span class="comment"># End while loop</span></span><br><span class="line">		</span><br><span class="line">	<span class="comment"># 判断变量是否存在，若存在则赋值</span></span><br><span class="line">    [[ -n <span class="string">&quot;<span class="variable">$&#123;geo&#125;</span>&quot;</span> ]] &amp;&amp; GEOLOC=<span class="string">&quot;<span class="variable">$&#123;geo&#125;</span>&quot;</span></span><br><span class="line">    [[ -n <span class="string">&quot;<span class="variable">$&#123;custom_version&#125;</span>&quot;</span> ]] &amp;&amp; USER_VERSION_OPT=<span class="string">&quot;<span class="variable">$&#123;custom_version&#125;</span>&quot;</span></span><br><span class="line">    [[ -n <span class="string">&quot;<span class="variable">$&#123;custom_dist&#125;</span>&quot;</span> ]] &amp;&amp; CUSTOM_DIST=<span class="string">&quot;<span class="variable">$&#123;custom_dist&#125;</span>&quot;</span></span><br><span class="line">    [[ -n <span class="string">&quot;<span class="variable">$&#123;shm_size&#125;</span>&quot;</span> ]] &amp;&amp; SHM_SIZE=<span class="string">&quot;<span class="variable">$&#123;shm_size&#125;</span>&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="数字关系运算符"><a class="markdownIt-Anchor" href="#数字关系运算符"></a> 数字关系运算符</h5>
+<p>下面假定变量 a 为 10，变量 b 为 20：<br />
+<code>-eq</code>：检测两个数是否相等，相等返回 true。 [ $a -eq $b ] 返回 false。<br />
+<code>-ne</code>： 检测两个数是否不相等，不相等返回 true。 [ $a -ne $b ] 返回 true。<br />
+<code>-gt</code>： 检测左边的数是否大于右边的，如果是，则返回 true。 [ $a -gt $b ] 返回 false。<br />
+<code>-lt</code>： 检测左边的数是否小于右边的，如果是，则返回 true。 [ $a -lt $b ] 返回 true。<br />
+<code>-ge</code>： 检测左边的数是否大于等于右边的，如果是，则返回 true。 [ $a -ge $b ] 返回 false。<br />
+<code>-le</code>： 检测左边的数是否小于等于右边的，如果是，则返回 true。 [ $a -le $b ] 返回 true。</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$#</td>
+<td>传给脚本的参数个数</td>
+</tr>
+<tr>
+<td>$0</td>
+<td>脚本本身的名字</td>
+</tr>
+<tr>
+<td>$1</td>
+<td>传递给该shell脚本的第一个参数</td>
+</tr>
+<tr>
+<td>$2</td>
+<td>传递给该shell脚本的第二个参数</td>
+</tr>
+<tr>
+<td>$@</td>
+<td>传给脚本的所有参数的列表</td>
+</tr>
+<tr>
+<td>$*</td>
+<td>以一个单字符串显示所有向脚本传递的参数，与位置变量不同，参数可超过9个</td>
+</tr>
+<tr>
+<td>$$</td>
+<td>脚本运行的当前进程ID号</td>
+</tr>
+<tr>
+<td>$?</td>
+<td>显示最后命令的退出状态，0表示没有错误，其他表示有错误</td>
+</tr>
+</tbody>
+</table>
+<h5 id="字符串运算符"><a class="markdownIt-Anchor" href="#字符串运算符"></a> 字符串运算符</h5>
+<p>下表列出了常用的字符串运算符，假定变量<code>a</code>为<code>&quot;abc&quot;</code>，变量<code>b</code>为<code>&quot;efg&quot;</code>：<br />
+<code>=</code>：检测两个字符串是否相等，相等返回<code>true</code>。<code>[ $a = $b ]</code>返回<code>false</code>。<br />
+<code>!=</code>：检测两个字符串是否相等，不相等返回<code>true</code>。<code>[ $a != $b ]</code>返回<code>true</code>。<br />
+<code>-z</code>：检测字符串长度是否为0，为0返回<code>true</code>。<code>[ -z $a ]</code>返回<code>false</code>。<br />
+<code>-n</code>：检测字符串长度是否为0，不为0返回<code>true</code>。<code>[ -n &quot;$a&quot; ]</code>返回<code>true</code>。<br />
+<code>$</code>：检测字符串是否为空，不为空返回<code>true</code>。<code>[ $a ]</code>返回<code>true</code>。</p>
+<h5 id="逻辑判断"><a class="markdownIt-Anchor" href="#逻辑判断"></a> 逻辑判断</h5>
+<p><code>[ ]</code>： 中括号旁边和运算符两边必须添加空格 （可以使用，不推荐）<br />
+<code>[[ ]]</code>：中括号旁边和运算符两边必须添加空格 （字符串验证时，推荐使用）<br />
+<code>(( ))</code>： 中括号旁边和运算符两边必须添加空格 （数字验证时，推荐使用）<br />
+<code>[[]]</code>和<code>(())</code>分别是<code>[ ]</code>的针对数学比较表达式和字符串表达式的加强版。</p>
+<h5 id="运算符"><a class="markdownIt-Anchor" href="#运算符"></a> 运算符</h5>
+<ul>
+<li>
+<p><code>|</code>运算符<br />
+管道符号，是<code>unix</code>一个很强大的功能,符号为一条竖线<code>|</code>。<br />
+用法:<br />
+<code>command 1 | command 2</code><br />
+他的功能是把第一个命令<code>command 1</code>执行的结果作为参数，输入传给<code>command 2</code></p>
+</li>
+<li>
+<p><code>&amp;&amp;</code>运算符:<br />
+<code>&amp;&amp;</code>左边的命令<code>command 1</code>返回真(即返回0，成功被执行）后，&amp;&amp;右边的命令<code>command 2</code>才能够被执行；换句话说，“如果这个命令执行成功&amp;&amp;那么执行这个命令”。<br />
+语法格式如下：<br />
+<code>command1 &amp;&amp; command2 &amp;&amp; command3 ...</code><br />
+命令之间使用<code>&amp;&amp;</code>连接，实现逻辑与的功能。<br />
+只有在<code>&amp;&amp;</code>左边的命令返回真（命令返回值<code>$? == 0</code>），<code>&amp;&amp;</code>右边的命令才会被执行。<br />
+只要有一个命令返回假（命令返回值<code>$? == 1</code>），后面的命令就不会被执行。</p>
+</li>
+<li>
+<p><code>||</code>运算符:<br />
+<code>command1 || command2</code><br />
+<code>||</code>则与<code>&amp;&amp;</code>相反。如果<code>||</code>左边的命令<code>command 1</code>未执行成功，那么就执行<code>||</code>右边的命令<code>command 2</code>；或者换句话说，“如果这个命令执行失败了||那么就执行这个命令。<br />
+命令之间使用<code>||</code>连接，实现逻辑或的功能。<br />
+只有在<code>||</code>左边的命令返回假（命令返回值<code>$? == 1</code>），<code>||</code>右边的命令才会被执行。这和 c 语言中的逻辑或语法功能相同，即实现短路逻辑或操作。<br />
+只要有一个命令返回真（命令返回值<code>$? == 0</code>），后面的命令就不会被执行。</p>
+  <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="variable">$BASH</span> |grep -q <span class="string">&#x27;bash&#x27;</span> || &#123; <span class="built_in">exec</span> bash <span class="string">&quot;<span class="variable">$0</span>&quot;</span> <span class="string">&quot;<span class="variable">$@</span>&quot;</span> || <span class="built_in">exit</span> 1; &#125;    </span><br><span class="line"><span class="comment"># 系统调用exec是以新的进程去代替原来的进程，但进程的PID保持不变。因此，可以这样认为，exec系统调用并没有创建新的进程，只是替换了原来进程上下文的内容。原进程的代码段，数据段，堆栈段被新的进程所代替。</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><code>()</code>运算符:<br />
+如果希望把几个命令合在一起执行，shell提供了两种方法。既可以在当前shell也可以在子shell中执行一组命令。<br />
+格式:<br />
+<code>(command1;command2;command3....)</code><br />
+多个命令之间用<code>;</code>分隔<br />
+一条命令需要独占一个物理行，如果需要将多条命令放在同一行，命令之间使用命令分隔符<code>;</code>分隔。执行的效果等同于多个独立的命令单独执行的效果。<br />
+<code>()</code>表示在当前 shell 中将多个命令作为一个整体执行。需要注意的是，使用<code>()</code>括起来的命令在执行前面都不会切换当前工作目录，也就是说命令组合都是在当前工作目录下被执行的，尽管命令中有切换目录的命令。<br />
+命令组合常和命令执行控制结合起来使用。</p>
+</li>
+<li>
+<p><code>&#123;&#125;</code>运算符:<br />
+如果使用<code>&#123;&#125;</code>来代替<code>()</code>，那么相应的命令将在<code>子shell</code>而不是当前<code>shell</code>中作为一个整体被执行，只有在<code>&#123;&#125;</code>中所有命令的输出作为一个整体被重定向时，其中的命令才被放到子<code>shell</code>中执行，否则在当前<code>shell</code>执行。<br />
+它的一般形式为：<br />
+<code>&#123; command1;command2;command3… &#125;</code><br />
+注意：在使用<code>&#123;&#125;</code>时，{}与命令之间必须使用一个空格</p>
+</li>
+</ul>
+<h5 id="optarg_check_for_opt"><a class="markdownIt-Anchor" href="#optarg_check_for_opt"></a> optarg_check_for_opt</h5>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">optarg_check_for_opt</span></span>() &#123;</span><br><span class="line">  <span class="built_in">local</span> opt=<span class="string">&quot;<span class="variable">$1</span>&quot;</span></span><br><span class="line">  <span class="built_in">local</span> optarg=<span class="string">&quot;<span class="variable">$2</span>&quot;</span></span><br><span class="line">  <span class="comment"># 判断参数是否为空，或者带 - 前缀</span></span><br><span class="line">  <span class="keyword">if</span> [[ -z <span class="string">&quot;<span class="variable">$&#123;optarg&#125;</span>&quot;</span> || <span class="string">&quot;<span class="variable">$&#123;optarg&#125;</span>&quot;</span> =~ ^-.* ]]; <span class="keyword">then</span></span><br><span class="line">      error <span class="string">&quot;Missing parameter for <span class="variable">$&#123;opt&#125;</span>. Exiting...&quot;</span></span><br><span class="line">      <span class="built_in">exit</span> 3</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="逻辑运算符"><a class="markdownIt-Anchor" href="#逻辑运算符"></a> 逻辑运算符</h6>
+<p>以下介绍<code>Shell</code>的逻辑运算符，假定变量<code>a</code>为10，变量<code>b</code>为20:<br />
+<code>&amp;&amp;</code>：逻辑的 AND，<code>[[ $a -lt 100 &amp;&amp; $b -gt 100 ]]</code>，返回<code>false</code><br />
+<code>||</code>：逻辑的 OR，<code>[[ $a -lt 100 || $b -gt 100 ]]</code>，返回<code>true</code></p>
+<p><code>=~</code>：正则表达式匹配，用在<code>[[ ]]</code>测试中。</p>
+<p><code>^-.*</code>意思如下：</p>
+<ul>
+<li><code>^</code>表示字符串开头，<code>^-</code>以<code>-</code>开头的字符串</li>
+<li><code>.</code>除换行符以外的所有字符</li>
+<li><code>*</code>匹配0次或多次</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">show_usage</span></span>() &#123;</span><br><span class="line">    <span class="built_in">cat</span> &lt;&lt;<span class="string">EOF</span></span><br><span class="line"><span class="string">Usage: $0 [options] ...</span></span><br><span class="line"><span class="string">OPTIONS:</span></span><br><span class="line"><span class="string">    -h, --help             Display this help and exit.</span></span><br><span class="line"><span class="string">    -f, --fast             Fast mode without pulling all map volumes.</span></span><br><span class="line"><span class="string">    -g, --geo &lt;us|cn|none&gt; Pull docker image from geolocation specific registry mirror.</span></span><br><span class="line"><span class="string">    -l, --local            Use local docker image.</span></span><br><span class="line"><span class="string">    -t, --tag &lt;TAG&gt;        Specify docker image with tag &lt;TAG&gt; to start.</span></span><br><span class="line"><span class="string">    -d, --dist             Specify Apollo distribution(stable/testing)</span></span><br><span class="line"><span class="string">    --shm-size &lt;bytes&gt;     Size of /dev/shm . Passed directly to &quot;docker run&quot;</span></span><br><span class="line"><span class="string">    -y                     Agree to Apollo License Agreement non-interactively.</span></span><br><span class="line"><span class="string">    stop                   Stop all running Apollo containers.</span></span><br><span class="line"><span class="string">EOF</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>cat &lt;&lt;EOF</code></p>
+<p><code>cat</code>命令表示查看，而<code>cat &lt;&lt;EOF</code>命令表示将进行输入，直到以<code>EOF</code>终止符来结束输入（最后的新行）。<code>EOF</code>必须写在一行的头部，前面不能有制表符或者空格。如果结束符<code>EOF</code>前面有制表符或者空格，则<code>EOF</code>不会被当做结束符，只会被视为继续输入的状态。</p>
+<p><font color=red>简单的理解，就是随意输入一堆字符，当输入EOF的时候才真正结束。<br />
+结合这两个标识，即可避免使用多行<code>echo</code>命令的方式，并实现多行输出的结果。</font></p>
+<h5 id="stop_all_apollo_containers"><a class="markdownIt-Anchor" href="#stop_all_apollo_containers"></a> stop_all_apollo_containers</h5>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">stop_all_apollo_containers</span></span>() &#123;</span><br><span class="line">    <span class="built_in">local</span> force=<span class="string">&quot;<span class="variable">$1</span>&quot;</span> <span class="comment"># 强制值令本地参数</span></span><br><span class="line">    <span class="built_in">local</span> running_containers</span><br><span class="line">	<span class="comment"># 获取docker运行container列表</span></span><br><span class="line">    running_containers=<span class="string">&quot;<span class="subst">$(docker ps -a --format &#x27;&#123;&#123;.Names&#125;&#125;&#x27;)</span>&quot;</span></span><br><span class="line">	<span class="comment"># 遍历循环先有容器</span></span><br><span class="line">    <span class="keyword">for</span> container <span class="keyword">in</span> <span class="variable">$&#123;running_containers[*]&#125;</span>; <span class="keyword">do</span></span><br><span class="line">		<span class="comment"># 若是属于apollo项目的容器则关掉</span></span><br><span class="line">        <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$&#123;container&#125;</span>&quot;</span> =~ apollo_.*_<span class="variable">$&#123;USER&#125;</span> ]]; <span class="keyword">then</span></span><br><span class="line">            <span class="comment">#printf %-*s 70 &quot;Now stop container: $&#123;container&#125; ...&quot;</span></span><br><span class="line">            <span class="comment">#printf &quot;\033[32m[DONE]\033[0m\n&quot;</span></span><br><span class="line">            <span class="comment">#printf &quot;\033[31m[FAILED]\033[0m\n&quot;</span></span><br><span class="line">            info <span class="string">&quot;Now stop container <span class="variable">$&#123;container&#125;</span> ...&quot;</span></span><br><span class="line">            <span class="keyword">if</span> docker stop <span class="string">&quot;<span class="variable">$&#123;container&#125;</span>&quot;</span> &gt;/dev/null; <span class="keyword">then</span></span><br><span class="line">                <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$&#123;force&#125;</span>&quot;</span> == <span class="string">&quot;-f&quot;</span> || <span class="string">&quot;<span class="variable">$&#123;force&#125;</span>&quot;</span> == <span class="string">&quot;--force&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">                    docker <span class="built_in">rm</span> -f <span class="string">&quot;<span class="variable">$&#123;container&#125;</span>&quot;</span> 2&gt;/dev/null</span><br><span class="line">                <span class="keyword">fi</span></span><br><span class="line">                info <span class="string">&quot;Done.&quot;</span></span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                warning <span class="string">&quot;Failed.&quot;</span></span><br><span class="line">            <span class="keyword">fi</span></span><br><span class="line">        <span class="keyword">fi</span></span><br><span class="line">    <span class="keyword">done</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>/dev/null</code>是一个特殊的设备文件，它丢弃一切写入其中的数据 可以将它<mark>视为一个黑洞</mark>，它等效于只写文件, 写入其中的所有内容都会消失, 尝试从中读取或输出不会有任何结果，同样，<code>/dev/nul</code> 在命令行和脚本中都非常有用。<br />
+用途：<code>/dev/null</code>通常被用于丢弃不需要的输出流，或作为用于输入流的空文件，这些操作通常由重定向完成，任何你想丢弃的数据都可以写入其中。</p>
+<p>Linux系统预留可三个文件描述符：0、1和2，他们的意义如下所示：</p>
+<ul>
+<li>0——标准输入（stdin）</li>
+<li>1——标准输出（stdout）</li>
+<li>2——标准错误（stderr）</li>
+</ul>
+<p>重定向的符号有两个：<code>&gt;</code>或<code>&gt;&gt;</code>，两者的区别是：前者会先清空文件，然后再写入内容，后者会将重定向的内容追加到现有文件的尾部。</p>
+<p><code>2&gt;/dev/null</code>的意思就是将标准错误<code>stderr</code>删掉。</p>
+<h4 id="check_agreement"><a class="markdownIt-Anchor" href="#check_agreement"></a> check_agreement</h4>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Check whether user has agreed license agreement</span></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">check_agreement</span></span>() &#123;</span><br><span class="line">    <span class="built_in">local</span> agreement_record=<span class="string">&quot;<span class="variable">$&#123;HOME&#125;</span>/.apollo_agreement.txt&quot;</span></span><br><span class="line">    <span class="keyword">if</span> [[ -e <span class="string">&quot;<span class="variable">$&#123;agreement_record&#125;</span>&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">return</span> 0</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    <span class="built_in">local</span> agreement_file</span><br><span class="line">    agreement_file=<span class="string">&quot;<span class="variable">$&#123;APOLLO_ROOT_DIR&#125;</span>/scripts/AGREEMENT.txt&quot;</span></span><br><span class="line">    <span class="keyword">if</span> [[ ! -f <span class="string">&quot;<span class="variable">$&#123;agreement_file&#125;</span>&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">        error <span class="string">&quot;AGREEMENT <span class="variable">$&#123;agreement_file&#125;</span> does not exist.&quot;</span></span><br><span class="line">        <span class="built_in">exit</span> 1</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">cat</span> <span class="string">&quot;<span class="variable">$&#123;agreement_file&#125;</span>&quot;</span></span><br><span class="line">    <span class="built_in">local</span> tip=<span class="string">&quot;Type &#x27;y&#x27; or &#x27;Y&#x27; to agree to the license agreement above, \</span></span><br><span class="line"><span class="string">or type any other key to exit:&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">echo</span> -n <span class="string">&quot;<span class="variable">$&#123;tip&#125;</span>&quot;</span></span><br><span class="line">    <span class="built_in">local</span> answer=<span class="string">&quot;<span class="subst">$(read_one_char_from_stdin)</span>&quot;</span></span><br><span class="line">    <span class="built_in">echo</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$&#123;answer&#125;</span>&quot;</span> != <span class="string">&quot;y&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">exit</span> 1</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">cp</span> -f <span class="string">&quot;<span class="variable">$&#123;agreement_file&#125;</span>&quot;</span> <span class="string">&quot;<span class="variable">$&#123;agreement_record&#125;</span>&quot;</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$&#123;tip&#125;</span>&quot;</span> &gt;&gt; <span class="string">&quot;<span class="variable">$&#123;agreement_record&#125;</span>&quot;</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$&#123;user_agreed&#125;</span>&quot;</span> &gt;&gt; <span class="string">&quot;<span class="variable">$&#123;agreement_record&#125;</span>&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="determine_dev_image"><a class="markdownIt-Anchor" href="#determine_dev_image"></a> determine_dev_image</h4>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 该函数用于确定使用哪个版本</span></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">determine_dev_image</span></span>() &#123;</span><br><span class="line">    <span class="built_in">local</span> version=<span class="string">&quot;<span class="variable">$1</span>&quot;</span></span><br><span class="line">    <span class="comment"># If no custom version specified</span></span><br><span class="line">    <span class="keyword">if</span> [[ -z <span class="string">&quot;<span class="variable">$&#123;version&#125;</span>&quot;</span> ]]; <span class="keyword">then</span> <span class="comment"># 确定版本变量是否为0，是则往下走</span></span><br><span class="line">	    <span class="comment"># 判断目标架构</span></span><br><span class="line">        <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$&#123;TARGET_ARCH&#125;</span>&quot;</span> == <span class="string">&quot;x86_64&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">			<span class="comment"># 判断是否是测试情景</span></span><br><span class="line">            <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$&#123;CUSTOM_DIST&#125;</span>&quot;</span> == <span class="string">&quot;testing&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">                version=<span class="string">&quot;<span class="variable">$&#123;TESTING_VERSION_X86_64&#125;</span>&quot;</span></span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                version=<span class="string">&quot;<span class="variable">$&#123;VERSION_X86_64&#125;</span>&quot;</span></span><br><span class="line">            <span class="keyword">fi</span></span><br><span class="line">        <span class="keyword">elif</span> [[ <span class="string">&quot;<span class="variable">$&#123;TARGET_ARCH&#125;</span>&quot;</span> == <span class="string">&quot;aarch64&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">            version=<span class="string">&quot;<span class="variable">$&#123;VERSION_AARCH64&#125;</span>&quot;</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            error <span class="string">&quot;Logic can&#x27;t reach here! Please report this issue to Apollo@GitHub.&quot;</span></span><br><span class="line">            <span class="built_in">exit</span> 3</span><br><span class="line">        <span class="keyword">fi</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    DEV_IMAGE=<span class="string">&quot;<span class="variable">$&#123;DOCKER_REPO&#125;</span>:<span class="variable">$&#123;version&#125;</span>&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="geo_specific_config"><a class="markdownIt-Anchor" href="#geo_specific_config"></a> geo_specific_config</h4>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 根据地理位置设定注册位置</span></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">geo_specific_config</span></span>() &#123;</span><br><span class="line">    <span class="built_in">local</span> geo=<span class="string">&quot;<span class="variable">$1</span>&quot;</span></span><br><span class="line">    <span class="keyword">if</span> [[ -z <span class="string">&quot;<span class="variable">$&#123;geo&#125;</span>&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">        info <span class="string">&quot;Use default GeoLocation settings&quot;</span></span><br><span class="line">        <span class="built_in">return</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    info <span class="string">&quot;Setup geolocation specific configurations for <span class="variable">$&#123;geo&#125;</span>&quot;</span></span><br><span class="line">    <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$&#123;geo&#125;</span>&quot;</span> == <span class="string">&quot;cn&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">        info <span class="string">&quot;GeoLocation settings for Mainland China&quot;</span></span><br><span class="line">        GEO_REGISTRY=<span class="string">&quot;registry.baidubce.com&quot;</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        info <span class="string">&quot;GeoLocation settings for <span class="variable">$&#123;geo&#125;</span> is not ready, fallback to default&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="docker_pull"><a class="markdownIt-Anchor" href="#docker_pull"></a> docker_pull</h4>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">docker_pull</span></span>() &#123;</span><br><span class="line">    <span class="built_in">local</span> img=<span class="string">&quot;<span class="variable">$1</span>&quot;</span></span><br><span class="line">    <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$&#123;USE_LOCAL_IMAGE&#125;</span>&quot;</span> -gt 0 ]]; <span class="keyword">then</span></span><br><span class="line">        <span class="keyword">if</span> docker images --format <span class="string">&quot;&#123;&#123;.Repository&#125;&#125;:&#123;&#123;.Tag&#125;&#125;&quot;</span> | grep -q <span class="string">&quot;<span class="variable">$&#123;img&#125;</span>&quot;</span>; <span class="keyword">then</span></span><br><span class="line">            info <span class="string">&quot;Local image <span class="variable">$&#123;img&#125;</span> found and will be used.&quot;</span></span><br><span class="line">            <span class="built_in">return</span></span><br><span class="line">        <span class="keyword">fi</span></span><br><span class="line">        warning <span class="string">&quot;Image <span class="variable">$&#123;img&#125;</span> not found locally although local mode enabled. Trying to pull from remote registry.&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    <span class="keyword">if</span> [[ -n <span class="string">&quot;<span class="variable">$&#123;GEO_REGISTRY&#125;</span>&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">        img=<span class="string">&quot;<span class="variable">$&#123;GEO_REGISTRY&#125;</span>/<span class="variable">$&#123;img&#125;</span>&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">    info <span class="string">&quot;Start pulling docker image <span class="variable">$&#123;img&#125;</span> ...&quot;</span></span><br><span class="line">    <span class="keyword">if</span> ! docker pull <span class="string">&quot;<span class="variable">$&#123;img&#125;</span>&quot;</span>; <span class="keyword">then</span></span><br><span class="line">        error <span class="string">&quot;Failed to pull docker image : <span class="variable">$&#123;img&#125;</span>&quot;</span></span><br><span class="line">        <span class="built_in">exit</span> 1</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>grep -q</code>：不显示常规输出。</p>
+<h5 id="布尔运算符"><a class="markdownIt-Anchor" href="#布尔运算符"></a> 布尔运算符</h5>
+<p>下表列出了常用的布尔运算符，假定变量<code>a</code>为 10，变量<code>b</code>为 20：<br />
+<code>!</code>：非运算，表达式为<code>true</code>则返回<code>false</code>，否则返回<code>true</code>。<code>[ ! false ]</code>返回<code>true</code>。<br />
+<code>-o</code>：或运算，有一个表达式为<code>true</code>则返回<code>true</code>。<code>[ $a -lt 20 -o $b -gt 100 ]</code>返回<code>true</code>。<br />
+<code>-a</code>：与运算，两个表达式都为<code>true</code>才返回<code>true</code>。<code>[ $a -lt 20 -a $b -gt 100 ]</code>返回<code>false</code>。</p>
+<h4 id="remove_container_if_exists"><a class="markdownIt-Anchor" href="#remove_container_if_exists"></a> remove_container_if_exists</h4>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">remove_container_if_exists</span></span>() &#123;</span><br><span class="line">    <span class="built_in">local</span> container=<span class="string">&quot;<span class="variable">$1</span>&quot;</span></span><br><span class="line">    <span class="keyword">if</span> docker ps -a --format <span class="string">&#x27;&#123;&#123;.Names&#125;&#125;&#x27;</span> | grep -q <span class="string">&quot;<span class="variable">$&#123;container&#125;</span>&quot;</span>; <span class="keyword">then</span></span><br><span class="line">        info <span class="string">&quot;Removing existing Apollo container: <span class="variable">$&#123;container&#125;</span>&quot;</span></span><br><span class="line">        docker stop <span class="string">&quot;<span class="variable">$&#123;container&#125;</span>&quot;</span> &gt;/dev/null <span class="comment"># 停止容器</span></span><br><span class="line">        docker <span class="built_in">rm</span> -v -f <span class="string">&quot;<span class="variable">$&#123;container&#125;</span>&quot;</span> 2&gt;/dev/null <span class="comment"># 删除容器</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="determine_gpu_use_host"><a class="markdownIt-Anchor" href="#determine_gpu_use_host"></a> determine_gpu_use_host</h4>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">determine_gpu_use_host</span></span>() &#123;</span><br><span class="line">    <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$&#123;HOST_ARCH&#125;</span>&quot;</span> == <span class="string">&quot;aarch64&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">        <span class="keyword">if</span> lsmod | grep -q <span class="string">&quot;^nvgpu&quot;</span>; <span class="keyword">then</span></span><br><span class="line">            USE_GPU_HOST=1</span><br><span class="line">        <span class="keyword">fi</span></span><br><span class="line">    <span class="keyword">elif</span> [[ <span class="string">&quot;<span class="variable">$&#123;HOST_ARCH&#125;</span>&quot;</span> == <span class="string">&quot;x86_64&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">        <span class="keyword">if</span> [[ ! -x <span class="string">&quot;<span class="subst">$(command -v nvidia-smi)</span>&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">            warning <span class="string">&quot;No nvidia-smi found. CPU will be used&quot;</span></span><br><span class="line">        <span class="keyword">elif</span> [[ -z <span class="string">&quot;<span class="subst">$(nvidia-smi)</span>&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">            warning <span class="string">&quot;No GPU device found. CPU will be used.&quot;</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            USE_GPU_HOST=1</span><br><span class="line">        <span class="keyword">fi</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        error <span class="string">&quot;Unsupported CPU architecture: <span class="variable">$&#123;HOST_ARCH&#125;</span>&quot;</span></span><br><span class="line">        <span class="built_in">exit</span> 1</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">local</span> nv_docker_doc=<span class="string">&quot;https://github.com/NVIDIA/nvidia-docker/blob/master/README.md&quot;</span></span><br><span class="line">    <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$&#123;USE_GPU_HOST&#125;</span>&quot;</span> -eq 1 ]]; <span class="keyword">then</span></span><br><span class="line">        <span class="keyword">if</span> [[ -x <span class="string">&quot;<span class="subst">$(which nvidia-container-toolkit)</span>&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">            <span class="built_in">local</span> docker_version</span><br><span class="line">			<span class="comment"># 只输出版本编号</span></span><br><span class="line">            docker_version=<span class="string">&quot;<span class="subst">$(docker version --format &#x27;&#123;&#123;.Server.Version&#125;&#125;&#x27;)</span>&quot;</span></span><br><span class="line">            <span class="keyword">if</span> dpkg --compare-versions <span class="string">&quot;<span class="variable">$&#123;docker_version&#125;</span>&quot;</span> <span class="string">&quot;ge&quot;</span> <span class="string">&quot;19.03&quot;</span>; <span class="keyword">then</span></span><br><span class="line">                DOCKER_RUN_CMD=<span class="string">&quot;docker run --gpus all&quot;</span></span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                warning <span class="string">&quot;Please upgrade to docker-ce 19.03+ to access GPU from container.&quot;</span></span><br><span class="line">                USE_GPU_HOST=0</span><br><span class="line">            <span class="keyword">fi</span></span><br><span class="line">        <span class="keyword">elif</span> [[ -x <span class="string">&quot;<span class="subst">$(which nvidia-docker)</span>&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">            DOCKER_RUN_CMD=<span class="string">&quot;nvidia-docker run&quot;</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            USE_GPU_HOST=0</span><br><span class="line">            warning <span class="string">&quot;Cannot access GPU from within container. Please install latest Docker&quot;</span> \</span><br><span class="line">                <span class="string">&quot;and NVIDIA Container Toolkit as described by: &quot;</span></span><br><span class="line">            warning <span class="string">&quot;  <span class="variable">$&#123;nv_docker_doc&#125;</span>&quot;</span></span><br><span class="line">        <span class="keyword">fi</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行<code>lsmod</code>指令，会列出所有已载入系统的模块。<code>Linux</code>操作系统的核心具有模块化的特性，因此在编译核心时，务须把全部的功能都放入核心。</p>
+<h5 id="文件运算符"><a class="markdownIt-Anchor" href="#文件运算符"></a> 文件运算符</h5>
+<p><code>-b file</code>：检测文件是否是块设备文件，如果是，则返回 true。 [ -b $file ] 返回 false。<br />
+<code>-c file</code>：检测文件是否是字符设备文件，如果是，则返回 true。 [ -c $file ] 返回 false。<br />
+<code>-d file</code>：检测文件是否是目录，如果是，则返回 true。 [ -d $file ] 返回 false。<br />
+<code>-f file</code>：检测文件是否是普通文件（既不是目录，也不是设备文件），如果是，则返回 true。 [ -f $file ] 返回 true。<br />
+<code>-g file</code>：检测文件是否设置了 SGID 位，如果是，则返回 true。 [ -g $file ] 返回 false。<br />
+<code>-k file</code>：检测文件是否设置了粘着位(Sticky Bit)，如果是，则返回 true。 [ -k $file ] 返回 false。<br />
+<code>-p file</code>：检测文件是否是有名管道，如果是，则返回 true。 [ -p $file ] 返回 false。<br />
+<code>-u file</code>：检测文件是否设置了 SUID 位，如果是，则返回 true。 [ -u $file ] 返回 false。<br />
+<code>-r file</code>：检测文件是否可读，如果是，则返回 true。 [ -r $file ] 返回 true。<br />
+<code>-w file</code>：检测文件是否可写，如果是，则返回 true。 [ -w $file ] 返回 true。<br />
+<code>-x file</code>：检测文件是否可执行，如果是，则返回 true。 [ -x $file ] 返回 true。<br />
+<code>-s file</code>：检测文件是否为空（文件大小是否大于0），不为空返回 true。 [ -s $file ] 返回 true。<br />
+<code>-e file</code>：检测文件（包括目录）是否存在，如果是，则返回 true。 [ -e $file ] 返回 true。</p>
+<h4 id="setup_devices_and_mount_local_volumes"><a class="markdownIt-Anchor" href="#setup_devices_and_mount_local_volumes"></a> setup_devices_and_mount_local_volumes</h4>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">setup_devices_and_mount_local_volumes</span></span>() &#123;</span><br><span class="line">    <span class="built_in">local</span> __retval=<span class="string">&quot;<span class="variable">$1</span>&quot;</span></span><br><span class="line">	<span class="comment"># 检查是否有目录，否则创建目录</span></span><br><span class="line">    [ -d <span class="string">&quot;<span class="variable">$&#123;CACHE_ROOT_DIR&#125;</span>&quot;</span> ] || <span class="built_in">mkdir</span> -p <span class="string">&quot;<span class="variable">$&#123;CACHE_ROOT_DIR&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">source</span> <span class="string">&quot;<span class="variable">$&#123;APOLLO_ROOT_DIR&#125;</span>/scripts/apollo_base.sh&quot;</span></span><br><span class="line">    setup_device</span><br><span class="line">	</span><br><span class="line">	<span class="comment"># 工作目录在主机与容器间映射</span></span><br><span class="line">    <span class="built_in">local</span> volumes=<span class="string">&quot;-v <span class="variable">$APOLLO_ROOT_DIR</span>:/apollo&quot;</span></span><br><span class="line"></span><br><span class="line">    [ -d <span class="string">&quot;<span class="variable">$&#123;APOLLO_CONFIG_HOME&#125;</span>&quot;</span> ] || <span class="built_in">mkdir</span> -p <span class="string">&quot;<span class="variable">$&#123;APOLLO_CONFIG_HOME&#125;</span>&quot;</span></span><br><span class="line">    volumes=<span class="string">&quot;-v <span class="variable">$&#123;APOLLO_CONFIG_HOME&#125;</span>:<span class="variable">$&#123;APOLLO_CONFIG_HOME&#125;</span> <span class="variable">$&#123;volumes&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">local</span> teleop=<span class="string">&quot;<span class="variable">$&#123;APOLLO_ROOT_DIR&#125;</span>/../apollo-teleop&quot;</span></span><br><span class="line">    <span class="keyword">if</span> [ -d <span class="string">&quot;<span class="variable">$&#123;teleop&#125;</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">        volumes=<span class="string">&quot;<span class="variable">$&#123;volumes&#125;</span> -v <span class="variable">$&#123;teleop&#125;</span>:/apollo/modules/teleop <span class="variable">$&#123;volumes&#125;</span>&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    <span class="built_in">local</span> apollo_tools=<span class="string">&quot;<span class="variable">$&#123;APOLLO_ROOT_DIR&#125;</span>/../apollo-tools&quot;</span></span><br><span class="line">    <span class="keyword">if</span> [ -d <span class="string">&quot;<span class="variable">$&#123;apollo_tools&#125;</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">        volumes=<span class="string">&quot;<span class="variable">$&#123;volumes&#125;</span> -v <span class="variable">$&#123;apollo_tools&#125;</span>:/tools&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">local</span> os_release=<span class="string">&quot;<span class="subst">$(lsb_release -rs)</span>&quot;</span></span><br><span class="line">    <span class="keyword">case</span> <span class="string">&quot;<span class="variable">$&#123;os_release&#125;</span>&quot;</span> <span class="keyword">in</span></span><br><span class="line">        16.04)</span><br><span class="line">            warning <span class="string">&quot;[Deprecated] Support for Ubuntu 16.04 will be removed&quot;</span> \</span><br><span class="line">                <span class="string">&quot;in the near future. Please upgrade to ubuntu 18.04+.&quot;</span></span><br><span class="line">            volumes=<span class="string">&quot;<span class="variable">$&#123;volumes&#125;</span> -v /dev:/dev&quot;</span></span><br><span class="line">            ;;</span><br><span class="line">        18.04 | 20.04 | *)</span><br><span class="line">            volumes=<span class="string">&quot;<span class="variable">$&#123;volumes&#125;</span> -v /dev:/dev&quot;</span></span><br><span class="line">            ;;</span><br><span class="line">    <span class="keyword">esac</span></span><br><span class="line">    <span class="comment"># local tegra_dir=&quot;/usr/lib/aarch64-linux-gnu/tegra&quot;</span></span><br><span class="line">    <span class="comment"># if [[ &quot;$&#123;TARGET_ARCH&#125;&quot; == &quot;aarch64&quot; &amp;&amp; -d &quot;$&#123;tegra_dir&#125;&quot; ]]; then</span></span><br><span class="line">    <span class="comment">#    volumes=&quot;$&#123;volumes&#125; -v $&#123;tegra_dir&#125;:$&#123;tegra_dir&#125;:ro&quot;</span></span><br><span class="line">    <span class="comment"># fi</span></span><br><span class="line">    volumes=<span class="string">&quot;<span class="variable">$&#123;volumes&#125;</span> -v /media:/media \</span></span><br><span class="line"><span class="string">                        -v /tmp/.X11-unix:/tmp/.X11-unix:rw \</span></span><br><span class="line"><span class="string">                        -v /etc/localtime:/etc/localtime:ro \</span></span><br><span class="line"><span class="string">                        -v /usr/src:/usr/src \</span></span><br><span class="line"><span class="string">                        -v /lib/modules:/lib/modules&quot;</span></span><br><span class="line">    volumes=<span class="string">&quot;<span class="subst">$(tr -s <span class="string">&quot; &quot;</span> &lt;&lt;&lt;<span class="string">&quot;<span class="variable">$&#123;volumes&#125;</span>&quot;</span>)</span>&quot;</span></span><br><span class="line">    <span class="built_in">eval</span> <span class="string">&quot;<span class="variable">$&#123;__retval&#125;</span>=&#x27;<span class="variable">$&#123;volumes&#125;</span>&#x27;&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>mkdir [-p] dirName</code>：<code>-p</code>确保目录名称存在，不存在的就建一个。</p>
+<p>LSB是Linux Standard Base（Linux标准库）的缩写，<code>lsb_release</code>命令用来与具体Linux发行版相关的Linux标准库信息。<br />
+注：LSB的译法有Linux标准库，Linux标准规范<br />
+<code>-r</code>：显示当前Linux发行版版本号<br />
+<code>-s</code>：可以取消开头的显示字符<br />
+<code>-a</code>：显示全部信息，包括LSB、版本号、代号、版本描述信息<br />
+<code>-c</code>：显示当前Linux发行版代号(codename)<br />
+<code>-d</code>：显示Linux发行版描述信息<br />
+<code>-i</code>：显示该Linux系统的发行商<br />
+<code>-v</code>：显示与你Linux发行版相对应的Linux版本库描述信息。Linux版本库模块描述使用冒号(:)分分隔</p>
+<p><code>tr</code>，<code>translate</code>的简写，主要用于压缩重复字符，删除文件中的控制字符以及进行字符转换操作。<br />
+<code>-s</code>：删除所有重复出现字符序列，只保留第一个；即将重复出现字符串压缩为一个字符串。<br />
+<code>-d</code>：删除字符串1中所有输入字符。</p>
+<h4 id="mount_map_volumes"><a class="markdownIt-Anchor" href="#mount_map_volumes"></a> mount_map_volumes</h4>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">mount_map_volumes</span></span>() &#123;</span><br><span class="line">    info <span class="string">&quot;Starting mounting map volumes ...&quot;</span></span><br><span class="line">    <span class="keyword">if</span> [ -n <span class="string">&quot;<span class="variable">$&#123;USER_SPECIFIED_MAPS&#125;</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">        <span class="keyword">for</span> map_name <span class="keyword">in</span> <span class="variable">$&#123;USER_SPECIFIED_MAPS&#125;</span>; <span class="keyword">do</span></span><br><span class="line">            restart_map_volume_if_needed <span class="string">&quot;<span class="variable">$&#123;map_name&#125;</span>&quot;</span> <span class="string">&quot;<span class="variable">$&#123;VOLUME_VERSION&#125;</span>&quot;</span></span><br><span class="line">        <span class="keyword">done</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$FAST_MODE</span>&quot;</span> == <span class="string">&quot;no&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">        <span class="keyword">for</span> map_name <span class="keyword">in</span> <span class="variable">$&#123;DEFAULT_MAPS[@]&#125;</span>; <span class="keyword">do</span></span><br><span class="line">            restart_map_volume_if_needed <span class="string">&quot;<span class="variable">$&#123;map_name&#125;</span>&quot;</span> <span class="string">&quot;<span class="variable">$&#123;VOLUME_VERSION&#125;</span>&quot;</span></span><br><span class="line">        <span class="keyword">done</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">for</span> map_name <span class="keyword">in</span> <span class="variable">$&#123;DEFAULT_TEST_MAPS[@]&#125;</span>; <span class="keyword">do</span></span><br><span class="line">            restart_map_volume_if_needed <span class="string">&quot;<span class="variable">$&#123;map_name&#125;</span>&quot;</span> <span class="string">&quot;<span class="variable">$&#123;VOLUME_VERSION&#125;</span>&quot;</span></span><br><span class="line">        <span class="keyword">done</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="restart_map_volume_if_needed"><a class="markdownIt-Anchor" href="#restart_map_volume_if_needed"></a> restart_map_volume_if_needed</h5>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">restart_map_volume_if_needed</span></span>() &#123;</span><br><span class="line">    <span class="built_in">local</span> map_name=<span class="string">&quot;<span class="variable">$1</span>&quot;</span></span><br><span class="line">    <span class="built_in">local</span> map_version=<span class="string">&quot;<span class="variable">$2</span>&quot;</span></span><br><span class="line">    <span class="built_in">local</span> map_volume=<span class="string">&quot;apollo_map_volume-<span class="variable">$&#123;map_name&#125;</span>_<span class="variable">$&#123;USER&#125;</span>&quot;</span></span><br><span class="line">    <span class="built_in">local</span> map_path=<span class="string">&quot;/apollo/modules/map/data/<span class="variable">$&#123;map_name&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> [[ <span class="variable">$&#123;MAP_VOLUMES_CONF&#125;</span> == *<span class="string">&quot;<span class="variable">$&#123;map_volume&#125;</span>&quot;</span>* ]]; <span class="keyword">then</span></span><br><span class="line">        info <span class="string">&quot;Map <span class="variable">$&#123;map_name&#125;</span> has already been included.&quot;</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">local</span> map_image=</span><br><span class="line">        <span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$&#123;TARGET_ARCH&#125;</span>&quot;</span> = <span class="string">&quot;aarch64&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">            map_image=<span class="string">&quot;<span class="variable">$&#123;DOCKER_REPO&#125;</span>:map_volume-<span class="variable">$&#123;map_name&#125;</span>-<span class="variable">$&#123;TARGET_ARCH&#125;</span>-<span class="variable">$&#123;map_version&#125;</span>&quot;</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            map_image=<span class="string">&quot;<span class="variable">$&#123;DOCKER_REPO&#125;</span>:map_volume-<span class="variable">$&#123;map_name&#125;</span>-<span class="variable">$&#123;map_version&#125;</span>&quot;</span></span><br><span class="line">        <span class="keyword">fi</span></span><br><span class="line">        info <span class="string">&quot;Load map <span class="variable">$&#123;map_name&#125;</span> from image: <span class="variable">$&#123;map_image&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line">        docker_restart_volume <span class="string">&quot;<span class="variable">$&#123;map_volume&#125;</span>&quot;</span> <span class="string">&quot;<span class="variable">$&#123;map_image&#125;</span>&quot;</span> <span class="string">&quot;<span class="variable">$&#123;map_path&#125;</span>&quot;</span></span><br><span class="line">        MAP_VOLUMES_CONF=<span class="string">&quot;<span class="variable">$&#123;MAP_VOLUMES_CONF&#125;</span> --volume <span class="variable">$&#123;map_volume&#125;</span>:<span class="variable">$&#123;map_path&#125;</span>&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="mount_other_volumes"><a class="markdownIt-Anchor" href="#mount_other_volumes"></a> mount_other_volumes</h4>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 挂载其他数据卷，主要是用于感知模块</span></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">mount_other_volumes</span></span>() &#123;</span><br><span class="line">    info <span class="string">&quot;Mount other volumes ...&quot;</span></span><br><span class="line">    <span class="built_in">local</span> volume_conf=</span><br><span class="line"></span><br><span class="line">    <span class="comment"># AUDIO</span></span><br><span class="line">    <span class="built_in">local</span> audio_volume=<span class="string">&quot;apollo_audio_volume_<span class="variable">$&#123;USER&#125;</span>&quot;</span></span><br><span class="line">    <span class="built_in">local</span> audio_image=<span class="string">&quot;<span class="variable">$&#123;DOCKER_REPO&#125;</span>:data_volume-audio_model-<span class="variable">$&#123;TARGET_ARCH&#125;</span>-latest&quot;</span></span><br><span class="line">    <span class="built_in">local</span> audio_path=<span class="string">&quot;/apollo/modules/audio/data/&quot;</span></span><br><span class="line">    docker_restart_volume <span class="string">&quot;<span class="variable">$&#123;audio_volume&#125;</span>&quot;</span> <span class="string">&quot;<span class="variable">$&#123;audio_image&#125;</span>&quot;</span> <span class="string">&quot;<span class="variable">$&#123;audio_path&#125;</span>&quot;</span></span><br><span class="line">    volume_conf=<span class="string">&quot;<span class="variable">$&#123;volume_conf&#125;</span> --volume <span class="variable">$&#123;audio_volume&#125;</span>:<span class="variable">$&#123;audio_path&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#TRAFFIC_LIGHT_DETECTION</span></span><br><span class="line">    <span class="built_in">local</span> tl_detection_volume=<span class="string">&quot;apollo_tl_detection_volume_<span class="variable">$&#123;USER&#125;</span>&quot;</span></span><br><span class="line">    <span class="built_in">local</span> tl_detection_image=<span class="string">&quot;<span class="variable">$&#123;DOCKER_REPO&#125;</span>:traffic_light-detection_caffe_model-<span class="variable">$&#123;TARGET_ARCH&#125;</span>-latest&quot;</span></span><br><span class="line">    <span class="built_in">local</span> tl_detection_path=<span class="string">&quot;/apollo/modules/perception/production/data/perception/camera/models/traffic_light_detection/tl_detection_caffe&quot;</span></span><br><span class="line">    docker_restart_volume <span class="string">&quot;<span class="variable">$&#123;tl_detection_volume&#125;</span>&quot;</span> <span class="string">&quot;<span class="variable">$&#123;tl_detection_image&#125;</span>&quot;</span> <span class="string">&quot;<span class="variable">$&#123;tl_detection_path&#125;</span>&quot;</span></span><br><span class="line">    volume_conf=<span class="string">&quot;<span class="variable">$&#123;volume_conf&#125;</span> --volume <span class="variable">$&#123;tl_detection_volume&#125;</span>:<span class="variable">$&#123;tl_detection_path&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#TRAFFIC_LIGHT_RECOGNITION</span></span><br><span class="line">    <span class="built_in">local</span> tl_horizontal_volume=<span class="string">&quot;apollo_tl_horizontal_volume_<span class="variable">$&#123;USER&#125;</span>&quot;</span></span><br><span class="line">    <span class="built_in">local</span> tl_horizontal_image=<span class="string">&quot;<span class="variable">$&#123;DOCKER_REPO&#125;</span>:traffic_light-horizontal_caffe_model-<span class="variable">$&#123;TARGET_ARCH&#125;</span>-latest&quot;</span></span><br><span class="line">    <span class="built_in">local</span> tl_horizontal_path=<span class="string">&quot;/apollo/modules/perception/production/data/perception/camera/models/traffic_light_recognition/horizontal_caffe&quot;</span></span><br><span class="line">    docker_restart_volume <span class="string">&quot;<span class="variable">$&#123;tl_horizontal_volume&#125;</span>&quot;</span> <span class="string">&quot;<span class="variable">$&#123;tl_horizontal_image&#125;</span>&quot;</span> <span class="string">&quot;<span class="variable">$&#123;tl_horizontal_path&#125;</span>&quot;</span></span><br><span class="line">    volume_conf=<span class="string">&quot;<span class="variable">$&#123;volume_conf&#125;</span> --volume <span class="variable">$&#123;tl_horizontal_volume&#125;</span>:<span class="variable">$&#123;tl_horizontal_path&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#TRAFFIC_LIGHT_RECOGNITION</span></span><br><span class="line">    <span class="built_in">local</span> tl_quadrate_volume=<span class="string">&quot;apollo_tl_quadrate_volume_<span class="variable">$&#123;USER&#125;</span>&quot;</span></span><br><span class="line">    <span class="built_in">local</span> tl_quadrate_image=<span class="string">&quot;<span class="variable">$&#123;DOCKER_REPO&#125;</span>:traffic_light-quadrate_caffe_model-<span class="variable">$&#123;TARGET_ARCH&#125;</span>-latest&quot;</span></span><br><span class="line">    <span class="built_in">local</span> tl_quadrate_path=<span class="string">&quot;/apollo/modules/perception/production/data/perception/camera/models/traffic_light_recognition/quadrate_caffe&quot;</span></span><br><span class="line">    docker_restart_volume <span class="string">&quot;<span class="variable">$&#123;tl_quadrate_volume&#125;</span>&quot;</span> <span class="string">&quot;<span class="variable">$&#123;tl_quadrate_image&#125;</span>&quot;</span> <span class="string">&quot;<span class="variable">$&#123;tl_quadrate_path&#125;</span>&quot;</span></span><br><span class="line">    volume_conf=<span class="string">&quot;<span class="variable">$&#123;volume_conf&#125;</span> --volume <span class="variable">$&#123;tl_quadrate_volume&#125;</span>:<span class="variable">$&#123;tl_quadrate_path&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#TRAFFIC_LIGHT_RECOGNITION</span></span><br><span class="line">    <span class="built_in">local</span> tl_recognition_volume=<span class="string">&quot;apollo_tl_recognition_volume_<span class="variable">$&#123;USER&#125;</span>&quot;</span></span><br><span class="line">    <span class="built_in">local</span> tl_recognition_image=<span class="string">&quot;<span class="variable">$&#123;DOCKER_REPO&#125;</span>:traffic_light-recognition_caffe_model-<span class="variable">$&#123;TARGET_ARCH&#125;</span>-latest&quot;</span></span><br><span class="line">    <span class="built_in">local</span> tl_recognition_path=<span class="string">&quot;/apollo/modules/perception/production/data/perception/camera/models/traffic_light_recognition/vertical_caffe&quot;</span></span><br><span class="line">    docker_restart_volume <span class="string">&quot;<span class="variable">$&#123;tl_recognition_volume&#125;</span>&quot;</span> <span class="string">&quot;<span class="variable">$&#123;tl_recognition_image&#125;</span>&quot;</span> <span class="string">&quot;<span class="variable">$&#123;tl_recognition_path&#125;</span>&quot;</span></span><br><span class="line">    volume_conf=<span class="string">&quot;<span class="variable">$&#123;volume_conf&#125;</span> --volume <span class="variable">$&#123;tl_recognition_volume&#125;</span>:<span class="variable">$&#123;tl_recognition_path&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#YOLO_OBSTACLE</span></span><br><span class="line">    <span class="built_in">local</span> yolo_volume=<span class="string">&quot;yolo_obstacle_volume_<span class="variable">$&#123;USER&#125;</span>&quot;</span></span><br><span class="line">    <span class="built_in">local</span> yolo_image=<span class="string">&quot;<span class="variable">$&#123;DOCKER_REPO&#125;</span>:yolo_obstacle_model-<span class="variable">$&#123;TARGET_ARCH&#125;</span>-latest&quot;</span></span><br><span class="line">    <span class="built_in">local</span> yolo_path=<span class="string">&quot;/apollo/modules/perception/production/data/perception/camera/models/yolo_obstacle_detector/3d-r4-half_caffe&quot;</span></span><br><span class="line">    docker_restart_volume <span class="string">&quot;<span class="variable">$&#123;yolo_volume&#125;</span>&quot;</span> <span class="string">&quot;<span class="variable">$&#123;yolo_image&#125;</span>&quot;</span> <span class="string">&quot;<span class="variable">$&#123;yolo_path&#125;</span>&quot;</span></span><br><span class="line">    volume_conf=<span class="string">&quot;<span class="variable">$&#123;volume_conf&#125;</span> --volume <span class="variable">$&#123;yolo_volume&#125;</span>:<span class="variable">$&#123;yolo_path&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#CNNSEG128</span></span><br><span class="line">    <span class="built_in">local</span> cnnseg_volume=<span class="string">&quot;cnnseg_volume_<span class="variable">$&#123;USER&#125;</span>&quot;</span></span><br><span class="line">    <span class="built_in">local</span> cnnseg_image=<span class="string">&quot;<span class="variable">$&#123;DOCKER_REPO&#125;</span>:cnnseg_caffe_model-<span class="variable">$&#123;TARGET_ARCH&#125;</span>-latest&quot;</span></span><br><span class="line">    <span class="built_in">local</span> cnnseg_path=<span class="string">&quot;/apollo/modules/perception/production/data/perception/lidar/models/cnnseg/cnnseg128_caffe&quot;</span></span><br><span class="line">    docker_restart_volume <span class="string">&quot;<span class="variable">$&#123;cnnseg_volume&#125;</span>&quot;</span> <span class="string">&quot;<span class="variable">$&#123;cnnseg_image&#125;</span>&quot;</span> <span class="string">&quot;<span class="variable">$&#123;cnnseg_path&#125;</span>&quot;</span></span><br><span class="line">    volume_conf=<span class="string">&quot;<span class="variable">$&#123;volume_conf&#125;</span> --volume <span class="variable">$&#123;cnnseg_volume&#125;</span>:<span class="variable">$&#123;cnnseg_path&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#LANE_DETECTION</span></span><br><span class="line">    <span class="built_in">local</span> lane_detection_volume=<span class="string">&quot;lane_detection_volume_<span class="variable">$&#123;USER&#125;</span>&quot;</span></span><br><span class="line">    <span class="built_in">local</span> lane_detection_image=<span class="string">&quot;<span class="variable">$&#123;DOCKER_REPO&#125;</span>:lane_detection_model-<span class="variable">$&#123;TARGET_ARCH&#125;</span>-latest&quot;</span></span><br><span class="line">    <span class="built_in">local</span> lane_detection_path=<span class="string">&quot;/apollo/modules/perception/production/data/perception/camera/models/lane_detector/darkSCNN_caffe&quot;</span></span><br><span class="line">    docker_restart_volume <span class="string">&quot;<span class="variable">$&#123;lane_detection_volume&#125;</span>&quot;</span> <span class="string">&quot;<span class="variable">$&#123;lane_detection_image&#125;</span>&quot;</span> <span class="string">&quot;<span class="variable">$&#123;lane_detection_path&#125;</span>&quot;</span></span><br><span class="line">    volume_conf=<span class="string">&quot;<span class="variable">$&#123;volume_conf&#125;</span> --volume <span class="variable">$&#123;lane_detection_volume&#125;</span>:<span class="variable">$&#123;lane_detection_path&#125;</span>&quot;</span> </span><br><span class="line"></span><br><span class="line">    <span class="comment"># SMOKE</span></span><br><span class="line">    <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$&#123;TARGET_ARCH&#125;</span>&quot;</span> == <span class="string">&quot;x86_64&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">local</span> smoke_volume=<span class="string">&quot;apollo_smoke_volume_<span class="variable">$&#123;USER&#125;</span>&quot;</span></span><br><span class="line">        <span class="built_in">local</span> smoke_image=<span class="string">&quot;<span class="variable">$&#123;DOCKER_REPO&#125;</span>:smoke_volume-yolo_obstacle_detection_model-<span class="variable">$&#123;TARGET_ARCH&#125;</span>-latest&quot;</span></span><br><span class="line">        <span class="built_in">local</span> smoke_path=<span class="string">&quot;/apollo/modules/perception/production/data/perception/camera/models/yolo_obstacle_detector/smoke_libtorch_model&quot;</span></span><br><span class="line">        docker_restart_volume <span class="string">&quot;<span class="variable">$&#123;smoke_volume&#125;</span>&quot;</span> <span class="string">&quot;<span class="variable">$&#123;smoke_image&#125;</span>&quot;</span> <span class="string">&quot;<span class="variable">$&#123;smoke_path&#125;</span>&quot;</span></span><br><span class="line">        volume_conf=<span class="string">&quot;<span class="variable">$&#123;volume_conf&#125;</span> --volume <span class="variable">$&#123;smoke_volume&#125;</span>:<span class="variable">$&#123;smoke_path&#125;</span>&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">    OTHER_VOLUMES_CONF=<span class="string">&quot;<span class="variable">$&#123;volume_conf&#125;</span>&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="docker_restart_volume"><a class="markdownIt-Anchor" href="#docker_restart_volume"></a> docker_restart_volume</h5>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">docker_restart_volume</span></span>() &#123;</span><br><span class="line">    <span class="built_in">local</span> volume=<span class="string">&quot;<span class="variable">$1</span>&quot;</span></span><br><span class="line">    <span class="built_in">local</span> image=<span class="string">&quot;<span class="variable">$2</span>&quot;</span></span><br><span class="line">    <span class="built_in">local</span> path=<span class="string">&quot;<span class="variable">$3</span>&quot;</span></span><br><span class="line">    info <span class="string">&quot;Create volume <span class="variable">$&#123;volume&#125;</span> from image: <span class="variable">$&#123;image&#125;</span>&quot;</span></span><br><span class="line">    docker_pull <span class="string">&quot;<span class="variable">$&#123;image&#125;</span>&quot;</span></span><br><span class="line">    docker volume <span class="built_in">rm</span> <span class="string">&quot;<span class="variable">$&#123;volume&#125;</span>&quot;</span> &gt;/dev/null 2&gt;&amp;1</span><br><span class="line">    docker run -v <span class="string">&quot;<span class="variable">$&#123;volume&#125;</span>&quot;</span>:<span class="string">&quot;<span class="variable">$&#123;path&#125;</span>&quot;</span> --<span class="built_in">rm</span> <span class="string">&quot;<span class="variable">$&#123;image&#125;</span>&quot;</span> <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>2&gt;&amp;1</code>的意思就是将标准错误重定向到标准输出。这里标准输出已经重定向到了<code>/dev/null</code>。那么标准错误也会输出到<code>/dev/null</code>。</p>
+<h3 id="postrun_start_user"><a class="markdownIt-Anchor" href="#postrun_start_user"></a> postrun_start_user</h3>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 配置容器内环境变量</span></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">postrun_start_user</span></span>() &#123;</span><br><span class="line">    <span class="built_in">local</span> container=<span class="string">&quot;<span class="variable">$1</span>&quot;</span></span><br><span class="line">    <span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$&#123;USER&#125;</span>&quot;</span> != <span class="string">&quot;root&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">        docker <span class="built_in">exec</span> -u root <span class="string">&quot;<span class="variable">$&#123;container&#125;</span>&quot;</span> \</span><br><span class="line">            bash -c <span class="string">&#x27;/apollo/scripts/docker_start_user.sh&#x27;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>docker exec</code>是需要容器处于运行中且<code>PID 1</code>进程也处于运行中才能执行的操作。命令执行后会进入容器的默认工作目录，如果在<code>Dockerfile</code>中指定了工作目录，则会进入<code>Dokcerfile</code>指定的目录，如果命令中指定了工作目录<code>-w</code>则会进入该目录。</p>
+<ul>
+<li><code>-u</code>：指定访问容器的用户名</li>
+</ul>
+<h4 id="bash-c-cmd-string"><a class="markdownIt-Anchor" href="#bash-c-cmd-string"></a> bash -c “cmd string”</h4>
+<p>如果用<code>-c</code>那么<code>bash</code>会从第一个非选项参数后面的<mark>字符串</mark>中读取命令，如果字符串有多个空格，第一个空格前面的字符串是<mark>要执行的命令</mark>，也就是<code>$0</code>, 后面的是参数，即<code>$1,  $2…</code></p>
+<ul>
+<li><code>-c</code>第一个字符串一定要是<mark>命令路径</mark>，不能是文件名，如果把<code>./atest</code>前面的<code>./</code>去掉，那么就会报找不到命令</li>
+<li>命令文件必须要有可执行权限，即<code>./atest</code>的必须就有<code>x</code>属性</li>
+</ul>
+<h2 id="docker_basesh"><a class="markdownIt-Anchor" href="#docker_basesh"></a> docker_base.sh</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">TOP_DIR=<span class="string">&quot;<span class="subst">$(cd <span class="string">&quot;<span class="subst">$(dirname <span class="string">&quot;<span class="variable">$&#123;BASH_SOURCE[0]&#125;</span>&quot;</span>)</span>/../..&quot;</span> &amp;&amp; pwd)</span>&quot;</span></span><br><span class="line"><span class="built_in">source</span> <span class="string">&quot;<span class="variable">$&#123;TOP_DIR&#125;</span>/scripts/apollo.bashrc&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">unset</span> TOP_DIR</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> HOST_ARCH=<span class="string">&quot;<span class="subst">$(uname -m)</span>&quot;</span></span><br><span class="line"><span class="built_in">export</span> HOST_OS=<span class="string">&quot;<span class="subst">$(uname -s)</span>&quot;</span></span><br><span class="line"></span><br><span class="line">GEO_REGISTRY=</span><br><span class="line"></span><br><span class="line">DOCKER_RUN_CMD=<span class="string">&quot;docker run&quot;</span></span><br><span class="line">USE_GPU_HOST=0</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> -f geo_specific_config</span><br><span class="line"><span class="built_in">export</span> -f determine_gpu_use_host</span><br><span class="line"><span class="built_in">export</span> -f stop_all_apollo_containers remove_container_if_exists</span><br><span class="line"><span class="built_in">export</span> -f check_agreement</span><br><span class="line"><span class="built_in">export</span> USE_GPU_HOST</span><br><span class="line"><span class="built_in">export</span> DOCKER_RUN_CMD</span><br><span class="line"><span class="built_in">export</span> GEO_REGISTRY</span><br></pre></td></tr></table></figure>
+<p><code>unset</code>为 shell 内建指令，用于删除已定义的shell变量（包括环境变量）和shell函数。<code>unset</code>命令不能够删除具有只读属性的shell变量和环境变量。</p>
+<ul>
+<li><code>-f</code>：仅删除函数</li>
+<li><code>-v</code>：仅删除变量</li>
+</ul>
+<h2 id="apollobashrc"><a class="markdownIt-Anchor" href="#apollobashrc"></a> apollo.bashrc</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">APOLLO_ROOT_DIR=<span class="string">&quot;<span class="subst">$(cd <span class="string">&quot;<span class="subst">$(dirname <span class="string">&quot;<span class="variable">$&#123;BASH_SOURCE[0]&#125;</span>&quot;</span>)</span>/..&quot;</span> &amp;&amp; pwd -P)</span>&quot;</span></span><br><span class="line">APOLLO_IN_DOCKER=<span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># If inside docker container</span></span><br><span class="line"><span class="keyword">if</span> [ -f /.dockerenv ]; <span class="keyword">then</span></span><br><span class="line">  APOLLO_IN_DOCKER=<span class="literal">true</span></span><br><span class="line">  APOLLO_ROOT_DIR=<span class="string">&quot;/apollo&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> APOLLO_CONFIG_HOME=<span class="string">&quot;<span class="variable">$&#123;APOLLO_CONFIG_HOME:=$HOME/.apollo&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> APOLLO_ROOT_DIR=<span class="string">&quot;<span class="variable">$&#123;APOLLO_ROOT_DIR&#125;</span>&quot;</span></span><br><span class="line"><span class="built_in">export</span> APOLLO_IN_DOCKER=<span class="string">&quot;<span class="variable">$&#123;APOLLO_IN_DOCKER&#125;</span>&quot;</span></span><br><span class="line"><span class="built_in">export</span> APOLLO_CACHE_DIR=<span class="string">&quot;<span class="variable">$&#123;APOLLO_ROOT_DIR&#125;</span>/.cache&quot;</span></span><br><span class="line"><span class="built_in">export</span> APOLLO_SYSROOT_DIR=<span class="string">&quot;/opt/apollo/sysroot&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> TAB=<span class="string">&quot;    &quot;</span> <span class="comment"># 4 spaces</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> <span class="variable">$&#123;APOLLO_ROOT_DIR&#125;</span>/scripts/common.bashrc</span><br><span class="line"></span><br><span class="line">: <span class="variable">$&#123;VERBOSE:=yes&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置颜色</span></span><br><span class="line">BOLD=<span class="string">&#x27;\033[1m&#x27;</span></span><br><span class="line">RED=<span class="string">&#x27;\033[0;31m&#x27;</span></span><br><span class="line">BLUE=<span class="string">&#x27;\033[0;34m&#x27;</span></span><br><span class="line">GREEN=<span class="string">&#x27;\033[32m&#x27;</span></span><br><span class="line">WHITE=<span class="string">&#x27;\033[34m&#x27;</span></span><br><span class="line">YELLOW=<span class="string">&#x27;\033[33m&#x27;</span></span><br><span class="line">NO_COLOR=<span class="string">&#x27;\033[0m&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="variable">$&#123;APOLLO_IN_DOCKER&#125;</span> ; <span class="keyword">then</span></span><br><span class="line">    setup_gpu_support</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<h3 id="setup_gpu_support"><a class="markdownIt-Anchor" href="#setup_gpu_support"></a> setup_gpu_support</h3>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">setup_gpu_support</span></span>() &#123;</span><br><span class="line">  <span class="comment"># 判断目录是否存在，若存在则返回true</span></span><br><span class="line">  <span class="keyword">if</span> [ -e /usr/local/cuda/ ]; <span class="keyword">then</span></span><br><span class="line">    <span class="comment"># 将 /usr/local/cuda/bin 增加到 PATH 里面</span></span><br><span class="line">    pathprepend /usr/local/cuda/bin</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">  determine_gpu_use_target</span><br><span class="line"></span><br><span class="line">  <span class="comment"># TODO(infra): revisit this for CPU builds on GPU capable machines</span></span><br><span class="line">  <span class="built_in">local</span> dev=<span class="string">&quot;cpu&quot;</span></span><br><span class="line">  <span class="comment"># 判断是否要使用 GPU</span></span><br><span class="line">  <span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$&#123;USE_GPU_TARGET&#125;</span>&quot;</span> -gt 0 ]; <span class="keyword">then</span></span><br><span class="line">    dev=<span class="string">&quot;gpu&quot;</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">local</span> torch_path=<span class="string">&quot;/usr/local/libtorch_<span class="variable">$&#123;dev&#125;</span>/lib&quot;</span></span><br><span class="line">  <span class="comment"># 判断目录是否存在</span></span><br><span class="line">  <span class="keyword">if</span> [ -d <span class="string">&quot;<span class="variable">$&#123;torch_path&#125;</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="comment"># Runtime default: for ./bazel-bin/xxx/yyy to work as expected</span></span><br><span class="line">	<span class="comment"># 将目录加入到 LD_LIBRARY_PATH</span></span><br><span class="line">    pathprepend <span class="variable">$&#123;torch_path&#125;</span> LD_LIBRARY_PATH</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="pathprepend"><a class="markdownIt-Anchor" href="#pathprepend"></a> pathprepend</h4>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将路径$1增加到$2前面</span></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">pathprepend</span></span>() &#123;</span><br><span class="line">  pathremove <span class="variable">$1</span> <span class="variable">$2</span></span><br><span class="line">  <span class="comment"># 如果$2已被定义但是为空值，则 PATHVARIABLE 为 $&#123;PATH&#125;</span></span><br><span class="line">  <span class="built_in">local</span> PATHVARIABLE=<span class="variable">$&#123;2:-PATH&#125;</span></span><br><span class="line">  <span class="comment"># 如果$&#123;!PATHVARIABLE&#125;不为空，</span></span><br><span class="line">  <span class="comment"># 则 $PATHVARIABLE=&quot;$1:$&#123;!PATHVARIABLE&#125;&quot;，其中 : 是路径分割符，相当于一个字符，没有其他意思</span></span><br><span class="line">  <span class="built_in">export</span> <span class="variable">$PATHVARIABLE</span>=<span class="string">&quot;$1<span class="variable">$&#123;!PATHVARIABLE:+:<span class="variable">$&#123;!PATHVARIABLE&#125;</span>&#125;</span>&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="pathappend"><a class="markdownIt-Anchor" href="#pathappend"></a> pathappend</h4>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将路径$1增加到$2后面</span></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">pathappend</span></span>() &#123;</span><br><span class="line">  pathremove <span class="variable">$1</span> <span class="variable">$2</span></span><br><span class="line">  <span class="comment"># 如果$2已被定义但是为空值，则 PATHVARIABLE 为 $&#123;PATH&#125;</span></span><br><span class="line">  <span class="built_in">local</span> PATHVARIABLE=<span class="variable">$&#123;2:-PATH&#125;</span></span><br><span class="line">  <span class="comment"># 如果$&#123;!PATHVARIABLE&#125;不为空，</span></span><br><span class="line">  <span class="comment"># 则 $PATHVARIABLE=&quot;$&#123;!PATHVARIABLE&#125;:$1&quot;，其中 : 是路径分割符，相当于一个字符，没有其他意思</span></span><br><span class="line">  <span class="built_in">export</span> <span class="variable">$PATHVARIABLE</span>=<span class="string">&quot;<span class="variable">$&#123;!PATHVARIABLE:+<span class="variable">$&#123;!PATHVARIABLE&#125;</span>:&#125;</span><span class="variable">$1</span>&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="间接变量引用"><a class="markdownIt-Anchor" href="#间接变量引用"></a> 间接变量引用</h5>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">aaa=123</span><br><span class="line">bbb=aaa</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$bbb</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;!bbb&#125;</span></span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">aaa</span><br><span class="line">123</span><br></pre></td></tr></table></figure>
+<p>感叹号是可以引用间接变量的值</p>
+<h5 id="pathremove"><a class="markdownIt-Anchor" href="#pathremove"></a> pathremove</h5>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">pathremove</span></span>() &#123;</span><br><span class="line">  <span class="built_in">local</span> IFS=<span class="string">&#x27;:&#x27;</span> <span class="comment"># 设定分割符</span></span><br><span class="line">  <span class="built_in">local</span> NEWPATH</span><br><span class="line">  <span class="built_in">local</span> DIR</span><br><span class="line">  <span class="built_in">local</span> PATHVARIABLE=<span class="variable">$&#123;2:-PATH&#125;</span></span><br><span class="line">  <span class="keyword">for</span> DIR <span class="keyword">in</span> <span class="variable">$&#123;!PATHVARIABLE&#125;</span>; <span class="keyword">do</span> <span class="comment"># 变量以分割符进行拆解，然后遍历循环</span></span><br><span class="line">    <span class="comment"># 遍历循环，去掉指定路径</span></span><br><span class="line">    <span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$DIR</span>&quot;</span> != <span class="string">&quot;<span class="variable">$1</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">	  <span class="comment"># 第一次循环，因为 NEWPATH 声明了但为空，所以 NEWPATH=$DIR</span></span><br><span class="line">	  <span class="comment"># 此后循化，使用 NEWPATH 不为空，所以 NEWPATH=$NEWPATH:$DIR</span></span><br><span class="line">	  <span class="comment"># 增加了一个路径分割符</span></span><br><span class="line">      NEWPATH=<span class="variable">$&#123;NEWPATH:+$NEWPATH:&#125;</span><span class="variable">$DIR</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">  <span class="keyword">done</span></span><br><span class="line">  <span class="built_in">export</span> <span class="variable">$PATHVARIABLE</span>=<span class="string">&quot;<span class="variable">$NEWPATH</span>&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="determine_gpu_use_target"><a class="markdownIt-Anchor" href="#determine_gpu_use_target"></a> determine_gpu_use_target</h4>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">determine_gpu_use_target</span></span>() &#123;</span><br><span class="line">  <span class="built_in">local</span> <span class="built_in">arch</span>=<span class="string">&quot;<span class="subst">$(uname -m)</span>&quot;</span></span><br><span class="line">  <span class="built_in">local</span> use_gpu=0</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$&#123;arch&#125;</span>&quot;</span> == <span class="string">&quot;aarch64&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">    <span class="keyword">if</span> lsmod | grep -q nvgpu; <span class="keyword">then</span></span><br><span class="line">      <span class="keyword">if</span> ldconfig -p | grep -q cudart; <span class="keyword">then</span></span><br><span class="line">        use_gpu=1</span><br><span class="line">      <span class="keyword">fi</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">  <span class="keyword">else</span> <span class="comment">## x86_64 mode</span></span><br><span class="line">    <span class="comment"># Check the existence of nvidia-smi</span></span><br><span class="line">    <span class="keyword">if</span> [[ ! -x <span class="string">&quot;<span class="subst">$(command -v nvidia-smi)</span>&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">      warning <span class="string">&quot;nvidia-smi not found. CPU will be used.&quot;</span></span><br><span class="line">    <span class="keyword">elif</span> [[ -z <span class="string">&quot;<span class="subst">$(nvidia-smi)</span>&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">      warning <span class="string">&quot;No GPU device found. CPU will be used.&quot;</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      use_gpu=1</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">  <span class="built_in">export</span> USE_GPU_TARGET=<span class="string">&quot;<span class="variable">$&#123;use_gpu&#125;</span>&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+                    
+                </div>
+
+                
+
+                <div class="post-bottom-tags-and-share border-box">
+                    <div>
+                        
+                    </div>
+                    <div>
+                        
+                            <div class="post-share-container border-box">
+    <ul class="share-list-wrap border-box">
+        <li class="qq share-item border-box flex-center tooltip"
+            data-tooltip-content="分享到 QQ"
+        >
+            <i class="fa-brands fa-qq"></i>
+        </li>
+        <li class="wechat share-item border-box flex-center tooltip tooltip-img"
+            data-tooltip-content="分享到微信"
+            data-tooltip-img-tip="微信扫一扫"
+            data-tooltip-img-style="background-color: #fff; top: -10px; padding: 0.6rem 0.6rem 0.1rem 0.6rem;"
+        >
+            <i class="fa-brands fa-weixin"></i>
+        </li>
+        <li class="weibo share-item border-box flex-center tooltip"
+            data-tooltip-content="分享到微博"
+        >
+            <i class="fa-brands fa-weibo"></i>
+        </li>
+    </ul>
+</div>
+
+                        
+                    </div>
+                </div>
+
+                
+                    
+
+<div class="reward-author-container border-box flex-center">
+    <div class="reward-btn border-box flex-center tooltip tooltip-img"
+            data-tooltip-img-url="/images/pay/pay.png"
+            data-tooltip-img-trigger="click"
+            data-tooltip-img-style="top: -6px;"
+    >
+        <i class="fa-solid fa-gift"></i>&nbsp;请作者吃姜饼
+    </div>
+</div>
+
+                
+
+                
+                    <div class="post-nav border-box">
+                        
+                            <div class="prev-post">
+                                <a class="prev"
+                                   rel="prev"
+                                   href="/2023/01/31/%E5%88%86%E6%AE%B5%E5%8A%A0%E5%8A%A0%E9%80%9F%E5%BA%A6%E7%AE%97%E6%B3%95%EF%BC%88PiecewiseJerk%EF%BC%89%E4%B9%8B%20%E9%80%9F%E5%BA%A6%E8%A7%84%E5%88%92%E7%90%86%E8%AE%BA%E6%8E%A8%E6%BC%94/"
+                                   title="（三）分段加加速度算法（PiecewiseJerk）之 速度规划理论推演"
+                                >
+                                    <span class="left arrow-icon flex-center">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">（三）分段加加速度算法（PiecewiseJerk）之 速度规划理论推演</span>
+                                        <span class="post-nav-item">上一篇</span>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                        
+                            <div class="next-post">
+                                <a class="next"
+                                   rel="next"
+                                   href="/2023/01/29/Apollo%20v8.0.0%20%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB%E4%B9%8BSpiralReferenceLineSmoother/"
+                                   title="Apollo v8.0.0 代码解读 之 SpiralReferenceLineSmoother"
+                                >
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">Apollo v8.0.0 代码解读 之 SpiralReferenceLineSmoother</span>
+                                        <span class="post-nav-item">下一篇</span>
+                                    </span>
+                                    <span class="right arrow-icon flex-center">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                    </div>
+                
+
+                
+                    
+
+
+    <div class="comments-container border-box">
+        <div id="comments-anchor" class="comment-area-title border-box">
+            <i class="fas fa-comments"></i>&nbsp;评论
+        </div>
+        <div class="comment-plugin-fail border-box">
+    <span class="fail-tip">评论插件加载失败</span>
+    <button class="reload keep-button">点击重新加载</button>
+</div>
+<div class="comment-plugin-loading flex-center border-box">
+    <i class="loading-icon fa-solid fa-spinner fa-spin"></i>
+    <span class="load-tip">正在加载评论插件</span>
+</div>
+<script data-pjax>
+  window.KeepCommentPlugin = {}
+  window.KeepCommentPlugin.hideLoading = () => {
+    const cplDom = document.querySelector('.comments-container .comment-plugin-loading')
+    cplDom.style.display = 'none'
+  }
+  window.KeepCommentPlugin.loadFailHandle = () => {
+    window.KeepCommentPlugin.hideLoading()
+    const cpfDom = document.querySelector('.comments-container .comment-plugin-fail')
+    cpfDom.style.display = 'flex'
+    cpfDom.querySelector('.reload').addEventListener('click', () => {
+      window.location.reload()
+    })
+  }
+</script>
+
+        
+            
+
+    <div class="giscus-comments-container">
+        <div class="giscus" id="giscus"></div>
+        <script data-pjax
+                onerror="window.KeepCommentPlugin.loadFailHandle()"
+        >
+          if (!window.KeepCommentPlugin?.getGiscusTheme) {
+            window.KeepCommentPlugin.getGiscusTheme = () => {
+              return document.documentElement.classList.contains('dark-mode') ? 'dark_dimmed' : 'light_tritanopia'
+            }
+          }
+
+          if (!window.KeepCommentPlugin?.changeGiscusTheme) {
+            window.KeepCommentPlugin.changeGiscusTheme = () => {
+              const iframe = document.querySelector('iframe.giscus-frame')
+              iframe && iframe.contentWindow.postMessage({
+                giscus: {
+                  setConfig: {
+                    theme: window.KeepCommentPlugin.getGiscusTheme()
+                  }
+                }
+              }, 'https://giscus.app')
+            }
+          }
+
+          if (!window.KeepCommentPlugin?.initGiscus) {
+            window.KeepCommentPlugin.initGiscus = () => {
+              const script = document.createElement('script')
+              script.async = true
+              script.src = 'https://giscus.app/client.js'
+              script.setAttribute('data-repo', 'i-Nog/iNog-blog-comments')
+              script.setAttribute('data-repo-id', 'R_kgDOPF7ymg')
+              script.setAttribute('data-category', 'Announcements')
+              script.setAttribute('data-category-id', 'DIC_kwDOPF7yms4Cscff')
+              script.setAttribute('data-reactions-enabled', '0')
+              script.setAttribute('data-lang', 'zh-CN')
+              script.setAttribute('data-mapping', 'pathname')
+              script.setAttribute('data-strict', '0')
+              script.setAttribute('data-emit-metadata', '0')
+              script.setAttribute('data-input-position', 'top')
+              script.setAttribute('crossorigin', 'anonymous')
+              script.setAttribute('loading', 'lazy')
+              script.setAttribute('data-theme', window.KeepCommentPlugin.getGiscusTheme())
+              document.querySelector('.giscus-comments-container').appendChild(script)
+              script.onerror = () => {
+                window.KeepCommentPlugin.loadFailHandle()
+              }
+              script.onload = () => {
+                window.KeepCommentPlugin.hideLoading()
+              }
+              const toggleThemeBtn = document.querySelector('.tool-toggle-theme-mode')
+              toggleThemeBtn && toggleThemeBtn.addEventListener('click', () => {
+                window.KeepCommentPlugin.changeGiscusTheme()
+              })
+            }
+          }
+
+          if ('true' === "true") {
+            setTimeout(() => {
+              window.KeepCommentPlugin.initGiscus()
+            }, 1000)
+          } else {
+            window.addEventListener("DOMContentLoaded", window.KeepCommentPlugin.initGiscus)
+          }
+        </script>
+    </div>
+
+
+        
+    </div>
+
+
+
+
+
+                
+            </div>
+        </div>
+
+        
+            <div class="pc-post-toc right-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B"><span class="nav-text"> 启动流程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#dev_startsh"><span class="nav-text"> dev_start.sh</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%98%E9%87%8F%E5%AE%9A%E4%B9%89"><span class="nav-text"> 变量定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#main%E5%87%BD%E6%95%B0"><span class="nav-text"> main函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#check_host_environment"><span class="nav-text"> check_host_environment</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#check_target_arch"><span class="nav-text"> check_target_arch</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#parse_arguments"><span class="nav-text"> parse_arguments</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%95%B0%E5%AD%97%E5%85%B3%E7%B3%BB%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-text"> 数字关系运算符</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-text"> 字符串运算符</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E5%88%A4%E6%96%AD"><span class="nav-text"> 逻辑判断</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-text"> 运算符</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#optarg_check_for_opt"><span class="nav-text"> optarg_check_for_opt</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-text"> 逻辑运算符</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#stop_all_apollo_containers"><span class="nav-text"> stop_all_apollo_containers</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#check_agreement"><span class="nav-text"> check_agreement</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#determine_dev_image"><span class="nav-text"> determine_dev_image</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#geo_specific_config"><span class="nav-text"> geo_specific_config</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#docker_pull"><span class="nav-text"> docker_pull</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B8%83%E5%B0%94%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-text"> 布尔运算符</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#remove_container_if_exists"><span class="nav-text"> remove_container_if_exists</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#determine_gpu_use_host"><span class="nav-text"> determine_gpu_use_host</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-text"> 文件运算符</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#setup_devices_and_mount_local_volumes"><span class="nav-text"> setup_devices_and_mount_local_volumes</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mount_map_volumes"><span class="nav-text"> mount_map_volumes</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#restart_map_volume_if_needed"><span class="nav-text"> restart_map_volume_if_needed</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mount_other_volumes"><span class="nav-text"> mount_other_volumes</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#docker_restart_volume"><span class="nav-text"> docker_restart_volume</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#postrun_start_user"><span class="nav-text"> postrun_start_user</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#bash-c-cmd-string"><span class="nav-text"> bash -c “cmd string”</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#docker_basesh"><span class="nav-text"> docker_base.sh</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#apollobashrc"><span class="nav-text"> apollo.bashrc</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#setup_gpu_support"><span class="nav-text"> setup_gpu_support</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#pathprepend"><span class="nav-text"> pathprepend</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pathappend"><span class="nav-text"> pathappend</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%97%B4%E6%8E%A5%E5%8F%98%E9%87%8F%E5%BC%95%E7%94%A8"><span class="nav-text"> 间接变量引用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#pathremove"><span class="nav-text"> pathremove</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#determine_gpu_use_target"><span class="nav-text"> determine_gpu_use_target</span></a></li></ol></li></ol></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+        </div>
+
+        <div class="page-main-content-bottom border-box">
+            
+<footer class="footer border-box">
+    <div class="copyright-info info-item">
+    &copy;&nbsp;<span>2021</span>&nbsp;-&nbsp;2025
+    
+            &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/">i-Nog</a>
+        
+    </div>
+
+    <div class="theme-info info-item">
+        由&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;驱动&nbsp;&&nbsp;主题&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
+    </div>
+
+    
+        
+        <div class="deploy-info info-item">
+            
+            本站由 <span class="tooltip" data-tooltip-content="GitHub Pages"><img src="/images/brands/github.png"></span> 提供部署服务
+            
+        </div>
+    
+
+    
+        <div class="count-info info-item">
+            
+                <span class="count-item border-box word">
+                    <span class="item-type border-box">总字数</span>
+                    <span class="item-value border-box word">83.4k</span>
+                </span>
+            
+
+            
+
+            
+        </div>
+    
+
+    
+        <div class="record-info info-item">
+            
+                
+            
+        </div>
+    
+</footer>
+
+        </div>
+    </div>
+
+    <!-- post tools -->
+    
+        <div class="post-tools right-toc">
+            <div class="post-tools-container border-box">
+    <ul class="post-tools-list border-box">
+        <!-- PC encrypt again -->
+        
+
+        <!-- PC TOC show toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- PC go comment -->
+        
+            <li class="tools-item flex-center go-to-comments">
+                <i class="fas fa-comment"></i>
+                <span class="post-comments-count"></span>
+            </li>
+        
+
+        <!-- PC full screen -->
+        <li class="tools-item flex-center full-screen">
+            <i class="fa-solid fa-expand"></i>
+        </li>
+    </ul>
+</div>
+
+        </div>
+    
+
+    <!-- side tools -->
+    <div class="side-tools">
+        <div class="side-tools-container border-box ">
+    <ul class="side-tools-list side-tools-show-handle border-box">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <!-- toggle mode -->
+        
+            <li class="tools-item tool-toggle-theme-mode flex-center">
+                <i class="fas fa-moon"></i>
+            </li>
+        
+
+        <!-- rss -->
+        
+
+        <!-- to bottom -->
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list border-box">
+        
+            <li class="tools-item toggle-show-toc-tablet flex-center">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        
+            <li class="tools-item go-to-comments-tablet flex-center">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+        <li class="tools-item tool-scroll-to-top flex-center show-arrow">
+            <i class="arrow fas fa-arrow-up"></i>
+            <span class="percent"></span>
+        </li>
+    </ul>
+</div>
+
+    </div>
+
+    <!-- image mask -->
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
+</div>
+
+
+    <!-- local search -->
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+    <!-- tablet toc -->
+    
+        <div class="tablet-post-toc-mask">
+            <div class="tablet-post-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B"><span class="nav-text"> 启动流程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#dev_startsh"><span class="nav-text"> dev_start.sh</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%98%E9%87%8F%E5%AE%9A%E4%B9%89"><span class="nav-text"> 变量定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#main%E5%87%BD%E6%95%B0"><span class="nav-text"> main函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#check_host_environment"><span class="nav-text"> check_host_environment</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#check_target_arch"><span class="nav-text"> check_target_arch</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#parse_arguments"><span class="nav-text"> parse_arguments</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%95%B0%E5%AD%97%E5%85%B3%E7%B3%BB%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-text"> 数字关系运算符</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-text"> 字符串运算符</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E5%88%A4%E6%96%AD"><span class="nav-text"> 逻辑判断</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-text"> 运算符</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#optarg_check_for_opt"><span class="nav-text"> optarg_check_for_opt</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-text"> 逻辑运算符</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#stop_all_apollo_containers"><span class="nav-text"> stop_all_apollo_containers</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#check_agreement"><span class="nav-text"> check_agreement</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#determine_dev_image"><span class="nav-text"> determine_dev_image</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#geo_specific_config"><span class="nav-text"> geo_specific_config</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#docker_pull"><span class="nav-text"> docker_pull</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B8%83%E5%B0%94%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-text"> 布尔运算符</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#remove_container_if_exists"><span class="nav-text"> remove_container_if_exists</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#determine_gpu_use_host"><span class="nav-text"> determine_gpu_use_host</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-text"> 文件运算符</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#setup_devices_and_mount_local_volumes"><span class="nav-text"> setup_devices_and_mount_local_volumes</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mount_map_volumes"><span class="nav-text"> mount_map_volumes</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#restart_map_volume_if_needed"><span class="nav-text"> restart_map_volume_if_needed</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mount_other_volumes"><span class="nav-text"> mount_other_volumes</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#docker_restart_volume"><span class="nav-text"> docker_restart_volume</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#postrun_start_user"><span class="nav-text"> postrun_start_user</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#bash-c-cmd-string"><span class="nav-text"> bash -c “cmd string”</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#docker_basesh"><span class="nav-text"> docker_base.sh</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#apollobashrc"><span class="nav-text"> apollo.bashrc</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#setup_gpu_support"><span class="nav-text"> setup_gpu_support</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#pathprepend"><span class="nav-text"> pathprepend</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pathappend"><span class="nav-text"> pathappend</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%97%B4%E6%8E%A5%E5%8F%98%E9%87%8F%E5%BC%95%E7%94%A8"><span class="nav-text"> 间接变量引用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#pathremove"><span class="nav-text"> pathremove</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#determine_gpu_use_target"><span class="nav-text"> determine_gpu_use_target</span></a></li></ol></li></ol></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        </div>
+    
+</main>
+
+
+
+
+
+<!-- common js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/header-shrink.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/back2top.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/toggle-theme.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/code-block.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/main.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/libs/anime.min.js"></script>
+
+<!-- local search -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/local-search.min.js"></script>
+
+
+<!-- lazyload -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/lazyload.min.js"></script>
+
+
+<div class="pjax">
+    <!-- home page -->
+    
+
+    <!-- post page -->
+    
+        <!-- post-helper -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/post/post-helper.min.js"></script>
+
+        <!-- toc -->
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/post/toc.min.js"></script>
+        
+
+        <!-- copyright-info -->
+        
+
+        <!-- share -->
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/post/share.min.js"></script>
+        
+    
+
+    <!-- categories page -->
+    
+
+    <!-- links page -->
+    
+
+    <!-- photos page -->
+    
+
+    <!-- tools page -->
+    
+</div>
+
+<!-- mermaid -->
+
+
+<!-- pjax -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/libs/pjax.min.js"></script>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart()
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd()
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'))
+            KEEP.initExecute()
+        });
+    });
+</script>
+
+
+
+
+    
+        
+    
+
+</body>
+</html>

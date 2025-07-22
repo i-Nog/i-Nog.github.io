@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="i-Nog">
+    
+    <title>
+        
+            Linux下QT使用appimage打包程序 |
+        
+        Lernen Forschen Machen
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+        <link rel="shortcut icon" href="/images/i-nog-logo.png">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/font/css/fontawesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/font/css/regular.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/font/css/solid.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/font/css/brands.min.css">
+    
+        
+            
+        
+            
+                
+<link rel="stylesheet" href="/css/custom-1.css">
+
+            
+        
+    
+    <script class="keep-theme-configurations">
+    const KEEP = window.KEEP || {}
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN","path":"search.json"}
+    KEEP.theme_config = {"base_info":{"primary_color":"#FF9900","title":"Lernen Forschen Machen","author":"i-Nog","avatar":"/images/i-nog-avatar.jpg","logo":"/images/i-nog-logo.png","favicon":"/images/i-nog-logo.png"},"menu":{"home":"/ || fa-solid fa-home","archives":"/archives || fa-solid fa-box-archive","categories":"/categories || fa-solid fa-layer-group","tools":"/tools || fa-solid fa-tools","about":"/about || fa-solid fa-user-graduate"},"first_screen":{"enable":true,"background_img":"/images/bg.svg","background_img_dark":"/images/bg.svg","description":"Keep writing and Keep loving.","hitokoto":true},"social_contact":{"enable":true,"links":{"github":null,"weixin":null,"qq":null,"weibo":null,"zhihu":null,"twitter":null,"x":null,"facebook":null,"email":"linxiaopeng-nog@qq.com"}},"scroll":{"progress_bar":false,"percent":true,"hide_header":true},"home":{"announcement":"转载请注明出处，尊重原创，从我做起。","category":true,"tag":false,"post_datetime":"updated","post_datetime_format":"YYYY-MM-DD HH:mm:ss"},"post":{"author_badge":{"enable":true,"level_badge":true,"custom_badge":["One","Two","Three"]},"word_count":{"wordcount":true,"min2read":true},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":false,"share":true,"reward":{"enable":true,"img_link":"/images/pay/pay.png","text":"请作者吃姜饼","icon":null}},"code_block":{"tools":{"enable":true,"style":"default"},"highlight_theme":"obsidian"},"toc":{"enable":true,"number":false,"expand_all":false,"init_open":true,"layout":"right"},"website_count":{"busuanzi_count":{"enable":false,"site_uv":true,"site_pv":true,"page_pv":true}},"local_search":{"enable":true,"preload":true},"comment":{"enable":true,"use":"giscus","valine":{"appid":null,"appkey":null,"server_urls":null,"placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.39"},"waline":{"server_url":null,"reaction":false,"version":"3.3.2"},"giscus":{"repo":"i-Nog/iNog-blog-comments","repo_id":"R_kgDOPF7ymg","category":"Announcements","category_id":"DIC_kwDOPF7yms4Cscff","reactions_enabled":false},"artalk":{"server":null},"disqus":{"shortname":null}},"rss":{"enable":false},"lazyload":{"enable":true},"cdn":{"enable":true,"provider":"cdnjs"},"pjax":{"enable":true},"footer":{"since":2021,"word_count":true,"site_deploy":{"enable":true,"provider":"github","url":null},"record":{"enable":true,"list":[{"code":null,"link":null}]}},"inject":{"enable":true,"css":[null,"/css/custom-1.css"],"js":[null]},"root":"","source_data":{"tools":[{"category":"AI 工具汇总","anchorId":"QUklMjAlRTUlQjclQTUlRTUlODUlQjclRTYlQjElODclRTYlODAlQkI0"},{"name":"AI 工具集","link":"https://ai-bot.cn/","description":"AI工具集导航收录了国内外数百个不同类型的AI工具","image":"/images/tools/ai-bot-logo-black.png"},{"name":"Leaderboard Overview","link":"https://lmarena.ai/leaderboard","description":"See how leading models stack up across text, image, vision, and beyond.","image":"/images/tools/lmarena.png"},{"category":"聊天 AI","anchorId":"JUU4JTgxJThBJUU1JUE0JUE5JTIwQUk3"},{"name":"ChatGPT","link":"https://chatgpt.com/","description":"OpenAI 旗下 AI 聊天对话工具","image":"/images/tools/chatgpt-icon.png"},{"name":"Claude","link":"https://claude.ai/","description":"Anthropic公司推出的对话式AI智能助手","image":"/images/tools/anthropic-icon.png"},{"name":"DeepSeek","link":"https://chat.deepseek.com/","description":"幻方量化推出的AI智能助手和开源大模型","image":"/images/tools/deepseek-chat-icon.png"},{"category":"绘画 AI","anchorId":"JUU3JUJCJTk4JUU3JTk0JUJCJTIwQUk7"},{"name":"即梦AI","link":"https://jimeng.jianying.com/ai-tool/home","description":"字节跳动推出的一站式AI创作平台","image":"/images/tools/jimeng-logo-1.png"},{"name":"Bing Image Creator","link":"https://www.bing.com/images/create","description":"微软必应推出的基于DALL·E的AI图像生成工具","image":"/images/tools/new-bing-icon.png"},{"category":"几何绘图工具","anchorId":"JUU1JTg3JUEwJUU0JUJEJTk1JUU3JUJCJTk4JUU1JTlCJUJFJUU1JUI3JUE1JUU1JTg1JUI310"},{"name":"GeoGebra","link":"https://www.geogebra.org/calculator","description":"以更为灵活的方式进行数学的教授与学习","image":"/images/tools/geogebra.png"},{"name":"desmos","link":"https://www.desmos.com/calculator?lang=zh-CN","description":"Desmos是一款十分实用的函数绘图工具。","image":"/images/tools/desmos.png"},{"category":"博客工具","anchorId":"JUU1JThEJTlBJUU1JUFFJUEyJUU1JUI3JUE1JUU1JTg1JUI313"},{"name":"Hexo","link":"https://hexo.io/zh-cn/","description":"快速、简洁且高效的博客框架","image":"/images/tools/hexo.png"},{"name":"Keep主题","link":"https://keep-docs.xpoet.cn/","description":"Keep 主题使用手册","image":"/images/logo.svg"}]},"version":"4.2.5"}
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"}
+    KEEP.language_code_block = {"copy":"复制代码","copied":"已复制","fold":"折叠代码块","folded":"已折叠"}
+    KEEP.language_copy_copyright = {"copy":"复制版权信息","copied":"已复制","title":"原文标题","author":"原文作者","link":"原文链接"}
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <i class="pjax-progress-icon fas fa-circle-notch fa-spin"></i>
+    
+</div>
+
+
+
+<main class="page-container border-box">
+    <!-- home first screen  -->
+    
+
+    <!-- page content -->
+    <div class="page-main-content border-box">
+        <div class="page-main-content-top">
+            
+<header class="header-wrapper">
+
+    <div class="border-box header-content">
+        <div class="left flex-start border-box">
+            
+                <a class="logo-image border-box" href="/">
+                    <img src="/images/i-nog-logo.png">
+                </a>
+            
+            <a class="site-name border-box" href="/">
+               Lernen Forschen Machen
+            </a>
+        </div>
+
+        <div class="right border-box">
+            <div class="pc border-box">
+                <ul class="menu-list border-box">
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-home"></i>
+                                
+                                首页
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/archives">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-box-archive"></i>
+                                
+                                归档
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/categories">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-layer-group"></i>
+                                
+                                分类
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/tools">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-tools"></i>
+                                
+                                工具
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/about">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-user-graduate"></i>
+                                
+                                关于
+                                
+                            </a>
+                            
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="menu-text-color fas search fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile border-box flex-start">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list border-box">
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-home"></i>
+                                </span>
+                            
+                            首页
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/archives">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-box-archive"></i>
+                                </span>
+                            
+                            归档
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/categories">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-layer-group"></i>
+                                </span>
+                            
+                            分类
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/tools">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-tools"></i>
+                                </span>
+                            
+                            工具
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/about">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-user-graduate"></i>
+                                </span>
+                            
+                            关于
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle border-box">
+
+            <div class="main-content border-box">
+                
+
+                    
+<div class="fade-in-down-animation">
+    <div class="post-page-container border-box">
+        <div class="post-content-container border-box">
+            
+                <div class="post-content-top border-box"
+                     style="height: 300px"
+                >
+                    <div class="cover-post-title">
+                        Linux下QT使用appimage打包程序
+                    </div>
+                    <img class="post-cover" src="/images/posts/qt_appimage.jpeg"
+                         onerror="this.style.display='none'"
+                    >
+                </div>
+            
+
+            <div class="post-content-bottom border-box has-cover">
+                
+
+                
+                    <div class="post-header border-box">
+                        
+                            <div class="avatar-box border-box">
+                                <img src="/images/i-nog-avatar.jpg">
+                            </div>
+                        
+                        <div class="info-box">
+                            <div class="author border-box">
+                                <span class="name">i-Nog</span>
+                                
+                                    <span class="author-badge">Lv3</span>
+                                
+                            </div>
+                            <div class="meta-info border-box">
+                                
+
+<div class="post-meta-info-container border-box post">
+    <div class="post-meta-info border-box">
+        
+
+        
+            <span class="meta-info-item post-create-date">
+                <i class="icon fa-solid fa-calendar-plus"></i>&nbsp;
+                <span class="datetime">2024-08-05 11:20:00</span>
+            </span>
+
+            
+                <span class="meta-info-item post-update-date">
+                    <i class="icon fa-solid fa-file-pen"></i>&nbsp;
+                    <span class="datetime" data-updated="Thu Jul 17 2025 11:31:14 GMT+0800">2025-07-17 11:31:14</span>
+                </span>
+            
+        
+
+        
+            <span class="meta-info-item post-category border-box"><i class="icon fas fa-folder"></i>&nbsp;
+                <ul class="post-category-ul">
+                    
+                            <li class="category-item"><a href="/categories/Linux%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">Linux软件开发</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+
+        
+        
+            <span class="meta-info-item post-wordcount">
+                <i class="icon fas fa-file-word"></i>&nbsp;<span>3.2k 字</span>
+            </span>
+        
+        
+            <span class="meta-info-item post-min2read">
+                <i class="icon fas fa-clock"></i>&nbsp;<span>12 分钟</span>
+            </span>
+        
+        
+    </div>
+
+    
+</div>
+
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="post-content keep-markdown-body ">
+                    
+
+                    
+                         <p>本文详细介绍了在 Linux 下使用 linuxdeployqt 将 Qt 应用程序打包为可移植的 .AppImage 文件的完整流程。内容涵盖环境配置、依赖库处理、patchelf 工具的作用、打包命令的使用、.desktop 文件与图标的自定义，以及显式加载库的特殊处理方法。通过该流程，开发者可实现“一键打包、跨平台分发”的效果，极大提升 Qt 应用在 Linux 系统下的部署效率与兼容性。</p>
+<span id="more"></span>
+<p>部分借鉴<a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/qq_43081702/article/details/115668609" >linux下将qt程序打包成appimage程序<i class="fas fa-external-link-alt"></i></a></p>
+<h2 id="1-配置linuxdeployqt"><a class="markdownIt-Anchor" href="#1-配置linuxdeployqt"></a> 1. 配置linuxdeployqt</h2>
+<p><a class="link"   target="_blank" rel="noopener" href="https://github.com/probonopd/linuxdeployqt/releases" >linuxdeployqt 下载地址<i class="fas fa-external-link-alt"></i></a></p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/12770f8dee4fd60db188f4d12d096bee.png"
+                        alt="12770f8dee4fd60db188f4d12d096bee.png" 
+                 ></p>
+<ol>
+<li>点击点击下载<code>linuxdeploy-continuous-x86_64.AppImage</code></li>
+<li>然后执行如下代码，将改名字后的<code>linuxdeployqt</code>移动到<code>/usr/local/bin</code>目录下</li>
+</ol>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> <span class="built_in">mv</span> linuxdeployqt-continuous-x86_64.AppImage linuxdeployqt</span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">mv</span> ./linuxdeployqt /usr/local/bin</span><br><span class="line"><span class="built_in">cd</span> /usr/local/bin</span><br><span class="line"><span class="built_in">chmod</span> 777 linuxdeployqt</span><br></pre></td></tr></table></figure>
+<p><font color=gree>显示版本表示安装成功</font><br />
+<img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/17d8eab3c3473f5edaf18e7c1e39a118.png"
+                        alt="17d8eab3c3473f5edaf18e7c1e39a118.png" 
+                 ></p>
+<p><code>linuxdeployqt</code>是一个用于将<code>Qt</code>应用程序打包成独立的可执行文件的工具，适用于<code>Linux</code>平台。该工具的主要目的是简化<code>Qt</code>应用程序的分发过程，使得应用程序可以在目标系统上独立运行，而无需用户手动安装所有的依赖项。</p>
+<h3 id="linuxdeployqt的使用示例"><a class="markdownIt-Anchor" href="#linuxdeployqt的使用示例"></a> linuxdeployqt的使用示例</h3>
+<p>以下是一个使用<code>linuxdeployqt</code>打包<code>Qt</code>应用程序的简单示例：</p>
+<ol>
+<li>
+<p><strong>构建 Qt 应用程序</strong>：</p>
+<ul>
+<li>假设你已经使用<code>Qt</code>构建了一个应用程序，并生成了可执行文件<code>myapp</code>。</li>
+</ul>
+</li>
+<li>
+<p><strong>准备 AppDir 目录</strong>：</p>
+<ul>
+<li>创建一个名为 <code>AppDir</code> 的目录，并将<font color=gree>可执行文件和所有必要的资源（如图标和 .desktop 文件）</font>放入该目录中。</li>
+<li>目录结构可能如下所示：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">AppDir/</span><br><span class="line">├── myapp</span><br><span class="line">├── myapp.desktop</span><br><span class="line">├── myapp.png</span><br><span class="line">└── usr/</span><br><span class="line">    ├── bin/</span><br><span class="line">    └── lib/</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>运行 <code>linuxdeployqt</code></strong>：</p>
+<ul>
+<li>使用 <code>linuxdeployqt</code> 工具来打包应用程序。以下是一个简单的命令示例：<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">linuxdeployqt AppDir/myapp -appimage</span><br></pre></td></tr></table></figure>
+</li>
+<li><code>linuxdeployqt</code> 会<font color=gree>自动处理依赖关系、设置 RPATH/RUNPATH</font>，并最终生成一个<code>AppImage</code>文件。</li>
+</ul>
+</li>
+</ol>
+<h3 id="linuxdeployqt的一些选项"><a class="markdownIt-Anchor" href="#linuxdeployqt的一些选项"></a> linuxdeployqt的一些选项</h3>
+<ul>
+<li><strong>-appimage</strong>：生成<code>AppImage</code>文件，这是一个常用选项，可以将应用程序打包成便携式的<code>AppImage</code>格式。</li>
+<li><strong>-bundle-non-qt-libs</strong>：同时打包非<code>Qt</code>库。</li>
+<li><strong>-qmldir=path</strong>：指定<code>QML</code>文件的目录。</li>
+</ul>
+<h3 id="重要注意事项"><a class="markdownIt-Anchor" href="#重要注意事项"></a> 重要注意事项</h3>
+<ul>
+<li><strong>依赖性处理</strong>：<code>linuxdeployqt</code>主要关注<code>Qt</code>应用程序的依赖性处理，但在某些情况下，可能需要<font color=gree>手动调整某些库路径或依赖关系</font>。</li>
+<li><strong>权限</strong>：确保你有足够的权限来运行<code>linuxdeployqt</code>并修改目标文件。</li>
+</ul>
+<h2 id="2-安装patchelf"><a class="markdownIt-Anchor" href="#2-安装patchelf"></a> 2. 安装patchelf</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt install patchelf</span><br></pre></td></tr></table></figure>
+<p><code>patchelf</code> 是一个用于修改 <code>ELF</code>（Executable and Linkable Format）文件的工具。<code>ELF</code> 文件是 <code>Linux</code> 和 <code>Unix</code> 系统上常见的可执行文件、共享库和目标文件格式。<code>patchelf</code> 可以用于调整和修改这些文件的某些属性，以适应特定的需求。常见的用途包括更改动态链接库的路径、修改 <code>RPATH</code> 和 <code>RUNPATH</code> 以及改变可执行文件的解释器路径。</p>
+<h3 id="patchelf的常见用途"><a class="markdownIt-Anchor" href="#patchelf的常见用途"></a> patchelf的常见用途</h3>
+<ol>
+<li>
+<p><strong>更改动态库路径（SONAME）</strong>：</p>
+<ul>
+<li>使用 <code>--set-soname</code> 选项可以更改共享库的 SONAME。</li>
+<li>例如，将共享库的<code>SONAME</code>设置为 <code>libnewname.so</code>：<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">patchelf --set-soname libnewname.so libexample.so</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>修改 RPATH 和 RUNPATH</strong>：</p>
+<ul>
+<li>RPATH 和 RUNPATH 是 ELF 文件中的两个属性，它们指定了运行时动态链接器查找共享库的路径。</li>
+<li>使用 <code>--set-rpath</code> 选项可以更改 ELF 文件的 RPATH：<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">patchelf --set-rpath /new/library/path executable</span><br></pre></td></tr></table></figure>
+</li>
+<li>使用 <code>--set-runpath</code> 选项可以更改 ELF 文件的 RUNPATH：<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">patchelf --set-runpath /new/library/path executable</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>更改解释器路径</strong>：</p>
+<ul>
+<li>ELF 可执行文件中的解释器（interpreter）指定了运行时用于加载和执行程序的动态链接器路径。</li>
+<li>使用 <code>--set-interpreter</code> 选项可以更改解释器路径：<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">patchelf --set-interpreter /new/path/to/ld-linux.so.2 executable</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>添加或删除依赖</strong>：</p>
+<ul>
+<li>使用 <code>--add-needed</code> 选项可以向 ELF 文件中添加一个新的动态库依赖：<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">patchelf --add-needed libnewdependency.so executable</span><br></pre></td></tr></table></figure>
+</li>
+<li>使用 <code>--remove-needed</code> 选项可以从 ELF 文件中移除一个动态库依赖：<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">patchelf --remove-needed libolddependency.so executable</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>显示当前设置</strong>：</p>
+<ul>
+<li>使用 <code>--print-rpath</code> 可以显示 ELF 文件的当前 RPATH：<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">patchelf --print-rpath executable</span><br></pre></td></tr></table></figure>
+</li>
+<li>使用 <code>--print-interpreter</code> 可以显示 ELF 文件的当前解释器路径：<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">patchelf --print-interpreter executable</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="linuxdeployqt和patchelf的关系"><a class="markdownIt-Anchor" href="#linuxdeployqt和patchelf的关系"></a> linuxdeployqt和patchelf的关系</h3>
+<p><code>linuxdeployqt</code> 在打包过程中<font color=gree>需要处理可执行文件和共享库的依赖关系</font>，以确保打包后的应用程序能够正确找到并加载所需的库。为此，<code>linuxdeployqt</code> 会使用 <code>patchelf</code> 来修改<code>ELF</code>文件（可执行文件和共享库）的某些属性，包括但不限于以下内容：</p>
+<ol>
+<li>
+<p><strong>设置 RPATH/RUNPATH</strong>：</p>
+<ul>
+<li><code>linuxdeployqt</code> 使用 <code>patchelf</code> 来设置可执行文件和共享库的<code>RPATH</code>或<code>RUNPATH</code>，使其能够在运行时正确地找到所需的依赖库。</li>
+</ul>
+</li>
+<li>
+<p><strong>更改解释器路径</strong>：</p>
+<ul>
+<li>在某些情况下，<code>linuxdeployqt</code> 可能需要修改可执行文件的解释器路径，以确保应用程序在目标系统上能够正确运行。</li>
+</ul>
+</li>
+<li>
+<p><strong>调整库路径</strong>：</p>
+<ul>
+<li>当应用程序依赖的库被打包到<code>AppDir</code>目录中时，<code>linuxdeployqt</code> 使用 <code>patchelf</code> 修改这些库的路径，使得它们在运行时能够相互找到。</li>
+</ul>
+</li>
+</ol>
+<p><code>linuxdeployqt</code> 在打包 <code>Qt</code> 应用程序时确实会使用到 <code>patchelf</code> 来处理 <code>ELF</code> 文件的依赖关系和路径设置。通过这种方式，<code>linuxdeployqt</code> 能够确保生成的 <code>AppImage</code> 文件包含所有必要的依赖，并且在目标系统上能够正确运行。这样，无论用户的系统环境如何，应用程序都能顺利启动并运行。</p>
+<h2 id="3-qt库路径设置到环境变量"><a class="markdownIt-Anchor" href="#3-qt库路径设置到环境变量"></a> 3. Qt库路径设置到环境变量</h2>
+<ul>
+<li>配置<code>qmake</code>环境</li>
+</ul>
+<p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_39083202/article/details/106864397" >用linuxdeployqt打包程序遇到qmake找不到的问题如何解决<i class="fas fa-external-link-alt"></i></a></p>
+<p><font color=greee>本地存在多个版本的<code>qmake</code>，需要正确指定所用版本，可以通过设置环境变量的方式让操作系统找到它。</font></p>
+<p>修改用户目录下的<code>.bashrc</code>文件，<font color=gree>仅对当前用户永久有效，</font><font color=greee>也可以配置成一次性的，防止环境混乱</font>。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> vim ~/.bashrc</span><br></pre></td></tr></table></figure>
+<p>我的<code>QT</code>安装目录在<code>/opt/Qt5.14.2/5.14.2/gcc_64/bin</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ~/.bashrc文件增加该文本</span></span><br><span class="line"><span class="built_in">export</span> PATH=/opt/Qt5.14.2/5.14.2/gcc_64/bin:<span class="variable">$PATH</span></span><br><span class="line"><span class="built_in">export</span> LD_LIBRARY_PATH=/opt/Qt5.14.2/5.14.2/gcc_64/lib:<span class="variable">$LD_LIBRARY_PATH</span></span><br><span class="line"><span class="built_in">export</span> QT_PLUGIN_PATH=/opt/Qt5.14.2/5.14.2/gcc_64/plugins:<span class="variable">$QT_PLUGIN_PATH</span></span><br><span class="line"><span class="built_in">export</span> QML2_IMPORT_PATH=/opt/Qt5.14.2/5.14.2/gcc_64/qml:<span class="variable">$QML2_IMPORT_PATH</span></span><br></pre></td></tr></table></figure>
+<p>此时再次在终端中运行<code>qmake -v</code>，就能找到相应的执行路径了：</p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/ccb417deeddcfd8113bedabd4e4bc5c0.png"
+                        alt="ccb417deeddcfd8113bedabd4e4bc5c0.png" 
+                 ></p>
+<p><font color=red size=5>根据<code>linuxdeployqt</code>在线帮助文档介绍，其实上述最重要的环境变量就是<code>PATH</code>这条，其他的并没有说，或许其他不要也没啥问题。</font></p>
+<h3 id="lib_path和ld_library_path区别"><a class="markdownIt-Anchor" href="#lib_path和ld_library_path区别"></a> LIB_PATH和LD_LIBRARY_PATH区别</h3>
+<ul>
+<li>
+<p><code>LIB_PATH</code><br />
+<code>LIB_PATH</code>通常<font color=red>不是一个标准的环境变量</font>，但在某些特定的构建系统或脚本中可能会被用作一个<font color=gree>自定义变量</font>来指定库路径。在这些情况下，它的用途取决于具体的构建工具或脚本是如何解释它的。例如，在某些自定义构建系统中，可能会使用<code>LIB_PATH</code>来指定链接时查找库的路径。</p>
+</li>
+<li>
+<p><code>LD_LIBRARY_PATH</code><br />
+<code>LD_LIBRARY_PATH</code>是<code>Unix</code>和<code>Linux</code>系统上的<font color=greee>一个标准环境变量</font>。它用于指定在运行时<font color=gree>动态链接器</font>查找<font color=gree>共享库的目录</font>。当一个程序运行时，<font color=gree>动态链接器</font>会按照以下顺序查找<font color=gree>共享库</font>：</p>
+<ol>
+<li>程序的运行时路径（通常由编译器设置）。</li>
+<li>环境变量<code>LD_LIBRARY_PATH</code>指定的目录。</li>
+<li>系统默认的共享库路径（通常是<code>/lib</code>和<code>/usr/lib</code>等目录）。</li>
+</ol>
+<p>在运行时，如果<code>LD_LIBRARY_PATH</code>指定了目录，动态链接器会<mark>优先</mark>在这些目录中查找共享库。</p>
+</li>
+</ul>
+<h2 id="4-配置其他依赖库的路径"><a class="markdownIt-Anchor" href="#4-配置其他依赖库的路径"></a> 4. 配置其他依赖库的路径</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ~/.bashrc文件增加该文本</span></span><br><span class="line">POSEIDON_ENV=/home/lxp/projects/dvpn-poseidon-kit</span><br><span class="line"><span class="built_in">export</span> LD_LIBRARY_PATH=<span class="variable">$&#123;POSEIDON_ENV&#125;</span>/sysroot/x86/lib:<span class="variable">$&#123;POSEIDON_ENV&#125;</span>/platform_sdk/x86/lib:/home/lxp/projects/l2_plot_tool_new/plot_tool/control_plot_tool/output/lib:<span class="variable">$LD_LIBRARY_PATH</span></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;POSEIDON_ENV&#125;</span>/platform_sdk/x86/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
+<p>其中<code>/home/lxp/projects/l2_plot_tool_new/plot_tool/control_plot_tool/output/lib:</code>是自己编译出来库的存放位置</p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/04739406d6f462af46db4afccbed4726.png"
+                        alt="04739406d6f462af46db4afccbed4726.png" 
+                 ></p>
+<h2 id="5-编译出可执行程序release版本"><a class="markdownIt-Anchor" href="#5-编译出可执行程序release版本"></a> 5. 编译出可执行程序（release版本）</h2>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/b98a53ff54208f8d2eb4a55a5b9ef498.png"
+                        alt="b98a53ff54208f8d2eb4a55a5b9ef498.png" 
+                 ></p>
+<p>并将<font color=greee>可执行文件以及所需配置文件</font>拷贝到打包目录，比如放在<code>app_test/</code></p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/7a84895a0a4df85bc11d28fddb2b3adf.png"
+                        alt="7a84895a0a4df85bc11d28fddb2b3adf.png" 
+                 ></p>
+<h2 id="6-使用linuxdeployqt"><a class="markdownIt-Anchor" href="#6-使用linuxdeployqt"></a> 6. 使用linuxdeployqt</h2>
+<p>直接对可执行程序进行操作</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">linuxdeployqt control_plot_tool -appimage</span><br></pre></td></tr></table></figure>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/3c9a41d58a4709387b1d6aa4d1e883a0.png"
+                        alt="3c9a41d58a4709387b1d6aa4d1e883a0.png" 
+                 ></p>
+<p>生成以下文件：</p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/5f72b12281a330c1484b04afaba1bedc.png"
+                        alt="5f72b12281a330c1484b04afaba1bedc.png" 
+                 ></p>
+<p>可以看到创建了<code>lib</code>等目录。</p>
+<p><font color=red size=5>重要提示：</font></p>
+<ul>
+<li>因为<code>linuxdeployqt</code>将在内部使用<code>ldd</code>命令，来确定从何处将库复制到包中。<code>ldd</code>命令本身<font color=gree>只能查找隐式加载的so</font>，故若程序中代码使用<font color=greee>显式加载的so</font>，它是找不到的，这时<font color=yellow>需要开发者自己去保证显式加载so的路径可被搜索</font>。</li>
+<li>举个例子：若存在程序<code>A</code>显式加载<code>B.so</code>，<code>B.so</code>隐式加载<code>C.so</code>，则对程序<code>A</code>使用<code>linuxdeployqt</code>拷贝依赖时，程序<code>A</code>的间接依赖文件<code>C.so</code>，将不会被拷贝。当程序跑起来加载<code>B.so</code>时，就会报找不到<code>C.so</code>的错误。这一点尤其需要注意。此时我们需要再对<code>B.so</code>使用一次<code>linuxdeployqt</code>拷贝依赖。这样程序<code>A</code>加载<code>B.so</code>，<code>B.so</code>加载<code>C.so</code>，就都可以找到了。</li>
+</ul>
+<h2 id="7-修改desktop"><a class="markdownIt-Anchor" href="#7-修改desktop"></a> 7. 修改desktop</h2>
+<p>因为默认生成的<code>default.desktop</code>存在问题</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Desktop file: /home/lxp/projects/l2_plot_tool_new/plot_tool/app_test/default.desktop</span><br><span class="line">Categories entry not found in desktop file</span><br><span class="line">.desktop file is missing a Categories= key</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// default.desktop文件内容</span><br><span class="line">[Desktop Entry]</span><br><span class="line">Type=Application</span><br><span class="line">Name=Application</span><br><span class="line">Exec=AppRun %F</span><br><span class="line">Icon=default</span><br><span class="line">Comment=Edit this default file</span><br><span class="line">Terminal=true</span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>替换<code>default.desktop</code>成<code>control_plot_tool.desktop</code></p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// control_plot_tool.desktop文件内容</span><br><span class="line">[Desktop Entry]</span><br><span class="line">Type=Application</span><br><span class="line">Name=ControlPlotTool</span><br><span class="line">Comment=This is a tool for control plot</span><br><span class="line">Exec=control_plot_tool</span><br><span class="line">Icon=control_plot_tool</span><br><span class="line">Categories=Application;</span><br><span class="line"></span><br><span class="line">X-AppImage-Version=59b7e67</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>将<code>default.png</code>替换成自定义图表<code>control_plot_tool.png</code></p>
+</li>
+</ul>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/b95677a51db57eb0a2532d8b1ea66df1.png"
+                        alt="b95677a51db57eb0a2532d8b1ea66df1.png" 
+                 ></p>
+<ul>
+<li>再次使用<code>linuxdeployqt</code></li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">linuxdeployqt control_plot_tool -appimage</span><br></pre></td></tr></table></figure>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/2cdf0d8d7fd0110d3e87d3886189d551.png"
+                        alt="2cdf0d8d7fd0110d3e87d3886189d551.png" 
+                 ></p>
+<p>生成<code>*.AppImage</code>文件</p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/d01076caa28f19a8c28b4c6189723dba.png"
+                        alt="d01076caa28f19a8c28b4c6189723dba.png" 
+                 ></p>
+<font color=gree>
+<ul>
+<li><code>AppRun</code>：这是一个可执行文件，作为<code>AppImage</code>的入口点。</li>
+<li><code>.desktop</code>文件：这是一个标准的桌面条目文件，描述了应用程序的基本信息，如名称、图标和可执行文件路径。</li>
+<li>图标文件：通常是<code>.png</code>格式的图标文件，用于在应用程序启动器和其他界面中显示。</li>
+</ul>
+</font>
+<h2 id="8-增加运行脚本"><a class="markdownIt-Anchor" href="#8-增加运行脚本"></a> 8. 增加运行脚本</h2>
+<p>正常双击<code>*.AppImage</code>文件就可以运行程序，但由于权限原因可能无法正常使用程序。</p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/87fe44962e82d8fbf4f1b151ef64a97f.png"
+                        alt="87fe44962e82d8fbf4f1b151ef64a97f.png" 
+                 ></p>
+<p>所以增加以下运行脚本<code>run.sh</code>，通过脚本启动程序：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># run.sh 文件内容</span></span><br><span class="line">./*.AppImage --appimage-extract-and-run</span><br></pre></td></tr></table></figure>
+<p><code>--appimage-extract-and-run</code> 是一个用于<code>AppImage</code>文件的命令行选项。<code>AppImage</code>是一种<font color=greee>便携式软件打包格式</font>，主要用于在<code>Linux</code>系统上分发应用程序。它允许开发者将<font color=gree>应用程序及其所有依赖项</font>打包成<font color=gree>一个单一的可执行文件</font>，用户可以通过下载并运行这个文件来使用应用程序，而<font color=yellow>无需进行传统的安装过程</font>。</p>
+<p>当你使用 <code>--appimage-extract-and-run</code> 选项运行<code>AppImage</code>文件时，会发生以下情况：</p>
+<ol>
+<li><strong>提取内容</strong>：<code>AppImage</code>文件的内容会被提取到<font color=gree>一个临时目录中</font>。</li>
+<li><strong>运行应用程序</strong>：<font color=gree>从提取的临时目录中直接运行应用程序</font>。</li>
+</ol>
+<p>这种方式的优点在于，可以在不实际提取文件到系统的情况下运行应用程序，同时也方便进行调试和测试。</p>
+<ul>
+<li>示例</li>
+</ul>
+<p>假设你有一个名为 <code>example.AppImage</code> 的<code>AppImage</code>文件，你可以使用以下命令来提取并运行它：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./example.AppImage --appimage-extract-and-run</span><br></pre></td></tr></table></figure>
+<ul>
+<li>工作原理</li>
+</ul>
+<ol>
+<li>
+<p><strong>提取内容</strong>：</p>
+<ul>
+<li><code>AppImage</code>文件本质上是一个压缩文件，<font color=gree>包含了应用程序及其所有依赖项</font>。</li>
+<li>使用 <code>--appimage-extract-and-run</code> 选项时，<code>AppImage</code>会在一个临时目录（通常是 <code>/tmp</code> 目录下）中解压缩其内容。</li>
+</ul>
+</li>
+<li>
+<p><strong>运行应用程序</strong>：</p>
+<ul>
+<li>在提取内容之后，<code>AppImage</code>会找到<font color=gree>主可执行文件</font>并运行它。</li>
+<li>运行完成后，<font color=greee>临时目录会被清理（如果程序正常退出）</font>。</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>
+<p>使用场景</p>
+<ul>
+<li><strong>调试</strong>：在开发和测试过程中，可以使用 <code>--appimage-extract-and-run</code> 选项来<font color=gree>查看<code>AppImage</code>内部的文件结构</font>，并直接运行应用程序，以便快速找到并解决问题。</li>
+<li><strong>临时运行</strong>：如果你只想临时运行一个<code>AppImage</code>文件，而不想提取其内容到系统的某个固定位置，这个选项非常方便。</li>
+<li><strong>环境隔离</strong>：有时你可能希望在一个临时隔离的环境中运行应用程序，<font color=gree>以确保它不会影响系统的其他部分</font>。</li>
+</ul>
+</li>
+<li>
+<p>注意事项</p>
+<ul>
+<li>由于内容被提取到临时目录中，因此在运行过程中可能<font color=gree>会占用一些额外的磁盘空间</font>。</li>
+<li>这个选项主要用于调试和测试，通常情况下，直接运行<code>AppImage</code>文件（不使用 <code>--appimage-extract-and-run</code> 选项）会更加高效。</li>
+</ul>
+</li>
+</ul>
+<h2 id="9-拷贝依赖库脚本span-stylecolor-greencopylibshspan"><a class="markdownIt-Anchor" href="#9-拷贝依赖库脚本span-stylecolor-greencopylibshspan"></a> 9. 拷贝依赖库脚本<span style="color: green;">copylib.sh</span></h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">LibDir=<span class="variable">$PWD</span><span class="string">&quot;/lib&quot;</span></span><br><span class="line">Target=<span class="variable">$1</span></span><br><span class="line"></span><br><span class="line">lib_array=($(ldd <span class="variable">$Target</span> | grep -o <span class="string">&quot;/.*&quot;</span> | grep -o <span class="string">&quot;/.*/[^[:space:]]*&quot;</span>))</span><br><span class="line"></span><br><span class="line">$(<span class="built_in">mkdir</span> <span class="variable">$LibDir</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> Variable <span class="keyword">in</span> <span class="variable">$&#123;lib_array[@]&#125;</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    <span class="built_in">cp</span> <span class="string">&quot;<span class="variable">$Variable</span>&quot;</span> <span class="variable">$LibDir</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># control_plot_tool是生成的可执行文件</span></span><br><span class="line">bash copylib.sh control_plot_tool</span><br></pre></td></tr></table></figure>
+
+                    
+                </div>
+
+                
+
+                <div class="post-bottom-tags-and-share border-box">
+                    <div>
+                        
+                    </div>
+                    <div>
+                        
+                            <div class="post-share-container border-box">
+    <ul class="share-list-wrap border-box">
+        <li class="qq share-item border-box flex-center tooltip"
+            data-tooltip-content="分享到 QQ"
+        >
+            <i class="fa-brands fa-qq"></i>
+        </li>
+        <li class="wechat share-item border-box flex-center tooltip tooltip-img"
+            data-tooltip-content="分享到微信"
+            data-tooltip-img-tip="微信扫一扫"
+            data-tooltip-img-style="background-color: #fff; top: -10px; padding: 0.6rem 0.6rem 0.1rem 0.6rem;"
+        >
+            <i class="fa-brands fa-weixin"></i>
+        </li>
+        <li class="weibo share-item border-box flex-center tooltip"
+            data-tooltip-content="分享到微博"
+        >
+            <i class="fa-brands fa-weibo"></i>
+        </li>
+    </ul>
+</div>
+
+                        
+                    </div>
+                </div>
+
+                
+                    
+
+<div class="reward-author-container border-box flex-center">
+    <div class="reward-btn border-box flex-center tooltip tooltip-img"
+            data-tooltip-img-url="/images/pay/pay.png"
+            data-tooltip-img-trigger="click"
+            data-tooltip-img-style="top: -6px;"
+    >
+        <i class="fa-solid fa-gift"></i>&nbsp;请作者吃姜饼
+    </div>
+</div>
+
+                
+
+                
+                    <div class="post-nav border-box">
+                        
+                            <div class="prev-post">
+                                <a class="prev"
+                                   rel="prev"
+                                   href="/2025/02/04/%E9%9D%9E%E7%BA%BF%E6%80%A7%E4%BC%98%E5%8C%96%E5%B7%A5%E5%85%B7IPOPT%E5%AE%89%E8%A3%85/"
+                                   title="非线性优化工具IPOPT安装"
+                                >
+                                    <span class="left arrow-icon flex-center">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">非线性优化工具IPOPT安装</span>
+                                        <span class="post-nav-item">上一篇</span>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                        
+                            <div class="next-post">
+                                <a class="next"
+                                   rel="next"
+                                   href="/2024/02/15/NFS%E6%8C%82%E8%BD%BD/"
+                                   title="NFS挂载"
+                                >
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">NFS挂载</span>
+                                        <span class="post-nav-item">下一篇</span>
+                                    </span>
+                                    <span class="right arrow-icon flex-center">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                    </div>
+                
+
+                
+                    
+
+
+    <div class="comments-container border-box">
+        <div id="comments-anchor" class="comment-area-title border-box">
+            <i class="fas fa-comments"></i>&nbsp;评论
+        </div>
+        <div class="comment-plugin-fail border-box">
+    <span class="fail-tip">评论插件加载失败</span>
+    <button class="reload keep-button">点击重新加载</button>
+</div>
+<div class="comment-plugin-loading flex-center border-box">
+    <i class="loading-icon fa-solid fa-spinner fa-spin"></i>
+    <span class="load-tip">正在加载评论插件</span>
+</div>
+<script data-pjax>
+  window.KeepCommentPlugin = {}
+  window.KeepCommentPlugin.hideLoading = () => {
+    const cplDom = document.querySelector('.comments-container .comment-plugin-loading')
+    cplDom.style.display = 'none'
+  }
+  window.KeepCommentPlugin.loadFailHandle = () => {
+    window.KeepCommentPlugin.hideLoading()
+    const cpfDom = document.querySelector('.comments-container .comment-plugin-fail')
+    cpfDom.style.display = 'flex'
+    cpfDom.querySelector('.reload').addEventListener('click', () => {
+      window.location.reload()
+    })
+  }
+</script>
+
+        
+            
+
+    <div class="giscus-comments-container">
+        <div class="giscus" id="giscus"></div>
+        <script data-pjax
+                onerror="window.KeepCommentPlugin.loadFailHandle()"
+        >
+          if (!window.KeepCommentPlugin?.getGiscusTheme) {
+            window.KeepCommentPlugin.getGiscusTheme = () => {
+              return document.documentElement.classList.contains('dark-mode') ? 'dark_dimmed' : 'light_tritanopia'
+            }
+          }
+
+          if (!window.KeepCommentPlugin?.changeGiscusTheme) {
+            window.KeepCommentPlugin.changeGiscusTheme = () => {
+              const iframe = document.querySelector('iframe.giscus-frame')
+              iframe && iframe.contentWindow.postMessage({
+                giscus: {
+                  setConfig: {
+                    theme: window.KeepCommentPlugin.getGiscusTheme()
+                  }
+                }
+              }, 'https://giscus.app')
+            }
+          }
+
+          if (!window.KeepCommentPlugin?.initGiscus) {
+            window.KeepCommentPlugin.initGiscus = () => {
+              const script = document.createElement('script')
+              script.async = true
+              script.src = 'https://giscus.app/client.js'
+              script.setAttribute('data-repo', 'i-Nog/iNog-blog-comments')
+              script.setAttribute('data-repo-id', 'R_kgDOPF7ymg')
+              script.setAttribute('data-category', 'Announcements')
+              script.setAttribute('data-category-id', 'DIC_kwDOPF7yms4Cscff')
+              script.setAttribute('data-reactions-enabled', '0')
+              script.setAttribute('data-lang', 'zh-CN')
+              script.setAttribute('data-mapping', 'pathname')
+              script.setAttribute('data-strict', '0')
+              script.setAttribute('data-emit-metadata', '0')
+              script.setAttribute('data-input-position', 'top')
+              script.setAttribute('crossorigin', 'anonymous')
+              script.setAttribute('loading', 'lazy')
+              script.setAttribute('data-theme', window.KeepCommentPlugin.getGiscusTheme())
+              document.querySelector('.giscus-comments-container').appendChild(script)
+              script.onerror = () => {
+                window.KeepCommentPlugin.loadFailHandle()
+              }
+              script.onload = () => {
+                window.KeepCommentPlugin.hideLoading()
+              }
+              const toggleThemeBtn = document.querySelector('.tool-toggle-theme-mode')
+              toggleThemeBtn && toggleThemeBtn.addEventListener('click', () => {
+                window.KeepCommentPlugin.changeGiscusTheme()
+              })
+            }
+          }
+
+          if ('true' === "true") {
+            setTimeout(() => {
+              window.KeepCommentPlugin.initGiscus()
+            }, 1000)
+          } else {
+            window.addEventListener("DOMContentLoaded", window.KeepCommentPlugin.initGiscus)
+          }
+        </script>
+    </div>
+
+
+        
+    </div>
+
+
+
+
+
+                
+            </div>
+        </div>
+
+        
+            <div class="pc-post-toc right-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E9%85%8D%E7%BD%AElinuxdeployqt"><span class="nav-text"> 1. 配置linuxdeployqt</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#linuxdeployqt%E7%9A%84%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-text"> linuxdeployqt的使用示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linuxdeployqt%E7%9A%84%E4%B8%80%E4%BA%9B%E9%80%89%E9%A1%B9"><span class="nav-text"> linuxdeployqt的一些选项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E8%A6%81%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-text"> 重要注意事项</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%AE%89%E8%A3%85patchelf"><span class="nav-text"> 2. 安装patchelf</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#patchelf%E7%9A%84%E5%B8%B8%E8%A7%81%E7%94%A8%E9%80%94"><span class="nav-text"> patchelf的常见用途</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linuxdeployqt%E5%92%8Cpatchelf%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-text"> linuxdeployqt和patchelf的关系</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-qt%E5%BA%93%E8%B7%AF%E5%BE%84%E8%AE%BE%E7%BD%AE%E5%88%B0%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="nav-text"> 3. Qt库路径设置到环境变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#lib_path%E5%92%8Cld_library_path%E5%8C%BA%E5%88%AB"><span class="nav-text"> LIB_PATH和LD_LIBRARY_PATH区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E9%85%8D%E7%BD%AE%E5%85%B6%E4%BB%96%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E8%B7%AF%E5%BE%84"><span class="nav-text"> 4. 配置其他依赖库的路径</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E7%BC%96%E8%AF%91%E5%87%BA%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%A8%8B%E5%BA%8Frelease%E7%89%88%E6%9C%AC"><span class="nav-text"> 5. 编译出可执行程序（release版本）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E4%BD%BF%E7%94%A8linuxdeployqt"><span class="nav-text"> 6. 使用linuxdeployqt</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-%E4%BF%AE%E6%94%B9desktop"><span class="nav-text"> 7. 修改desktop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-%E5%A2%9E%E5%8A%A0%E8%BF%90%E8%A1%8C%E8%84%9A%E6%9C%AC"><span class="nav-text"> 8. 增加运行脚本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-%E6%8B%B7%E8%B4%9D%E4%BE%9D%E8%B5%96%E5%BA%93%E8%84%9A%E6%9C%ACspan-stylecolor-greencopylibshspan"><span class="nav-text"> 9. 拷贝依赖库脚本copylib.sh</span></a></li></ol>
+    </div>
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+        </div>
+
+        <div class="page-main-content-bottom border-box">
+            
+<footer class="footer border-box">
+    <div class="copyright-info info-item">
+    &copy;&nbsp;<span>2021</span>&nbsp;-&nbsp;2025
+    
+            &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/">i-Nog</a>
+        
+    </div>
+
+    <div class="theme-info info-item">
+        由&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;驱动&nbsp;&&nbsp;主题&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
+    </div>
+
+    
+        
+        <div class="deploy-info info-item">
+            
+            本站由 <span class="tooltip" data-tooltip-content="GitHub Pages"><img src="/images/brands/github.png"></span> 提供部署服务
+            
+        </div>
+    
+
+    
+        <div class="count-info info-item">
+            
+                <span class="count-item border-box word">
+                    <span class="item-type border-box">总字数</span>
+                    <span class="item-value border-box word">83.4k</span>
+                </span>
+            
+
+            
+
+            
+        </div>
+    
+
+    
+        <div class="record-info info-item">
+            
+                
+            
+        </div>
+    
+</footer>
+
+        </div>
+    </div>
+
+    <!-- post tools -->
+    
+        <div class="post-tools right-toc">
+            <div class="post-tools-container border-box">
+    <ul class="post-tools-list border-box">
+        <!-- PC encrypt again -->
+        
+
+        <!-- PC TOC show toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- PC go comment -->
+        
+            <li class="tools-item flex-center go-to-comments">
+                <i class="fas fa-comment"></i>
+                <span class="post-comments-count"></span>
+            </li>
+        
+
+        <!-- PC full screen -->
+        <li class="tools-item flex-center full-screen">
+            <i class="fa-solid fa-expand"></i>
+        </li>
+    </ul>
+</div>
+
+        </div>
+    
+
+    <!-- side tools -->
+    <div class="side-tools">
+        <div class="side-tools-container border-box ">
+    <ul class="side-tools-list side-tools-show-handle border-box">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <!-- toggle mode -->
+        
+            <li class="tools-item tool-toggle-theme-mode flex-center">
+                <i class="fas fa-moon"></i>
+            </li>
+        
+
+        <!-- rss -->
+        
+
+        <!-- to bottom -->
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list border-box">
+        
+            <li class="tools-item toggle-show-toc-tablet flex-center">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        
+            <li class="tools-item go-to-comments-tablet flex-center">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+        <li class="tools-item tool-scroll-to-top flex-center show-arrow">
+            <i class="arrow fas fa-arrow-up"></i>
+            <span class="percent"></span>
+        </li>
+    </ul>
+</div>
+
+    </div>
+
+    <!-- image mask -->
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
+</div>
+
+
+    <!-- local search -->
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+    <!-- tablet toc -->
+    
+        <div class="tablet-post-toc-mask">
+            <div class="tablet-post-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E9%85%8D%E7%BD%AElinuxdeployqt"><span class="nav-text"> 1. 配置linuxdeployqt</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#linuxdeployqt%E7%9A%84%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-text"> linuxdeployqt的使用示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linuxdeployqt%E7%9A%84%E4%B8%80%E4%BA%9B%E9%80%89%E9%A1%B9"><span class="nav-text"> linuxdeployqt的一些选项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E8%A6%81%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-text"> 重要注意事项</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%AE%89%E8%A3%85patchelf"><span class="nav-text"> 2. 安装patchelf</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#patchelf%E7%9A%84%E5%B8%B8%E8%A7%81%E7%94%A8%E9%80%94"><span class="nav-text"> patchelf的常见用途</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linuxdeployqt%E5%92%8Cpatchelf%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-text"> linuxdeployqt和patchelf的关系</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-qt%E5%BA%93%E8%B7%AF%E5%BE%84%E8%AE%BE%E7%BD%AE%E5%88%B0%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="nav-text"> 3. Qt库路径设置到环境变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#lib_path%E5%92%8Cld_library_path%E5%8C%BA%E5%88%AB"><span class="nav-text"> LIB_PATH和LD_LIBRARY_PATH区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E9%85%8D%E7%BD%AE%E5%85%B6%E4%BB%96%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E8%B7%AF%E5%BE%84"><span class="nav-text"> 4. 配置其他依赖库的路径</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E7%BC%96%E8%AF%91%E5%87%BA%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%A8%8B%E5%BA%8Frelease%E7%89%88%E6%9C%AC"><span class="nav-text"> 5. 编译出可执行程序（release版本）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E4%BD%BF%E7%94%A8linuxdeployqt"><span class="nav-text"> 6. 使用linuxdeployqt</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-%E4%BF%AE%E6%94%B9desktop"><span class="nav-text"> 7. 修改desktop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-%E5%A2%9E%E5%8A%A0%E8%BF%90%E8%A1%8C%E8%84%9A%E6%9C%AC"><span class="nav-text"> 8. 增加运行脚本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-%E6%8B%B7%E8%B4%9D%E4%BE%9D%E8%B5%96%E5%BA%93%E8%84%9A%E6%9C%ACspan-stylecolor-greencopylibshspan"><span class="nav-text"> 9. 拷贝依赖库脚本copylib.sh</span></a></li></ol>
+    </div>
+</div>
+
+            </div>
+        </div>
+    
+</main>
+
+
+
+
+
+<!-- common js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/header-shrink.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/back2top.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/toggle-theme.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/code-block.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/main.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/libs/anime.min.js"></script>
+
+<!-- local search -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/local-search.min.js"></script>
+
+
+<!-- lazyload -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/lazyload.min.js"></script>
+
+
+<div class="pjax">
+    <!-- home page -->
+    
+
+    <!-- post page -->
+    
+        <!-- post-helper -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/post/post-helper.min.js"></script>
+
+        <!-- toc -->
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/post/toc.min.js"></script>
+        
+
+        <!-- copyright-info -->
+        
+
+        <!-- share -->
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/post/share.min.js"></script>
+        
+    
+
+    <!-- categories page -->
+    
+
+    <!-- links page -->
+    
+
+    <!-- photos page -->
+    
+
+    <!-- tools page -->
+    
+</div>
+
+<!-- mermaid -->
+
+
+<!-- pjax -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/libs/pjax.min.js"></script>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart()
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd()
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'))
+            KEEP.initExecute()
+        });
+    });
+</script>
+
+
+
+
+    
+        
+    
+
+</body>
+</html>
