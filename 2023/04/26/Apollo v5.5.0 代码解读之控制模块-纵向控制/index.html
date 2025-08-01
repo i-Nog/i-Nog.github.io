@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="i-Nog">
+    
+    <title>
+        
+            Apollo v5.5.0 代码解读 之 控制模块-纵向控制 |
+        
+        Lernen Forschen Machen
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+        <link rel="shortcut icon" href="/images/i-nog-logo.png">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/font/css/fontawesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/font/css/regular.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/font/css/solid.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/font/css/brands.min.css">
+    
+        
+            
+        
+            
+                
+<link rel="stylesheet" href="/css/custom-1.css">
+
+            
+        
+    
+    <script class="keep-theme-configurations">
+    const KEEP = window.KEEP || {}
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN","path":"search.json"}
+    KEEP.theme_config = {"base_info":{"primary_color":"#FF9900","title":"Lernen Forschen Machen","author":"i-Nog","avatar":"/images/i-nog-avatar.jpg","logo":"/images/i-nog-logo.png","favicon":"/images/i-nog-logo.png"},"menu":{"home":"/ || fa-solid fa-home","archives":"/archives || fa-solid fa-box-archive","categories":"/categories || fa-solid fa-layer-group","tools":"/tools || fa-solid fa-tools","about":"/about || fa-solid fa-user-graduate"},"first_screen":{"enable":true,"background_img":"/images/bg.svg","background_img_dark":"/images/bg.svg","description":"Keep writing and Keep loving.","hitokoto":true},"social_contact":{"enable":true,"links":{"github":null,"weixin":null,"qq":null,"weibo":null,"zhihu":null,"twitter":null,"x":null,"facebook":null,"email":"linxiaopeng-nog@qq.com"}},"scroll":{"progress_bar":false,"percent":true,"hide_header":true},"home":{"announcement":"转载请注明出处，尊重原创，从我做起。","category":true,"tag":false,"post_datetime":"updated","post_datetime_format":"YYYY-MM-DD HH:mm:ss"},"post":{"author_badge":{"enable":true,"level_badge":true,"custom_badge":["One","Two","Three"]},"word_count":{"wordcount":true,"min2read":true},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":false,"share":true,"reward":{"enable":true,"img_link":"/images/pay/pay.png","text":"请作者吃姜饼","icon":null}},"code_block":{"tools":{"enable":true,"style":"default"},"highlight_theme":"obsidian"},"toc":{"enable":true,"number":false,"expand_all":false,"init_open":true,"layout":"right"},"website_count":{"busuanzi_count":{"enable":false,"site_uv":true,"site_pv":true,"page_pv":true}},"local_search":{"enable":true,"preload":true},"comment":{"enable":true,"use":"giscus","valine":{"appid":null,"appkey":null,"server_urls":null,"placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.39"},"waline":{"server_url":null,"reaction":false,"version":"3.3.2"},"giscus":{"repo":"i-Nog/iNog-blog-comments","repo_id":"R_kgDOPF7ymg","category":"Announcements","category_id":"DIC_kwDOPF7yms4Cscff","reactions_enabled":false},"artalk":{"server":null},"disqus":{"shortname":null}},"rss":{"enable":false},"lazyload":{"enable":true},"cdn":{"enable":true,"provider":"cdnjs"},"pjax":{"enable":true},"footer":{"since":2021,"word_count":true,"site_deploy":{"enable":true,"provider":"github","url":null},"record":{"enable":true,"list":[{"code":null,"link":null}]}},"inject":{"enable":true,"css":[null,"/css/custom-1.css"],"js":[null]},"root":"","source_data":{"tools":[{"category":"AI 工具汇总","anchorId":"QUklMjAlRTUlQjclQTUlRTUlODUlQjclRTYlQjElODclRTYlODAlQkI0"},{"name":"AI 工具集","link":"https://ai-bot.cn/","description":"AI工具集导航收录了国内外数百个不同类型的AI工具","image":"/images/tools/ai-bot-logo-black.png"},{"name":"Leaderboard Overview","link":"https://lmarena.ai/leaderboard","description":"See how leading models stack up across text, image, vision, and beyond.","image":"/images/tools/lmarena.png"},{"category":"聊天 AI","anchorId":"JUU4JTgxJThBJUU1JUE0JUE5JTIwQUk3"},{"name":"ChatGPT","link":"https://chatgpt.com/","description":"OpenAI 旗下 AI 聊天对话工具","image":"/images/tools/chatgpt-icon.png"},{"name":"Claude","link":"https://claude.ai/","description":"Anthropic公司推出的对话式AI智能助手","image":"/images/tools/anthropic-icon.png"},{"name":"DeepSeek","link":"https://chat.deepseek.com/","description":"幻方量化推出的AI智能助手和开源大模型","image":"/images/tools/deepseek-chat-icon.png"},{"category":"绘画 AI","anchorId":"JUU3JUJCJTk4JUU3JTk0JUJCJTIwQUk7"},{"name":"即梦AI","link":"https://jimeng.jianying.com/ai-tool/home","description":"字节跳动推出的一站式AI创作平台","image":"/images/tools/jimeng-logo-1.png"},{"name":"Bing Image Creator","link":"https://www.bing.com/images/create","description":"微软必应推出的基于DALL·E的AI图像生成工具","image":"/images/tools/new-bing-icon.png"},{"category":"几何绘图工具","anchorId":"JUU1JTg3JUEwJUU0JUJEJTk1JUU3JUJCJTk4JUU1JTlCJUJFJUU1JUI3JUE1JUU1JTg1JUI310"},{"name":"GeoGebra","link":"https://www.geogebra.org/calculator","description":"以更为灵活的方式进行数学的教授与学习","image":"/images/tools/geogebra.png"},{"name":"desmos","link":"https://www.desmos.com/calculator?lang=zh-CN","description":"Desmos是一款十分实用的函数绘图工具。","image":"/images/tools/desmos.png"},{"category":"博客工具","anchorId":"JUU1JThEJTlBJUU1JUFFJUEyJUU1JUI3JUE1JUU1JTg1JUI313"},{"name":"Hexo","link":"https://hexo.io/zh-cn/","description":"快速、简洁且高效的博客框架","image":"/images/tools/hexo.png"},{"name":"Keep主题","link":"https://keep-docs.xpoet.cn/","description":"Keep 主题使用手册","image":"/images/logo.svg"}]},"version":"4.2.5"}
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"}
+    KEEP.language_code_block = {"copy":"复制代码","copied":"已复制","fold":"折叠代码块","folded":"已折叠"}
+    KEEP.language_copy_copyright = {"copy":"复制版权信息","copied":"已复制","title":"原文标题","author":"原文作者","link":"原文链接"}
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <i class="pjax-progress-icon fas fa-circle-notch fa-spin"></i>
+    
+</div>
+
+
+
+<main class="page-container border-box">
+    <!-- home first screen  -->
+    
+
+    <!-- page content -->
+    <div class="page-main-content border-box">
+        <div class="page-main-content-top">
+            
+<header class="header-wrapper">
+
+    <div class="border-box header-content">
+        <div class="left flex-start border-box">
+            
+                <a class="logo-image border-box" href="/">
+                    <img src="/images/i-nog-logo.png">
+                </a>
+            
+            <a class="site-name border-box" href="/">
+               Lernen Forschen Machen
+            </a>
+        </div>
+
+        <div class="right border-box">
+            <div class="pc border-box">
+                <ul class="menu-list border-box">
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-home"></i>
+                                
+                                首页
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/archives">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-box-archive"></i>
+                                
+                                归档
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/categories">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-layer-group"></i>
+                                
+                                分类
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/tools">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-tools"></i>
+                                
+                                工具
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/about">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-user-graduate"></i>
+                                
+                                关于
+                                
+                            </a>
+                            
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="menu-text-color fas search fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile border-box flex-start">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list border-box">
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-home"></i>
+                                </span>
+                            
+                            首页
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/archives">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-box-archive"></i>
+                                </span>
+                            
+                            归档
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/categories">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-layer-group"></i>
+                                </span>
+                            
+                            分类
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/tools">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-tools"></i>
+                                </span>
+                            
+                            工具
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/about">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-user-graduate"></i>
+                                </span>
+                            
+                            关于
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle border-box">
+
+            <div class="main-content border-box">
+                
+
+                    
+<div class="fade-in-down-animation">
+    <div class="post-page-container border-box">
+        <div class="post-content-container border-box">
+            
+                <div class="post-content-top border-box"
+                     style="height: 300px"
+                >
+                    <div class="cover-post-title">
+                        Apollo v5.5.0 代码解读 之 控制模块-纵向控制
+                    </div>
+                    <img class="post-cover" src="/images/posts/lon_control.jpeg"
+                         onerror="this.style.display='none'"
+                    >
+                </div>
+            
+
+            <div class="post-content-bottom border-box has-cover">
+                
+
+                
+                    <div class="post-header border-box">
+                        
+                            <div class="avatar-box border-box">
+                                <img src="/images/i-nog-avatar.jpg">
+                            </div>
+                        
+                        <div class="info-box">
+                            <div class="author border-box">
+                                <span class="name">i-Nog</span>
+                                
+                                    <span class="author-badge">Lv3</span>
+                                
+                            </div>
+                            <div class="meta-info border-box">
+                                
+
+<div class="post-meta-info-container border-box post">
+    <div class="post-meta-info border-box">
+        
+
+        
+            <span class="meta-info-item post-create-date">
+                <i class="icon fa-solid fa-calendar-plus"></i>&nbsp;
+                <span class="datetime">2023-04-26 11:15:00</span>
+            </span>
+
+            
+                <span class="meta-info-item post-update-date">
+                    <i class="icon fa-solid fa-file-pen"></i>&nbsp;
+                    <span class="datetime" data-updated="Thu Jul 31 2025 16:16:54 GMT+0800">2025-07-31 16:16:54</span>
+                </span>
+            
+        
+
+        
+            <span class="meta-info-item post-category border-box"><i class="icon fas fa-folder"></i>&nbsp;
+                <ul class="post-category-ul">
+                    
+                            <li class="category-item"><a href="/categories/%E7%AE%97%E6%B3%95/">算法</a></li>
+                        
+                    
+                            <li class="category-item">&nbsp;<i class="icon fas fa-angle-right"></i>&nbsp;<a href="/categories/Apollo%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB/">Apollo源码解读</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+
+        
+        
+            <span class="meta-info-item post-wordcount">
+                <i class="icon fas fa-file-word"></i>&nbsp;<span>5.2k 字</span>
+            </span>
+        
+        
+            <span class="meta-info-item post-min2read">
+                <i class="icon fas fa-clock"></i>&nbsp;<span>25 分钟</span>
+            </span>
+        
+        
+    </div>
+
+    
+</div>
+
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="post-content keep-markdown-body ">
+                    
+
+                    
+                         <h1 id="font-colorgreeeclass-loncontrollerfont"><a class="markdownIt-Anchor" href="#font-colorgreeeclass-loncontrollerfont"></a> <font color=greee>Class LonController</font></h1>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/5a12aac4dccf13f0b9a62ccb0ea7b45b.png"
+                        alt="5a12aac4dccf13f0b9a62ccb0ea7b45b.png" 
+                 ></p>
+<span id="more"></span>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/13cedef3be29cdb6e1c3eac14328aa38.png"
+                        alt="13cedef3be29cdb6e1c3eac14328aa38.png" 
+                 ></p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/63a85aa54d06225ee7b7f8c3dd7906e2.png"
+                        alt="63a85aa54d06225ee7b7f8c3dd7906e2.png" 
+                 ></p>
+<h2 id="loncontroller"><a class="markdownIt-Anchor" href="#loncontroller"></a> LonController()</h2>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">LonController::<span class="built_in">LonController</span>()</span><br><span class="line">    : <span class="built_in">name_</span>(<span class="built_in">ControlConf_ControllerType_Name</span>(ControlConf::LON_CONTROLLER)) &#123;</span><br><span class="line">  <span class="keyword">if</span> (FLAGS_enable_csv_debug) &#123;</span><br><span class="line">    <span class="comment">// 用 csv 格式记录debug信息</span></span><br><span class="line">    <span class="type">time_t</span> rawtime;</span><br><span class="line">    <span class="type">char</span> name_buffer[<span class="number">80</span>];</span><br><span class="line">    std::<span class="built_in">time</span>(&amp;rawtime);</span><br><span class="line">    std::tm time_tm;</span><br><span class="line">    <span class="built_in">localtime_r</span>(&amp;rawtime, &amp;time_tm);</span><br><span class="line">    <span class="built_in">strftime</span>(name_buffer, <span class="number">80</span>, <span class="string">&quot;/tmp/speed_log__%F_%H%M%S.csv&quot;</span>, &amp;time_tm);</span><br><span class="line">    speed_log_file_ = <span class="built_in">fopen</span>(name_buffer, <span class="string">&quot;w&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (speed_log_file_ == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">      AERROR &lt;&lt; <span class="string">&quot;Fail to open file:&quot;</span> &lt;&lt; name_buffer;</span><br><span class="line">      FLAGS_enable_csv_debug = <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (speed_log_file_ != <span class="literal">nullptr</span>) &#123;</span><br><span class="line">      <span class="built_in">fprintf</span>(speed_log_file_,</span><br><span class="line">              <span class="string">&quot;station_reference,&quot;</span></span><br><span class="line">              <span class="string">&quot;station_error,&quot;</span></span><br><span class="line">              <span class="string">&quot;station_error_limited,&quot;</span></span><br><span class="line">              <span class="string">&quot;preview_station_error,&quot;</span></span><br><span class="line">              <span class="string">&quot;speed_reference,&quot;</span></span><br><span class="line">              <span class="string">&quot;speed_error,&quot;</span></span><br><span class="line">              <span class="string">&quot;speed_error_limited,&quot;</span></span><br><span class="line">              <span class="string">&quot;preview_speed_reference,&quot;</span></span><br><span class="line">              <span class="string">&quot;preview_speed_error,&quot;</span></span><br><span class="line">              <span class="string">&quot;preview_acceleration_reference,&quot;</span></span><br><span class="line">              <span class="string">&quot;acceleration_cmd_closeloop,&quot;</span></span><br><span class="line">              <span class="string">&quot;acceleration_cmd,&quot;</span></span><br><span class="line">              <span class="string">&quot;acceleration_lookup,&quot;</span></span><br><span class="line">              <span class="string">&quot;speed_lookup,&quot;</span></span><br><span class="line">              <span class="string">&quot;calibration_value,&quot;</span></span><br><span class="line">              <span class="string">&quot;throttle_cmd,&quot;</span></span><br><span class="line">              <span class="string">&quot;brake_cmd,&quot;</span></span><br><span class="line">              <span class="string">&quot;is_full_stop,&quot;</span></span><br><span class="line">              <span class="string">&quot;\r\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">      <span class="built_in">fflush</span>(speed_log_file_);</span><br><span class="line">    &#125;</span><br><span class="line">    AINFO &lt;&lt; name_ &lt;&lt; <span class="string">&quot; used.&quot;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="closelogfile"><a class="markdownIt-Anchor" href="#closelogfile"></a> CloseLogFile()</h2>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">LonController::CloseLogFile</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (FLAGS_enable_csv_debug) &#123;</span><br><span class="line">    <span class="keyword">if</span> (speed_log_file_ != <span class="literal">nullptr</span>) &#123;</span><br><span class="line">      <span class="built_in">fclose</span>(speed_log_file_);</span><br><span class="line">      speed_log_file_ = <span class="literal">nullptr</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">LonController::Stop</span><span class="params">()</span> </span>&#123; <span class="built_in">CloseLogFile</span>(); &#125;</span><br><span class="line"></span><br><span class="line">LonController::~<span class="built_in">LonController</span>() &#123; <span class="built_in">CloseLogFile</span>(); &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="init"><a class="markdownIt-Anchor" href="#init"></a> Init()</h2>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Status <span class="title">LonController::Init</span><span class="params">(<span class="type">const</span> ControlConf *control_conf)</span> </span>&#123;</span><br><span class="line">  control_conf_ = control_conf;</span><br><span class="line">  <span class="keyword">if</span> (control_conf_ == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">    <span class="comment">// 配置文件加载失败</span></span><br><span class="line">    controller_initialized_ = <span class="literal">false</span>;</span><br><span class="line">    AERROR &lt;&lt; <span class="string">&quot;get_longitudinal_param() nullptr&quot;</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Status</span>(ErrorCode::CONTROL_INIT_ERROR,</span><br><span class="line">                  <span class="string">&quot;Failed to load LonController conf&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 获取纵向配置文件</span></span><br><span class="line">  <span class="type">const</span> LonControllerConf &amp;lon_controller_conf =</span><br><span class="line">      control_conf_-&gt;<span class="built_in">lon_controller_conf</span>();</span><br><span class="line">  <span class="type">double</span> ts = lon_controller_conf.<span class="built_in">ts</span>(); <span class="comment">// ts 默认值 0.01</span></span><br><span class="line">  <span class="type">bool</span> enable_leadlag =</span><br><span class="line">      lon_controller_conf.<span class="built_in">enable_reverse_leadlag_compensation</span>();</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 初始化位置 PID</span></span><br><span class="line">  station_pid_controller_.<span class="built_in">Init</span>(lon_controller_conf.<span class="built_in">station_pid_conf</span>());</span><br><span class="line">  <span class="comment">// 初始化速度 PID</span></span><br><span class="line">  speed_pid_controller_.<span class="built_in">Init</span>(lon_controller_conf.<span class="built_in">low_speed_pid_conf</span>());</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (enable_leadlag) &#123;</span><br><span class="line">    station_leadlag_controller_.<span class="built_in">Init</span>(</span><br><span class="line">        lon_controller_conf.<span class="built_in">reverse_station_leadlag_conf</span>(), ts);</span><br><span class="line">    speed_leadlag_controller_.<span class="built_in">Init</span>(</span><br><span class="line">        lon_controller_conf.<span class="built_in">reverse_speed_leadlag_conf</span>(), ts);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 获取车辆基本属性</span></span><br><span class="line">  vehicle_param_.<span class="built_in">CopyFrom</span>(</span><br><span class="line">      common::VehicleConfigHelper::<span class="built_in">Instance</span>()-&gt;<span class="built_in">GetConfig</span>().<span class="built_in">vehicle_param</span>());</span><br><span class="line"></span><br><span class="line">  <span class="built_in">SetDigitalFilterPitchAngle</span>(lon_controller_conf);</span><br><span class="line">  <span class="comment">// 加载标定表</span></span><br><span class="line">  <span class="built_in">LoadControlCalibrationTable</span>(lon_controller_conf);</span><br><span class="line">  controller_initialized_ = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> Status::<span class="built_in">OK</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="setdigitalfilterpitchangle"><a class="markdownIt-Anchor" href="#setdigitalfilterpitchangle"></a> SetDigitalFilterPitchAngle()</h3>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//设置Pitch车辆俯仰角</span></span><br><span class="line"><span class="comment">//参数：lon_controller_conf是纵向控制器配置类对象，该类由modules/control/proto/.proto文件生成</span></span><br><span class="line"><span class="comment">//从该对象中读取截至频率，控制周期等参数来设置pitch角滤波器</span></span><br><span class="line"><span class="comment">//pitch角用来进行车辆的坡道补偿，默认坡道补偿是关闭的</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">LonController::SetDigitalFilterPitchAngle</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">const</span> LonControllerConf &amp;lon_controller_conf)</span> </span>&#123;</span><br><span class="line">  <span class="type">double</span> cutoff_freq =</span><br><span class="line">      lon_controller_conf.<span class="built_in">pitch_angle_filter_conf</span>().<span class="built_in">cutoff_freq</span>();</span><br><span class="line">  <span class="type">double</span> ts = lon_controller_conf.<span class="built_in">ts</span>();</span><br><span class="line">  <span class="built_in">SetDigitalFilter</span>(ts, cutoff_freq, &amp;digital_filter_pitch_angle_);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="setdigitalfilter"><a class="markdownIt-Anchor" href="#setdigitalfilter"></a> SetDigitalFilter()</h4>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//加载控制标定表函数</span></span><br><span class="line"><span class="comment">//参数：lon_controller_conf是纵向控制器配置类对象，该类由modules/control/proto/.proto文件生成</span></span><br><span class="line"><span class="comment">//从纵向控制器配置对象中读取车速-加速度-控制百分数标定表</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">LonController::SetDigitalFilter</span><span class="params">(<span class="type">double</span> ts, <span class="type">double</span> cutoff_freq,</span></span></span><br><span class="line"><span class="params"><span class="function">                                     common::DigitalFilter *digital_filter)</span> </span>&#123;</span><br><span class="line">  std::vector&lt;<span class="type">double</span>&gt; denominators;</span><br><span class="line">  std::vector&lt;<span class="type">double</span>&gt; numerators;</span><br><span class="line">  common::<span class="built_in">LpfCoefficients</span>(ts, cutoff_freq, &amp;denominators, &amp;numerators);</span><br><span class="line">  digital_filter-&gt;<span class="built_in">set_coefficients</span>(denominators, numerators);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="loadcontrolcalibrationtable"><a class="markdownIt-Anchor" href="#loadcontrolcalibrationtable"></a> LoadControlCalibrationTable()</h3>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">LonController::LoadControlCalibrationTable</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">const</span> LonControllerConf &amp;lon_controller_conf)</span> </span>&#123;</span><br><span class="line">  <span class="type">const</span> <span class="keyword">auto</span> &amp;control_table = lon_controller_conf.<span class="built_in">calibration_table</span>();</span><br><span class="line">  AINFO &lt;&lt; <span class="string">&quot;Control calibration table loaded&quot;</span>;</span><br><span class="line">  AINFO &lt;&lt; <span class="string">&quot;Control calibration table size is &quot;</span></span><br><span class="line">        &lt;&lt; control_table.<span class="built_in">calibration_size</span>();</span><br><span class="line">  Interpolation2D::DataType xyz;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">const</span> <span class="keyword">auto</span> &amp;calibration : control_table.<span class="built_in">calibration</span>()) &#123;</span><br><span class="line">    xyz.<span class="built_in">push_back</span>(std::<span class="built_in">make_tuple</span>(calibration.<span class="built_in">speed</span>(),</span><br><span class="line">                                  calibration.<span class="built_in">acceleration</span>(),</span><br><span class="line">                                  calibration.<span class="built_in">command</span>()));</span><br><span class="line">  &#125;</span><br><span class="line">  control_interpolation_.<span class="built_in">reset</span>(<span class="keyword">new</span> Interpolation2D);</span><br><span class="line">  <span class="built_in">CHECK</span>(control_interpolation_-&gt;<span class="built_in">Init</span>(xyz))</span><br><span class="line">      &lt;&lt; <span class="string">&quot;Fail to load control calibration table&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="computecontrolcommand"><a class="markdownIt-Anchor" href="#computecontrolcommand"></a> ComputeControlCommand()</h2>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/e71368c64cdc51628d668e429aa0b378.png"
+                        alt="e71368c64cdc51628d668e429aa0b378.png" 
+                 ></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Status <span class="title">LonController::ComputeControlCommand</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">const</span> localization::LocalizationEstimate *localization,</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">const</span> canbus::Chassis *chassis,</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">const</span> planning::ADCTrajectory *planning_published_trajectory,</span></span></span><br><span class="line"><span class="params"><span class="function">    control::ControlCommand *cmd)</span> </span>&#123;</span><br><span class="line">  localization_ = localization;</span><br><span class="line">  chassis_ = chassis;</span><br><span class="line"></span><br><span class="line">  trajectory_message_ = planning_published_trajectory;</span><br><span class="line">  <span class="keyword">if</span> (!control_interpolation_) &#123;</span><br><span class="line">    <span class="comment">// 确认差值表是否有问题</span></span><br><span class="line">    AERROR &lt;&lt; <span class="string">&quot;Fail to initialize calibration table.&quot;</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Status</span>(ErrorCode::CONTROL_COMPUTE_ERROR,</span><br><span class="line">                  <span class="string">&quot;Fail to initialize calibration table.&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (trajectory_analyzer_ == <span class="literal">nullptr</span> ||</span><br><span class="line">      trajectory_analyzer_-&gt;<span class="built_in">seq_num</span>() !=</span><br><span class="line">          trajectory_message_-&gt;<span class="built_in">header</span>().<span class="built_in">sequence_num</span>()) &#123;</span><br><span class="line">    <span class="comment">// 更新跟踪轨迹</span></span><br><span class="line">    trajectory_analyzer_.<span class="built_in">reset</span>(<span class="keyword">new</span> <span class="built_in">TrajectoryAnalyzer</span>(trajectory_message_));</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 获取纵向控制配置参数</span></span><br><span class="line">  <span class="type">const</span> LonControllerConf &amp;lon_controller_conf =</span><br><span class="line">      control_conf_-&gt;<span class="built_in">lon_controller_conf</span>();</span><br><span class="line">  <span class="comment">// 获取输出控制信息里面的debug指针</span></span><br><span class="line">  <span class="keyword">auto</span> debug = cmd-&gt;<span class="built_in">mutable_debug</span>()-&gt;<span class="built_in">mutable_simple_lon_debug</span>();</span><br><span class="line">  debug-&gt;<span class="built_in">Clear</span>(); <span class="comment">// 清空debug信息</span></span><br><span class="line"></span><br><span class="line">  <span class="type">double</span> brake_cmd = <span class="number">0.0</span>;</span><br><span class="line">  <span class="type">double</span> throttle_cmd = <span class="number">0.0</span>;</span><br><span class="line">  <span class="type">double</span> ts = lon_controller_conf.<span class="built_in">ts</span>();</span><br><span class="line">  <span class="comment">// preview_window 默认值 20</span></span><br><span class="line">  <span class="type">double</span> preview_time = lon_controller_conf.<span class="built_in">preview_window</span>() * ts;</span><br><span class="line">  <span class="type">bool</span> enable_leadlag =</span><br><span class="line">      lon_controller_conf.<span class="built_in">enable_reverse_leadlag_compensation</span>();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (preview_time &lt; <span class="number">0.0</span>) &#123;</span><br><span class="line">    <span class="comment">// 预瞄时间异常</span></span><br><span class="line">    <span class="type">const</span> <span class="keyword">auto</span> error_msg =</span><br><span class="line">        absl::<span class="built_in">StrCat</span>(<span class="string">&quot;Preview time set as: &quot;</span>, preview_time, <span class="string">&quot; less than 0&quot;</span>);</span><br><span class="line">    AERROR &lt;&lt; error_msg;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Status</span>(ErrorCode::CONTROL_COMPUTE_ERROR, error_msg);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 计算纵向各项误差值</span></span><br><span class="line">  <span class="built_in">ComputeLongitudinalErrors</span>(trajectory_analyzer_.<span class="built_in">get</span>(), preview_time, ts,</span><br><span class="line">                            debug);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 定义临时变量station_error_limit纵向位置误差限制</span></span><br><span class="line">  <span class="comment">// 从配置文件control_conf.pb.txt-lon_controller_conf-station_error_limit中读取到</span></span><br><span class="line">  <span class="comment">// 默认是2.0m</span></span><br><span class="line">  <span class="type">double</span> station_error_limit = lon_controller_conf.<span class="built_in">station_error_limit</span>();</span><br><span class="line">  <span class="comment">// 定义临时变量station_error_limited为限幅后的纵向位置误差</span></span><br><span class="line">  <span class="type">double</span> station_error_limited = <span class="number">0.0</span>;</span><br><span class="line">  <span class="comment">// enable_speed_station_preview 默认值 true</span></span><br><span class="line">  <span class="keyword">if</span> (FLAGS_enable_speed_station_preview) &#123;</span><br><span class="line">    <span class="comment">// 有两种位置误差</span></span><br><span class="line">    <span class="comment">// 第一种, preview_station_error=预览点纵向位置 - 匹配点纵向位置</span></span><br><span class="line">    <span class="comment">// 第二种, station_error=参考点纵向位置 - 匹配点纵向位置</span></span><br><span class="line">    <span class="comment">// 如果打开此开关则采用第一种纵向位置误差，纵向误差的计算结果都是存在debug里</span></span><br><span class="line">    station_error_limited =</span><br><span class="line">        common::math::<span class="built_in">Clamp</span>(debug-&gt;<span class="built_in">preview_station_error</span>(),</span><br><span class="line">                            -station_error_limit, station_error_limit);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 否则采用第二种纵向位置误差，纵向误差的计算结果都是存在debug里</span></span><br><span class="line">    station_error_limited = common::math::<span class="built_in">Clamp</span>(</span><br><span class="line">        debug-&gt;<span class="built_in">station_error</span>(), -station_error_limit, station_error_limit);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (trajectory_message_-&gt;<span class="built_in">gear</span>() == canbus::Chassis::GEAR_REVERSE) &#123;</span><br><span class="line">    <span class="comment">// 倒档情况，设置对应PID配置文件</span></span><br><span class="line">    station_pid_controller_.<span class="built_in">SetPID</span>(</span><br><span class="line">        lon_controller_conf.<span class="built_in">reverse_station_pid_conf</span>());</span><br><span class="line">    speed_pid_controller_.<span class="built_in">SetPID</span>(lon_controller_conf.<span class="built_in">reverse_speed_pid_conf</span>());</span><br><span class="line">    <span class="keyword">if</span> (enable_leadlag) &#123;</span><br><span class="line">      <span class="comment">// 如果打开enable_leadlag超前滞后控制器，默认是关闭直接略过</span></span><br><span class="line">      station_leadlag_controller_.<span class="built_in">SetLeadlag</span>(</span><br><span class="line">          lon_controller_conf.<span class="built_in">reverse_station_leadlag_conf</span>());</span><br><span class="line">      speed_leadlag_controller_.<span class="built_in">SetLeadlag</span>(</span><br><span class="line">          lon_controller_conf.<span class="built_in">reverse_speed_leadlag_conf</span>());</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (VehicleStateProvider::<span class="built_in">Instance</span>()-&gt;<span class="built_in">linear_velocity</span>() &lt;=</span><br><span class="line">             lon_controller_conf.switch_speed()) &#123;</span><br><span class="line">    <span class="comment">// 低速情况，设置对应PID配置文件</span></span><br><span class="line">    speed_pid_controller_.<span class="built_in">SetPID</span>(lon_controller_conf.<span class="built_in">low_speed_pid_conf</span>());</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 高速情况，设置对应PID配置文件 </span></span><br><span class="line">    speed_pid_controller_.<span class="built_in">SetPID</span>(lon_controller_conf.<span class="built_in">high_speed_pid_conf</span>());</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 速度偏差=位置控制器根据(限幅后位置误差，采样周期)计算出控制量即速度</span></span><br><span class="line">  <span class="comment">// 补偿量</span></span><br><span class="line">  <span class="type">double</span> speed_offset =</span><br><span class="line">      station_pid_controller_.<span class="built_in">Control</span>(station_error_limited, ts);</span><br><span class="line">  <span class="keyword">if</span> (enable_leadlag) &#123;</span><br><span class="line">    <span class="comment">// 如果打开超前-滞后控制器，默认不打开，略过</span></span><br><span class="line">    speed_offset = station_leadlag_controller_.<span class="built_in">Control</span>(speed_offset, ts);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="type">double</span> speed_controller_input = <span class="number">0.0</span>;</span><br><span class="line">  <span class="comment">// speed_controller_input_limit 默认值 2.0</span></span><br><span class="line">  <span class="type">double</span> speed_controller_input_limit =</span><br><span class="line">      lon_controller_conf.<span class="built_in">speed_controller_input_limit</span>();</span><br><span class="line">  <span class="type">double</span> speed_controller_input_limited = <span class="number">0.0</span>;</span><br><span class="line">  <span class="keyword">if</span> (FLAGS_enable_speed_station_preview) &#123;</span><br><span class="line">    <span class="comment">// 打开的话速度控制器的输入 = 位置控制器计算出的speed_offset + 当前时间向前加上预览时间在轨迹上的对应点的速度和当前车速的偏差</span></span><br><span class="line">    speed_controller_input = speed_offset + debug-&gt;<span class="built_in">preview_speed_error</span>();</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 不打开的话速度控制器的输入 = 位置控制器计算出的speed_offset + 参考点车速和当前车速的偏差</span></span><br><span class="line">    speed_controller_input = speed_offset + debug-&gt;<span class="built_in">speed_error</span>();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 计算得到的速度控制器的输入再进行限幅</span></span><br><span class="line">  speed_controller_input_limited =</span><br><span class="line">      common::math::<span class="built_in">Clamp</span>(speed_controller_input, -speed_controller_input_limit,</span><br><span class="line">                          speed_controller_input_limit);</span><br><span class="line"></span><br><span class="line">  <span class="type">double</span> acceleration_cmd_closeloop = <span class="number">0.0</span>;</span><br><span class="line">  <span class="comment">// 闭环的加速度指令就等于速度PID控制器根据速度控制器的输入，以及采样周期去计算</span></span><br><span class="line">  acceleration_cmd_closeloop =</span><br><span class="line">      speed_pid_controller_.<span class="built_in">Control</span>(speed_controller_input_limited, ts);</span><br><span class="line">  <span class="comment">// 将速度PID控制器中积分器的饱和状态设置到debug.pid_saturation_status里</span></span><br><span class="line">  debug-&gt;<span class="built_in">set_pid_saturation_status</span>(</span><br><span class="line">      speed_pid_controller_.<span class="built_in">IntegratorSaturationStatus</span>());</span><br><span class="line">  <span class="keyword">if</span> (enable_leadlag) &#123;</span><br><span class="line">    acceleration_cmd_closeloop =</span><br><span class="line">        speed_leadlag_controller_.<span class="built_in">Control</span>(acceleration_cmd_closeloop, ts);</span><br><span class="line">    debug-&gt;<span class="built_in">set_leadlag_saturation_status</span>(</span><br><span class="line">        speed_leadlag_controller_.<span class="built_in">InnerstateSaturationStatus</span>());</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 定义斜坡补偿加速度 = (重力加速度 * 车辆俯仰角的正弦值)再经过数字滤波器滤波得到斜坡加速度补偿</span></span><br><span class="line">  <span class="type">double</span> slope_offset_compenstaion = digital_filter_pitch_angle_.<span class="built_in">Filter</span>(</span><br><span class="line">      GRA_ACC * std::<span class="built_in">sin</span>(VehicleStateProvider::<span class="built_in">Instance</span>()-&gt;<span class="built_in">pitch</span>()));</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (std::<span class="built_in">isnan</span>(slope_offset_compenstaion)) &#123;</span><br><span class="line">    slope_offset_compenstaion = <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 将斜坡补偿加速度设置到debug里</span></span><br><span class="line">  debug-&gt;<span class="built_in">set_slope_offset_compensation</span>(slope_offset_compenstaion);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 总的加速度指令 = 闭环加速度指令 + 预览参考加速度 + 坡道补偿加速度(如果打开坡道补偿的话)</span></span><br><span class="line">  <span class="type">double</span> acceleration_cmd =</span><br><span class="line">      acceleration_cmd_closeloop + debug-&gt;<span class="built_in">preview_acceleration_reference</span>() +</span><br><span class="line">      FLAGS_enable_slope_offset * debug-&gt;<span class="built_in">slope_offset_compensation</span>();</span><br><span class="line">  debug-&gt;<span class="built_in">set_is_full_stop</span>(<span class="literal">false</span>);</span><br><span class="line">  <span class="comment">// 获取停车点的一个函数，后面介绍，找到当前规划模块发布的轨迹msg里的第一个v,a都小于一个很小值的点作为停车点</span></span><br><span class="line">  <span class="comment">// 找到的这个停车点的纵向位置和当前车辆纵向位置的偏差设置到debug里面去，debug.path_remain()</span></span><br><span class="line">  <span class="built_in">GetPathRemain</span>(debug);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// At near-stop stage, replace the brake control command with the standstill</span></span><br><span class="line">  <span class="comment">// acceleration if the former is even softer than the latter</span></span><br><span class="line">  <span class="comment">// 在快要停车的阶段，用一个固定的standstill的减速度代替刹车控制指令</span></span><br><span class="line">  <span class="comment">// 简而言之就是快到停车点时给一个固定-0.3m/s^2的减速度(数值控制配置里设置)</span></span><br><span class="line">  <span class="keyword">if</span> ((trajectory_message_-&gt;<span class="built_in">trajectory_type</span>() ==</span><br><span class="line">       apollo::planning::ADCTrajectory::NORMAL) &amp;&amp;</span><br><span class="line">        <span class="comment">// 预览点的加速度&lt;=控制配置里的停车时最大允许加速度</span></span><br><span class="line">        <span class="comment">// max_acceleration_when_stopped 默认值 0.01</span></span><br><span class="line">      ((std::<span class="built_in">fabs</span>(debug-&gt;<span class="built_in">preview_acceleration_reference</span>()) &lt;=</span><br><span class="line">            control_conf_-&gt;<span class="built_in">max_acceleration_when_stopped</span>() &amp;&amp;</span><br><span class="line">        <span class="comment">// 预览点速度小于车辆参数中的最大允许停车速度</span></span><br><span class="line">        <span class="comment">// max_abs_speed_when_stopped 默认值 0.2</span></span><br><span class="line">        std::<span class="built_in">fabs</span>(debug-&gt;<span class="built_in">preview_speed_reference</span>()) &lt;=</span><br><span class="line">            vehicle_param_.<span class="built_in">max_abs_speed_when_stopped</span>()) ||</span><br><span class="line">       <span class="comment">// 或当前纵向位置到停止点纵向位置偏差小于控制配置</span></span><br><span class="line">       <span class="comment">// max_path_remain_when_stopped 默认值 0.3m</span></span><br><span class="line">       std::<span class="built_in">abs</span>(debug-&gt;<span class="built_in">path_remain</span>()) &lt;</span><br><span class="line">           control_conf_-&gt;<span class="built_in">max_path_remain_when_stopped</span>())) &#123;</span><br><span class="line">    <span class="comment">// 总结上述条件，轨迹类型normal且(预览点加速度小于阈值且预览点速度小于阈值)或到停车点纵向偏差&lt;阈值    </span></span><br><span class="line">    <span class="comment">// 符合条件时，加速度指令按如下方式计算      </span></span><br><span class="line">    <span class="comment">// standstill_acceleration默认为-0.3 m/s^2</span></span><br><span class="line">    acceleration_cmd =</span><br><span class="line">        (chassis-&gt;<span class="built_in">gear_location</span>() == canbus::Chassis::GEAR_REVERSE)</span><br><span class="line">            ? std::<span class="built_in">max</span>(acceleration_cmd,</span><br><span class="line">                       -lon_controller_conf.<span class="built_in">standstill_acceleration</span>())</span><br><span class="line">            : std::<span class="built_in">min</span>(acceleration_cmd,</span><br><span class="line">                       lon_controller_conf.<span class="built_in">standstill_acceleration</span>());</span><br><span class="line">    ADEBUG &lt;&lt; <span class="string">&quot;Stop location reached&quot;</span>;</span><br><span class="line">    debug-&gt;<span class="built_in">set_is_full_stop</span>(<span class="literal">true</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 定义油门指令的下边界，为 车辆配置里的throttle_deadzone 和 lon_controller_conf配置里的throttle_minimum_action，两者中的较大值</span></span><br><span class="line">  <span class="comment">// 车辆控制油门，有一个最低油门，也就算只能车辆油门控制只能从最小油门开始，而不是0，刹车同理</span></span><br><span class="line">  <span class="type">double</span> throttle_lowerbound =</span><br><span class="line">      std::<span class="built_in">max</span>(vehicle_param_.<span class="built_in">throttle_deadzone</span>(),</span><br><span class="line">               lon_controller_conf.<span class="built_in">throttle_minimum_action</span>());</span><br><span class="line">  <span class="comment">// 定义刹车指令的下边界</span></span><br><span class="line">  <span class="type">double</span> brake_lowerbound =</span><br><span class="line">      std::<span class="built_in">max</span>(vehicle_param_.<span class="built_in">brake_deadzone</span>(),</span><br><span class="line">               lon_controller_conf.<span class="built_in">brake_minimum_action</span>());</span><br><span class="line">  <span class="type">double</span> calibration_value = <span class="number">0.0</span>;</span><br><span class="line">  <span class="comment">// 要用来查表加速度，若R档为加速度控制指令取反，非R档保持加速度控制指令</span></span><br><span class="line">  <span class="type">double</span> acceleration_lookup =</span><br><span class="line">      (chassis-&gt;<span class="built_in">gear_location</span>() == canbus::Chassis::GEAR_REVERSE)</span><br><span class="line">          ? -acceleration_cmd</span><br><span class="line">          : acceleration_cmd;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (FLAGS_use_preview_speed_for_table) &#123;</span><br><span class="line">    <span class="comment">// 使用预览点速度来查标定表(车速-加速度-控制指令百分数)</span></span><br><span class="line">    calibration_value = control_interpolation_-&gt;<span class="built_in">Interpolate</span>(</span><br><span class="line">        std::<span class="built_in">make_pair</span>(debug-&gt;<span class="built_in">preview_speed_reference</span>(), acceleration_lookup));</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 标定表就用chassis里反馈的实际车速去查</span></span><br><span class="line">    <span class="comment">// 用速度加速度根据标定表线性插值得到控制量百分数calibration_value</span></span><br><span class="line">    calibration_value = control_interpolation_-&gt;<span class="built_in">Interpolate</span>(</span><br><span class="line">        std::<span class="built_in">make_pair</span>(chassis_-&gt;<span class="built_in">speed_mps</span>(), acceleration_lookup));</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (acceleration_lookup &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="comment">// 请求查表加速度&gt;=0，也就是加油情况</span></span><br><span class="line">    <span class="keyword">if</span> (calibration_value &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="comment">// 计算得到的控制百分数&gt;=0</span></span><br><span class="line">      <span class="comment">// 设置油门控制百分数，为油门下边界和查表得到的控制百分数之间的较大值</span></span><br><span class="line">      throttle_cmd = std::<span class="built_in">max</span>(calibration_value, throttle_lowerbound);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">// 如果计算得到的控制百分数&lt;0,但是加速度又大于0</span></span><br><span class="line">      <span class="comment">// 设置油门控制百分数为油门下边界</span></span><br><span class="line">      throttle_cmd = throttle_lowerbound;</span><br><span class="line">    &#125;</span><br><span class="line">    brake_cmd = <span class="number">0.0</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 请求查表加速度&lt;0，也就是刹车情况</span></span><br><span class="line">    throttle_cmd = <span class="number">0.0</span>;</span><br><span class="line">    <span class="keyword">if</span> (calibration_value &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">      brake_cmd = brake_lowerbound;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      brake_cmd = std::<span class="built_in">max</span>(-calibration_value, brake_lowerbound);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 将被限制的纵向位置误差设置到debug.station_error_limited  </span></span><br><span class="line">  debug-&gt;<span class="built_in">set_station_error_limited</span>(station_error_limited);</span><br><span class="line">  <span class="comment">// 位置控制器的输出设置到debug.speedoffset</span></span><br><span class="line">  debug-&gt;<span class="built_in">set_speed_offset</span>(speed_offset);</span><br><span class="line">  <span class="comment">// 被限幅的速度控制器的输入设置到debug.speed_controller_input_limited</span></span><br><span class="line">  debug-&gt;<span class="built_in">set_speed_controller_input_limited</span>(speed_controller_input_limited);</span><br><span class="line">  <span class="comment">// 计算到的加速度指令设置到debug.acceleration_cmd</span></span><br><span class="line">  debug-&gt;<span class="built_in">set_acceleration_cmd</span>(acceleration_cmd);</span><br><span class="line">  <span class="comment">// 计算到的油门指令设置到debug.throttle_cmd</span></span><br><span class="line">  debug-&gt;<span class="built_in">set_throttle_cmd</span>(throttle_cmd);</span><br><span class="line">  <span class="comment">// 计算到的刹车指令设置到debug.brake_cmd</span></span><br><span class="line">  debug-&gt;<span class="built_in">set_brake_cmd</span>(brake_cmd);</span><br><span class="line">  <span class="comment">// 去查标定表的请求加速度设置到debug.acceleration_lookup</span></span><br><span class="line">  debug-&gt;<span class="built_in">set_acceleration_lookup</span>(acceleration_lookup);</span><br><span class="line">  <span class="comment">// 去查标定表的速度将chassis反馈值设置到debug.speed_lookup</span></span><br><span class="line">  debug-&gt;<span class="built_in">set_speed_lookup</span>(chassis_-&gt;<span class="built_in">speed_mps</span>());</span><br><span class="line">  <span class="comment">// 将标定表中查到的控制百分数值calibration_value设置到debug.calibration_value</span></span><br><span class="line">  debug-&gt;<span class="built_in">set_calibration_value</span>(calibration_value);</span><br><span class="line">  <span class="comment">// 将闭环反馈速度控制器计算得到的控制量加速度设置到debug.acceleration_cmd_closeloop</span></span><br><span class="line">  debug-&gt;<span class="built_in">set_acceleration_cmd_closeloop</span>(acceleration_cmd_closeloop);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (FLAGS_enable_csv_debug &amp;&amp; speed_log_file_ != <span class="literal">nullptr</span>) &#123;</span><br><span class="line">    <span class="comment">// 讲数据输出到 csv 文件</span></span><br><span class="line">    <span class="built_in">fprintf</span>(speed_log_file_,</span><br><span class="line">            <span class="string">&quot;%.6f, %.6f, %.6f, %.6f, %.6f, %.6f, %.6f, %.6f, %.6f, %.6f,&quot;</span></span><br><span class="line">            <span class="string">&quot;%.6f, %.6f, %.6f, %.6f, %.6f, %.6f, %.6f, %d,\r\n&quot;</span>,</span><br><span class="line">            debug-&gt;<span class="built_in">station_reference</span>(), debug-&gt;<span class="built_in">station_error</span>(),</span><br><span class="line">            station_error_limited, debug-&gt;<span class="built_in">preview_station_error</span>(),</span><br><span class="line">            debug-&gt;<span class="built_in">speed_reference</span>(), debug-&gt;<span class="built_in">speed_error</span>(),</span><br><span class="line">            speed_controller_input_limited, debug-&gt;<span class="built_in">preview_speed_reference</span>(),</span><br><span class="line">            debug-&gt;<span class="built_in">preview_speed_error</span>(),</span><br><span class="line">            debug-&gt;<span class="built_in">preview_acceleration_reference</span>(), acceleration_cmd_closeloop,</span><br><span class="line">            acceleration_cmd, debug-&gt;<span class="built_in">acceleration_lookup</span>(),</span><br><span class="line">            debug-&gt;<span class="built_in">speed_lookup</span>(), calibration_value, throttle_cmd, brake_cmd,</span><br><span class="line">            debug-&gt;<span class="built_in">is_full_stop</span>());</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// if the car is driven by acceleration, disgard the cmd-&gt;throttle and brake</span></span><br><span class="line">  <span class="comment">// 如果车辆是以加速度驱动，那么可以忽略下面的油门，制动指令值</span></span><br><span class="line">  cmd-&gt;<span class="built_in">set_throttle</span>(throttle_cmd);</span><br><span class="line">  cmd-&gt;<span class="built_in">set_brake</span>(brake_cmd);</span><br><span class="line">  cmd-&gt;<span class="built_in">set_acceleration</span>(acceleration_cmd);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 如果车辆的纵向速度绝对值&lt;=车辆参数配置里设定的停车最大速度绝对值</span></span><br><span class="line">  <span class="comment">// 简单理解就是车辆的纵向速度小于某阈值或者chassis反馈的档为信息是N档就认为车已经停住了，下发车辆的换档指令</span></span><br><span class="line">  <span class="keyword">if</span> (std::<span class="built_in">fabs</span>(VehicleStateProvider::<span class="built_in">Instance</span>()-&gt;<span class="built_in">linear_velocity</span>()) &lt;=</span><br><span class="line">          vehicle_param_.<span class="built_in">max_abs_speed_when_stopped</span>() ||</span><br><span class="line">      chassis-&gt;<span class="built_in">gear_location</span>() == trajectory_message_-&gt;<span class="built_in">gear</span>() ||</span><br><span class="line">      chassis-&gt;<span class="built_in">gear_location</span>() == canbus::Chassis::GEAR_NEUTRAL) &#123;</span><br><span class="line">    <span class="comment">// 若车辆处于停车或N档时下发规划发布的轨迹msg里的档位</span></span><br><span class="line">    cmd-&gt;<span class="built_in">set_gear_location</span>(trajectory_message_-&gt;<span class="built_in">gear</span>());</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 若车辆不处于停车且不在N档时下发chassis反馈的车辆实际档位</span></span><br><span class="line">    cmd-&gt;<span class="built_in">set_gear_location</span>(chassis-&gt;<span class="built_in">gear_location</span>());</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> Status::<span class="built_in">OK</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="computelongitudinalerrors"><a class="markdownIt-Anchor" href="#computelongitudinalerrors"></a> ComputeLongitudinalErrors()</h3>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/3b8f58931c301b3b6c806831068cc255.png"
+                        alt="3b8f58931c301b3b6c806831068cc255.png" 
+                 ></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">LonController::ComputeLongitudinalErrors</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">const</span> TrajectoryAnalyzer *trajectory_analyzer, <span class="type">const</span> <span class="type">double</span> preview_time,</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">const</span> <span class="type">double</span> ts, SimpleLongitudinalDebug *debug)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// the decomposed vehicle motion onto Frenet frame</span></span><br><span class="line">  <span class="comment">// s: longitudinal accumulated distance along reference trajectory</span></span><br><span class="line">  <span class="comment">// s_dot: longitudinal velocity along reference trajectory</span></span><br><span class="line">  <span class="comment">// d: lateral distance w.r.t. reference trajectory</span></span><br><span class="line">  <span class="comment">// d_dot: lateral distance change rate, i.e. dd/dt</span></span><br><span class="line">  <span class="type">double</span> s_matched = <span class="number">0.0</span>;</span><br><span class="line">  <span class="type">double</span> s_dot_matched = <span class="number">0.0</span>;</span><br><span class="line">  <span class="type">double</span> d_matched = <span class="number">0.0</span>;</span><br><span class="line">  <span class="type">double</span> d_dot_matched = <span class="number">0.0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 计算本车在轨迹上的投影点</span></span><br><span class="line">  <span class="keyword">auto</span> matched_point = trajectory_analyzer-&gt;<span class="built_in">QueryMatchedPathPoint</span>(</span><br><span class="line">      VehicleStateProvider::<span class="built_in">Instance</span>()-&gt;<span class="built_in">x</span>(),</span><br><span class="line">      VehicleStateProvider::<span class="built_in">Instance</span>()-&gt;<span class="built_in">y</span>());</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 将本车位置转换成SL坐标，基于规划轨迹的SL坐标系</span></span><br><span class="line">  trajectory_analyzer-&gt;<span class="built_in">ToTrajectoryFrame</span>(</span><br><span class="line">      VehicleStateProvider::<span class="built_in">Instance</span>()-&gt;<span class="built_in">x</span>(),</span><br><span class="line">      VehicleStateProvider::<span class="built_in">Instance</span>()-&gt;<span class="built_in">y</span>(),</span><br><span class="line">      VehicleStateProvider::<span class="built_in">Instance</span>()-&gt;<span class="built_in">heading</span>(),</span><br><span class="line">      VehicleStateProvider::<span class="built_in">Instance</span>()-&gt;<span class="built_in">linear_velocity</span>(), matched_point,</span><br><span class="line">      &amp;s_matched, &amp;s_dot_matched, &amp;d_matched, &amp;d_dot_matched);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 当前绝对时间</span></span><br><span class="line">  <span class="type">double</span> current_control_time = Clock::<span class="built_in">NowInSeconds</span>();</span><br><span class="line">  <span class="comment">// 预瞄绝对时间</span></span><br><span class="line">  <span class="type">double</span> preview_control_time = current_control_time + preview_time;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 通过当前绝对时间获取轨迹上的参考点</span></span><br><span class="line">  TrajectoryPoint reference_point =</span><br><span class="line">      trajectory_analyzer-&gt;<span class="built_in">QueryNearestPointByAbsoluteTime</span>(</span><br><span class="line">          current_control_time);</span><br><span class="line">  <span class="comment">// 通过预瞄绝对时间获取轨迹上的预瞄点</span></span><br><span class="line">  TrajectoryPoint preview_point =</span><br><span class="line">      trajectory_analyzer-&gt;<span class="built_in">QueryNearestPointByAbsoluteTime</span>(</span><br><span class="line">          preview_control_time);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// debug 记录 三个点的信息：位置匹配点，当前绝对时间的参考点，预瞄绝对时间的预瞄点</span></span><br><span class="line">  debug-&gt;<span class="built_in">mutable_current_matched_point</span>()-&gt;<span class="built_in">mutable_path_point</span>()-&gt;<span class="built_in">set_x</span>(</span><br><span class="line">      matched_point.<span class="built_in">x</span>());</span><br><span class="line">  debug-&gt;<span class="built_in">mutable_current_matched_point</span>()-&gt;<span class="built_in">mutable_path_point</span>()-&gt;<span class="built_in">set_y</span>(</span><br><span class="line">      matched_point.<span class="built_in">y</span>());</span><br><span class="line">  debug-&gt;<span class="built_in">mutable_current_reference_point</span>()-&gt;<span class="built_in">mutable_path_point</span>()-&gt;<span class="built_in">set_x</span>(</span><br><span class="line">      reference_point.<span class="built_in">path_point</span>().<span class="built_in">x</span>());</span><br><span class="line">  debug-&gt;<span class="built_in">mutable_current_reference_point</span>()-&gt;<span class="built_in">mutable_path_point</span>()-&gt;<span class="built_in">set_y</span>(</span><br><span class="line">      reference_point.<span class="built_in">path_point</span>().<span class="built_in">y</span>());</span><br><span class="line">  debug-&gt;<span class="built_in">mutable_preview_reference_point</span>()-&gt;<span class="built_in">mutable_path_point</span>()-&gt;<span class="built_in">set_x</span>(</span><br><span class="line">      preview_point.<span class="built_in">path_point</span>().<span class="built_in">x</span>());</span><br><span class="line">  debug-&gt;<span class="built_in">mutable_preview_reference_point</span>()-&gt;<span class="built_in">mutable_path_point</span>()-&gt;<span class="built_in">set_y</span>(</span><br><span class="line">      preview_point.<span class="built_in">path_point</span>().<span class="built_in">y</span>());</span><br><span class="line"></span><br><span class="line">  ADEBUG &lt;&lt; <span class="string">&quot;matched point:&quot;</span> &lt;&lt; matched_point.<span class="built_in">DebugString</span>();</span><br><span class="line">  ADEBUG &lt;&lt; <span class="string">&quot;reference point:&quot;</span> &lt;&lt; reference_point.<span class="built_in">DebugString</span>();</span><br><span class="line">  ADEBUG &lt;&lt; <span class="string">&quot;preview point:&quot;</span> &lt;&lt; preview_point.<span class="built_in">DebugString</span>();</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 航向角误差 = 车辆当前状态航向角 - 匹配点的航向角</span></span><br><span class="line">  <span class="comment">// NormalizeAngle角度的规范化，就是将所有角度规范到-pi,pi</span></span><br><span class="line">  <span class="type">double</span> heading_error = common::math::<span class="built_in">NormalizeAngle</span>(</span><br><span class="line">      VehicleStateProvider::<span class="built_in">Instance</span>()-&gt;<span class="built_in">heading</span>() - matched_point.<span class="built_in">theta</span>());</span><br><span class="line">  <span class="comment">// 纵向速度 = 车辆速度 * cos(当前航向角 - 轨迹上距离最近点航向角)</span></span><br><span class="line">  <span class="type">double</span> lon_speed = VehicleStateProvider::<span class="built_in">Instance</span>()-&gt;<span class="built_in">linear_velocity</span>() *</span><br><span class="line">                     std::<span class="built_in">cos</span>(heading_error);</span><br><span class="line">  <span class="comment">// 纵向加速度 = 车辆加速度 * cos(当前航向角 - 轨迹上距离最近点航向角</span></span><br><span class="line">  <span class="type">double</span> lon_acceleration =</span><br><span class="line">      VehicleStateProvider::<span class="built_in">Instance</span>()-&gt;<span class="built_in">linear_acceleration</span>() *</span><br><span class="line">      std::<span class="built_in">cos</span>(heading_error);</span><br><span class="line">  <span class="comment">// 1-kd就是将大地坐标系转化到Frenet坐标纵向上引入的，如下图所示</span></span><br><span class="line">  <span class="type">double</span> one_minus_kappa_lat_error =</span><br><span class="line">      <span class="number">1</span> - reference_point.<span class="built_in">path_point</span>().<span class="built_in">kappa</span>() *</span><br><span class="line">              VehicleStateProvider::<span class="built_in">Instance</span>()-&gt;<span class="built_in">linear_velocity</span>() *</span><br><span class="line">              std::<span class="built_in">sin</span>(heading_error);</span><br><span class="line"></span><br><span class="line">  debug-&gt;<span class="built_in">set_station_reference</span>(reference_point.<span class="built_in">path_point</span>().<span class="built_in">s</span>());</span><br><span class="line">  debug-&gt;<span class="built_in">set_current_station</span>(s_matched);</span><br><span class="line">  <span class="comment">// 纵向位置误差debug.station_error=参考点路径点的累积弧长-匹配点的累积弧长(匹配点就是路径最近点)</span></span><br><span class="line">  debug-&gt;<span class="built_in">set_station_error</span>(reference_point.<span class="built_in">path_point</span>().<span class="built_in">s</span>() - s_matched);</span><br><span class="line"></span><br><span class="line">  debug-&gt;<span class="built_in">set_speed_reference</span>(reference_point.<span class="built_in">v</span>());</span><br><span class="line">  debug-&gt;<span class="built_in">set_current_speed</span>(lon_speed);</span><br><span class="line">  <span class="comment">// 速度误差就是参考点速度减匹配点速度 debug.speed_error</span></span><br><span class="line">  debug-&gt;<span class="built_in">set_speed_error</span>(reference_point.<span class="built_in">v</span>() - s_dot_matched);</span><br><span class="line"></span><br><span class="line">  debug-&gt;<span class="built_in">set_acceleration_reference</span>(reference_point.<span class="built_in">a</span>());</span><br><span class="line">  debug-&gt;<span class="built_in">set_current_acceleration</span>(lon_acceleration);</span><br><span class="line">  <span class="comment">// 设定加速度误差=参考点加速度-纵向加速度/(1-kd)  1-kd由全局坐标转换到Frenet坐标引入，kappa就是曲率</span></span><br><span class="line">  debug-&gt;<span class="built_in">set_acceleration_error</span>(reference_point.<span class="built_in">a</span>() -</span><br><span class="line">                                lon_acceleration / one_minus_kappa_lat_error);</span><br><span class="line"></span><br><span class="line">  <span class="type">double</span> jerk_reference =</span><br><span class="line">      (debug-&gt;<span class="built_in">acceleration_reference</span>() - previous_acceleration_reference_) / ts;</span><br><span class="line">  <span class="type">double</span> lon_jerk =</span><br><span class="line">      (debug-&gt;<span class="built_in">current_acceleration</span>() - previous_acceleration_) / ts;</span><br><span class="line">  debug-&gt;<span class="built_in">set_jerk_reference</span>(jerk_reference);</span><br><span class="line">  debug-&gt;<span class="built_in">set_current_jerk</span>(lon_jerk);</span><br><span class="line">  <span class="comment">// 加加速度误差=加加速度参考-纵向加加速度/(1-kd)存到debug里</span></span><br><span class="line">  debug-&gt;<span class="built_in">set_jerk_error</span>(jerk_reference - lon_jerk / one_minus_kappa_lat_error);</span><br><span class="line">  previous_acceleration_reference_ = debug-&gt;<span class="built_in">acceleration_reference</span>();</span><br><span class="line">  previous_acceleration_ = debug-&gt;<span class="built_in">current_acceleration</span>();</span><br><span class="line"></span><br><span class="line">  debug-&gt;<span class="built_in">set_preview_station_error</span>(preview_point.<span class="built_in">path_point</span>().<span class="built_in">s</span>() - s_matched);</span><br><span class="line">  debug-&gt;<span class="built_in">set_preview_speed_error</span>(preview_point.<span class="built_in">v</span>() - s_dot_matched);</span><br><span class="line">  debug-&gt;<span class="built_in">set_preview_speed_reference</span>(preview_point.<span class="built_in">v</span>());</span><br><span class="line">  debug-&gt;<span class="built_in">set_preview_acceleration_reference</span>(preview_point.<span class="built_in">a</span>());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/94914008ece3eae98e1640ba282f0d96.png"
+                        alt="94914008ece3eae98e1640ba282f0d96.png" 
+                 ></p>
+<h3 id="getpathremain"><a class="markdownIt-Anchor" href="#getpathremain"></a> GetPathRemain()</h3>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">LonController::GetPathRemain</span><span class="params">(SimpleLongitudinalDebug *debug)</span> </span>&#123;</span><br><span class="line">  <span class="type">int</span> stop_index = <span class="number">0</span>;</span><br><span class="line">  <span class="comment">// 定义了静态常量速度阈值，速度小于此阈值认为是停止条件之一</span></span><br><span class="line">  <span class="type">static</span> <span class="keyword">constexpr</span> <span class="type">double</span> kSpeedThreshold = <span class="number">1e-3</span>;</span><br><span class="line">  <span class="comment">// 定义了静态常量加速度常量 前进档时加速度&gt;此阈值且&lt;0认为是停止条件之一</span></span><br><span class="line">  <span class="type">static</span> <span class="keyword">constexpr</span> <span class="type">double</span> kForwardAccThreshold = <span class="number">-1e-2</span>;</span><br><span class="line">  <span class="comment">// 定义了静态常量加速度常量 R档时加速度&lt;此阈值且&gt;0认为是停止条件之一</span></span><br><span class="line">  <span class="type">static</span> <span class="keyword">constexpr</span> <span class="type">double</span> kBackwardAccThreshold = <span class="number">1e-1</span>;</span><br><span class="line">  <span class="comment">// 定义了静态常量驻车速度，也是判断停车点的一个依据</span></span><br><span class="line">  <span class="type">static</span> <span class="keyword">constexpr</span> <span class="type">double</span> kParkingSpeed = <span class="number">0.1</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (trajectory_message_-&gt;<span class="built_in">gear</span>() == canbus::Chassis::GEAR_DRIVE) &#123;</span><br><span class="line">    <span class="comment">// 前进情况</span></span><br><span class="line">    <span class="keyword">while</span> (stop_index &lt; trajectory_message_-&gt;<span class="built_in">trajectory_point_size</span>()) &#123;</span><br><span class="line">      <span class="keyword">auto</span> &amp;current_trajectory_point =</span><br><span class="line">          trajectory_message_-&gt;<span class="built_in">trajectory_point</span>(stop_index);</span><br><span class="line">      <span class="comment">// 遍历每个轨迹点，判断是否满足驻车条件</span></span><br><span class="line">      <span class="keyword">if</span> (<span class="built_in">fabs</span>(current_trajectory_point.<span class="built_in">v</span>()) &lt; kSpeedThreshold &amp;&amp;</span><br><span class="line">          current_trajectory_point.<span class="built_in">a</span>() &gt; kForwardAccThreshold &amp;&amp;</span><br><span class="line">          current_trajectory_point.<span class="built_in">a</span>() &lt; <span class="number">0.0</span>) &#123;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      ++stop_index;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 后退情况</span></span><br><span class="line">    <span class="keyword">while</span> (stop_index &lt; trajectory_message_-&gt;<span class="built_in">trajectory_point_size</span>()) &#123;</span><br><span class="line">      <span class="keyword">auto</span> &amp;current_trajectory_point =</span><br><span class="line">          trajectory_message_-&gt;<span class="built_in">trajectory_point</span>(stop_index);</span><br><span class="line">      <span class="comment">// 遍历每个轨迹点，判断是否满足驻车条件</span></span><br><span class="line">      <span class="keyword">if</span> (current_trajectory_point.<span class="built_in">v</span>() &lt; kSpeedThreshold &amp;&amp;</span><br><span class="line">          current_trajectory_point.<span class="built_in">a</span>() &lt; kBackwardAccThreshold &amp;&amp;</span><br><span class="line">          current_trajectory_point.<span class="built_in">a</span>() &gt; <span class="number">0.0</span>) &#123;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      ++stop_index;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (stop_index == trajectory_message_-&gt;<span class="built_in">trajectory_point_size</span>()) &#123;</span><br><span class="line">    <span class="comment">// 停车下标是最后一个</span></span><br><span class="line">    --stop_index;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">fabs</span>(trajectory_message_-&gt;<span class="built_in">trajectory_point</span>(stop_index).<span class="built_in">v</span>()) &lt;</span><br><span class="line">        kParkingSpeed) &#123;</span><br><span class="line">      ADEBUG &lt;&lt; <span class="string">&quot;the last point is selected as parking point&quot;</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      ADEBUG &lt;&lt; <span class="string">&quot;the last point found in path and speed &gt; speed_deadzone&quot;</span>;</span><br><span class="line">      debug-&gt;<span class="built_in">set_path_remain</span>(<span class="number">10000</span>); <span class="comment">// 设置停车距离无穷远</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 记录当前位置到停车位置的距离</span></span><br><span class="line">  debug-&gt;<span class="built_in">set_path_remain</span>(</span><br><span class="line">      trajectory_message_-&gt;<span class="built_in">trajectory_point</span>(stop_index).<span class="built_in">path_point</span>().<span class="built_in">s</span>() -</span><br><span class="line">      debug-&gt;<span class="built_in">current_station</span>());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="reset"><a class="markdownIt-Anchor" href="#reset"></a> Reset()</h2>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Status <span class="title">LonController::Reset</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  speed_pid_controller_.<span class="built_in">Reset</span>();</span><br><span class="line">  station_pid_controller_.<span class="built_in">Reset</span>();</span><br><span class="line">  <span class="keyword">return</span> Status::<span class="built_in">OK</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="font-colorgreeeclass-trajectoryanalyzerfont"><a class="markdownIt-Anchor" href="#font-colorgreeeclass-trajectoryanalyzerfont"></a> <font color=greee>Class TrajectoryAnalyzer</font></h1>
+<h2 id="trajectoryanalyzer"><a class="markdownIt-Anchor" href="#trajectoryanalyzer"></a> TrajectoryAnalyzer()</h2>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">TrajectoryAnalyzer::<span class="built_in">TrajectoryAnalyzer</span>(</span><br><span class="line">    <span class="type">const</span> planning::ADCTrajectory *planning_published_trajectory) &#123;</span><br><span class="line">  <span class="comment">// 规划轨迹时间戳</span></span><br><span class="line">  header_time_ = planning_published_trajectory-&gt;<span class="built_in">header</span>().<span class="built_in">timestamp_sec</span>();</span><br><span class="line">  <span class="comment">// 规划轨迹帧数</span></span><br><span class="line">  seq_num_ = planning_published_trajectory-&gt;<span class="built_in">header</span>().<span class="built_in">sequence_num</span>();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; planning_published_trajectory-&gt;<span class="built_in">trajectory_point_size</span>();</span><br><span class="line">       ++i) &#123;</span><br><span class="line">    <span class="comment">// 整合规划轨迹点集合</span></span><br><span class="line">    trajectory_points_.<span class="built_in">push_back</span>(</span><br><span class="line">        planning_published_trajectory-&gt;<span class="built_in">trajectory_point</span>(i));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="querymatchedpathpoint"><a class="markdownIt-Anchor" href="#querymatchedpathpoint"></a> QueryMatchedPathPoint()</h2>
+<p><font color=gree>找到离散曲线上离(x,y)最近的点，通过差值算出来的。</font></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">PathPoint <span class="title">TrajectoryAnalyzer::QueryMatchedPathPoint</span><span class="params">(<span class="type">const</span> <span class="type">double</span> x,</span></span></span><br><span class="line"><span class="params"><span class="function">                                                    <span class="type">const</span> <span class="type">double</span> y)</span> <span class="type">const</span> </span>&#123;</span><br><span class="line">  <span class="built_in">CHECK_GT</span>(trajectory_points_.<span class="built_in">size</span>(), <span class="number">0</span>);</span><br><span class="line">  <span class="comment">// 计算轨迹第一个点到（x,y）的距离</span></span><br><span class="line">  <span class="type">double</span> d_min = <span class="built_in">PointDistanceSquare</span>(trajectory_points_.<span class="built_in">front</span>(), x, y);</span><br><span class="line">  <span class="type">size_t</span> index_min = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">size_t</span> i = <span class="number">1</span>; i &lt; trajectory_points_.<span class="built_in">size</span>(); ++i) &#123;</span><br><span class="line">    <span class="comment">// 遍历每一个点，选取最近的点</span></span><br><span class="line">    <span class="type">double</span> d_temp = <span class="built_in">PointDistanceSquare</span>(trajectory_points_[i], x, y);</span><br><span class="line">    <span class="keyword">if</span> (d_temp &lt; d_min) &#123;</span><br><span class="line">      d_min = d_temp;</span><br><span class="line">      index_min = i;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 计算最近的范围</span></span><br><span class="line">  <span class="type">size_t</span> index_start = index_min == <span class="number">0</span> ? index_min : index_min - <span class="number">1</span>;</span><br><span class="line">  <span class="type">size_t</span> index_end =</span><br><span class="line">      index_min + <span class="number">1</span> == trajectory_points_.<span class="built_in">size</span>() ? index_min : index_min + <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">  <span class="type">const</span> <span class="type">double</span> kEpsilon = <span class="number">0.001</span>;</span><br><span class="line">  <span class="keyword">if</span> (index_start == index_end ||</span><br><span class="line">      std::<span class="built_in">fabs</span>(trajectory_points_[index_start].<span class="built_in">path_point</span>().<span class="built_in">s</span>() -</span><br><span class="line">                trajectory_points_[index_end].<span class="built_in">path_point</span>().<span class="built_in">s</span>()) &lt;= kEpsilon) &#123;</span><br><span class="line">    <span class="comment">// 输出 PathPoint 的格式</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">TrajectoryPointToPathPoint</span>(trajectory_points_[index_start]);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">FindMinDistancePoint</span>(trajectory_points_[index_start],</span><br><span class="line">                              trajectory_points_[index_end], x, y);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="findmindistancepoint"><a class="markdownIt-Anchor" href="#findmindistancepoint"></a> FindMinDistancePoint()</h3>
+<p><font color=gree>在两点之间找到离(x,y)最近的点，通过黄金分割方法查找。</font></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">PathPoint <span class="title">TrajectoryAnalyzer::FindMinDistancePoint</span><span class="params">(<span class="type">const</span> TrajectoryPoint &amp;p0,</span></span></span><br><span class="line"><span class="params"><span class="function">                                                   <span class="type">const</span> TrajectoryPoint &amp;p1,</span></span></span><br><span class="line"><span class="params"><span class="function">                                                   <span class="type">const</span> <span class="type">double</span> x,</span></span></span><br><span class="line"><span class="params"><span class="function">                                                   <span class="type">const</span> <span class="type">double</span> y)</span> <span class="type">const</span> </span>&#123;</span><br><span class="line">  <span class="comment">// given the fact that the discretized trajectory is dense enough,</span></span><br><span class="line">  <span class="comment">// we assume linear trajectory between consecutive trajectory points.</span></span><br><span class="line">  <span class="keyword">auto</span> dist_square = [&amp;p0, &amp;p1, &amp;x, &amp;y](<span class="type">const</span> <span class="type">double</span> s) &#123;</span><br><span class="line">    <span class="type">double</span> px = common::math::<span class="built_in">lerp</span>(p<span class="number">0.</span><span class="built_in">path_point</span>().<span class="built_in">x</span>(), p<span class="number">0.</span><span class="built_in">path_point</span>().<span class="built_in">s</span>(),</span><br><span class="line">                                   p<span class="number">1.</span><span class="built_in">path_point</span>().<span class="built_in">x</span>(), p<span class="number">1.</span><span class="built_in">path_point</span>().<span class="built_in">s</span>(), s);</span><br><span class="line">    <span class="type">double</span> py = common::math::<span class="built_in">lerp</span>(p<span class="number">0.</span><span class="built_in">path_point</span>().<span class="built_in">y</span>(), p<span class="number">0.</span><span class="built_in">path_point</span>().<span class="built_in">s</span>(),</span><br><span class="line">                                   p<span class="number">1.</span><span class="built_in">path_point</span>().<span class="built_in">y</span>(), p<span class="number">1.</span><span class="built_in">path_point</span>().<span class="built_in">s</span>(), s);</span><br><span class="line">    <span class="type">double</span> dx = px - x;</span><br><span class="line">    <span class="type">double</span> dy = py - y;</span><br><span class="line">    <span class="keyword">return</span> dx * dx + dy * dy;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  PathPoint p = p<span class="number">0.</span><span class="built_in">path_point</span>();</span><br><span class="line">  <span class="type">double</span> s = common::math::<span class="built_in">GoldenSectionSearch</span>(dist_square, p<span class="number">0.</span><span class="built_in">path_point</span>().<span class="built_in">s</span>(),</span><br><span class="line">                                               p<span class="number">1.</span><span class="built_in">path_point</span>().<span class="built_in">s</span>());</span><br><span class="line">  p.<span class="built_in">set_s</span>(s);</span><br><span class="line">  p.<span class="built_in">set_x</span>(common::math::<span class="built_in">lerp</span>(p<span class="number">0.</span><span class="built_in">path_point</span>().<span class="built_in">x</span>(), p<span class="number">0.</span><span class="built_in">path_point</span>().<span class="built_in">s</span>(),</span><br><span class="line">                             p<span class="number">1.</span><span class="built_in">path_point</span>().<span class="built_in">x</span>(), p<span class="number">1.</span><span class="built_in">path_point</span>().<span class="built_in">s</span>(), s));</span><br><span class="line">  p.<span class="built_in">set_y</span>(common::math::<span class="built_in">lerp</span>(p<span class="number">0.</span><span class="built_in">path_point</span>().<span class="built_in">y</span>(), p<span class="number">0.</span><span class="built_in">path_point</span>().<span class="built_in">s</span>(),</span><br><span class="line">                             p<span class="number">1.</span><span class="built_in">path_point</span>().<span class="built_in">y</span>(), p<span class="number">1.</span><span class="built_in">path_point</span>().<span class="built_in">s</span>(), s));</span><br><span class="line">  p.<span class="built_in">set_theta</span>(common::math::<span class="built_in">slerp</span>(p<span class="number">0.</span><span class="built_in">path_point</span>().<span class="built_in">theta</span>(), p<span class="number">0.</span><span class="built_in">path_point</span>().<span class="built_in">s</span>(),</span><br><span class="line">                                  p<span class="number">1.</span><span class="built_in">path_point</span>().<span class="built_in">theta</span>(), p<span class="number">1.</span><span class="built_in">path_point</span>().<span class="built_in">s</span>(),</span><br><span class="line">                                  s));</span><br><span class="line">  <span class="comment">// approximate the curvature at the intermediate point</span></span><br><span class="line">  p.<span class="built_in">set_kappa</span>(common::math::<span class="built_in">lerp</span>(p<span class="number">0.</span><span class="built_in">path_point</span>().<span class="built_in">kappa</span>(), p<span class="number">0.</span><span class="built_in">path_point</span>().<span class="built_in">s</span>(),</span><br><span class="line">                                 p<span class="number">1.</span><span class="built_in">path_point</span>().<span class="built_in">kappa</span>(), p<span class="number">1.</span><span class="built_in">path_point</span>().<span class="built_in">s</span>(),</span><br><span class="line">                                 s));</span><br><span class="line">  <span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="totrajectoryframe"><a class="markdownIt-Anchor" href="#totrajectoryframe"></a> ToTrajectoryFrame()</h2>
+<p><font color=greee>将<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo separator="true">,</mo><mi>t</mi><mi>h</mi><mi>e</mi><mi>t</mi><mi>a</mi><mo separator="true">,</mo><mi>v</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(x,y,theta,v)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">t</span><span class="mord mathnormal">h</span><span class="mord mathnormal">e</span><span class="mord mathnormal">t</span><span class="mord mathnormal">a</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mclose">)</span></span></span></span>转换成SL坐标系下的<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>s</mi><mo separator="true">,</mo><mover accent="true"><mi>s</mi><mo>˙</mo></mover><mo separator="true">,</mo><mi>l</mi><mo separator="true">,</mo><msup><mi>l</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(s, \dot s, l, l&#x27;)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.001892em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">s</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.66786em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">s</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.08333000000000002em;"><span class="mord">˙</span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.751892em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>。</font></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">TrajectoryAnalyzer::ToTrajectoryFrame</span><span class="params">(<span class="type">const</span> <span class="type">double</span> x, <span class="type">const</span> <span class="type">double</span> y,</span></span></span><br><span class="line"><span class="params"><span class="function">                                           <span class="type">const</span> <span class="type">double</span> theta, <span class="type">const</span> <span class="type">double</span> v,</span></span></span><br><span class="line"><span class="params"><span class="function">                                           <span class="type">const</span> PathPoint &amp;ref_point,</span></span></span><br><span class="line"><span class="params"><span class="function">                                           <span class="type">double</span> *ptr_s, <span class="type">double</span> *ptr_s_dot,</span></span></span><br><span class="line"><span class="params"><span class="function">                                           <span class="type">double</span> *ptr_d,</span></span></span><br><span class="line"><span class="params"><span class="function">                                           <span class="type">double</span> *ptr_d_dot)</span> <span class="type">const</span> </span>&#123;</span><br><span class="line">  <span class="type">double</span> dx = x - ref_point.<span class="built_in">x</span>();</span><br><span class="line">  <span class="type">double</span> dy = y - ref_point.<span class="built_in">y</span>();</span><br><span class="line"></span><br><span class="line">  <span class="type">double</span> cos_ref_theta = std::<span class="built_in">cos</span>(ref_point.<span class="built_in">theta</span>());</span><br><span class="line">  <span class="type">double</span> sin_ref_theta = std::<span class="built_in">sin</span>(ref_point.<span class="built_in">theta</span>());</span><br><span class="line"></span><br><span class="line">  <span class="comment">// the sin of diff angle between vector (cos_ref_theta, sin_ref_theta) and</span></span><br><span class="line">  <span class="comment">// (dx, dy)</span></span><br><span class="line">  <span class="type">double</span> cross_rd_nd = cos_ref_theta * dy - sin_ref_theta * dx;</span><br><span class="line">  *ptr_d = cross_rd_nd;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// the cos of diff angle between vector (cos_ref_theta, sin_ref_theta) and</span></span><br><span class="line">  <span class="comment">// (dx, dy)</span></span><br><span class="line">  <span class="type">double</span> dot_rd_nd = dx * cos_ref_theta + dy * sin_ref_theta;</span><br><span class="line">  *ptr_s = ref_point.<span class="built_in">s</span>() + dot_rd_nd;</span><br><span class="line"></span><br><span class="line">  <span class="type">double</span> delta_theta = theta - ref_point.<span class="built_in">theta</span>();</span><br><span class="line">  <span class="type">double</span> cos_delta_theta = std::<span class="built_in">cos</span>(delta_theta);</span><br><span class="line">  <span class="type">double</span> sin_delta_theta = std::<span class="built_in">sin</span>(delta_theta);</span><br><span class="line"></span><br><span class="line">  *ptr_d_dot = v * sin_delta_theta;</span><br><span class="line"></span><br><span class="line">  <span class="type">double</span> one_minus_kappa_r_d = <span class="number">1</span> - ref_point.<span class="built_in">kappa</span>() * (*ptr_d);</span><br><span class="line">  <span class="keyword">if</span> (one_minus_kappa_r_d &lt;= <span class="number">0.0</span>) &#123;</span><br><span class="line">    AERROR &lt;&lt; <span class="string">&quot;TrajectoryAnalyzer::ToTrajectoryFrame &quot;</span></span><br><span class="line">              <span class="string">&quot;found fatal reference and actual difference. &quot;</span></span><br><span class="line">              <span class="string">&quot;Control output might be unstable:&quot;</span></span><br><span class="line">           &lt;&lt; <span class="string">&quot; ref_point.kappa:&quot;</span> &lt;&lt; ref_point.<span class="built_in">kappa</span>()</span><br><span class="line">           &lt;&lt; <span class="string">&quot; ref_point.x:&quot;</span> &lt;&lt; ref_point.<span class="built_in">x</span>()</span><br><span class="line">           &lt;&lt; <span class="string">&quot; ref_point.y:&quot;</span> &lt;&lt; ref_point.<span class="built_in">y</span>() &lt;&lt; <span class="string">&quot; car x:&quot;</span> &lt;&lt; x</span><br><span class="line">           &lt;&lt; <span class="string">&quot; car y:&quot;</span> &lt;&lt; y &lt;&lt; <span class="string">&quot; *ptr_d:&quot;</span> &lt;&lt; *ptr_d</span><br><span class="line">           &lt;&lt; <span class="string">&quot; one_minus_kappa_r_d:&quot;</span> &lt;&lt; one_minus_kappa_r_d;</span><br><span class="line">    <span class="comment">// currently set to a small value to avoid control crash.</span></span><br><span class="line">    one_minus_kappa_r_d = <span class="number">0.01</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  *ptr_s_dot = v * cos_delta_theta / one_minus_kappa_r_d;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="querynearestpointbyabsolutetime"><a class="markdownIt-Anchor" href="#querynearestpointbyabsolutetime"></a> QueryNearestPointByAbsoluteTime()</h2>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">TrajectoryPoint <span class="title">TrajectoryAnalyzer::QueryNearestPointByAbsoluteTime</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">const</span> <span class="type">double</span> t)</span> <span class="type">const</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">QueryNearestPointByRelativeTime</span>(t - header_time_);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="querynearestpointbyrelativetime"><a class="markdownIt-Anchor" href="#querynearestpointbyrelativetime"></a> QueryNearestPointByRelativeTime()</h3>
+<p><font color=gree>通过相对时间找到离散轨迹点集里面最近的轨迹点。</font></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">TrajectoryPoint <span class="title">TrajectoryAnalyzer::QueryNearestPointByRelativeTime</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">const</span> <span class="type">double</span> t)</span> <span class="type">const</span> </span>&#123;</span><br><span class="line">  <span class="keyword">auto</span> func_comp = [](<span class="type">const</span> TrajectoryPoint &amp;point,</span><br><span class="line">                      <span class="type">const</span> <span class="type">double</span> relative_time) &#123;</span><br><span class="line">    <span class="keyword">return</span> point.<span class="built_in">relative_time</span>() &lt; relative_time;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 找到时间匹配的下标值</span></span><br><span class="line">  <span class="keyword">auto</span> it_low = std::<span class="built_in">lower_bound</span>(trajectory_points_.<span class="built_in">begin</span>(),</span><br><span class="line">                                 trajectory_points_.<span class="built_in">end</span>(), t, func_comp);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (it_low == trajectory_points_.<span class="built_in">begin</span>()) &#123;</span><br><span class="line">    <span class="keyword">return</span> trajectory_points_.<span class="built_in">front</span>();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (it_low == trajectory_points_.<span class="built_in">end</span>()) &#123;</span><br><span class="line">    <span class="keyword">return</span> trajectory_points_.<span class="built_in">back</span>();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (FLAGS_query_forward_time_point_only) &#123;</span><br><span class="line">    <span class="keyword">return</span> *it_low;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 找最近时间点的轨迹点</span></span><br><span class="line">    <span class="keyword">auto</span> it_lower = it_low - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span> (it_low-&gt;<span class="built_in">relative_time</span>() - t &lt; t - it_lower-&gt;<span class="built_in">relative_time</span>()) &#123;</span><br><span class="line">      <span class="keyword">return</span> *it_low;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> *it_lower;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="querynearestpointbyposition"><a class="markdownIt-Anchor" href="#querynearestpointbyposition"></a> QueryNearestPointByPosition()</h2>
+<p><font color=gree>找到离散轨迹点集里面离(x,y)最近的轨迹点。</font></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">TrajectoryPoint <span class="title">TrajectoryAnalyzer::QueryNearestPointByPosition</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">const</span> <span class="type">double</span> x, <span class="type">const</span> <span class="type">double</span> y)</span> <span class="type">const</span> </span>&#123;</span><br><span class="line">  <span class="type">double</span> d_min = <span class="built_in">PointDistanceSquare</span>(trajectory_points_.<span class="built_in">front</span>(), x, y);</span><br><span class="line">  <span class="type">size_t</span> index_min = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">size_t</span> i = <span class="number">1</span>; i &lt; trajectory_points_.<span class="built_in">size</span>(); ++i) &#123;</span><br><span class="line">    <span class="type">double</span> d_temp = <span class="built_in">PointDistanceSquare</span>(trajectory_points_[i], x, y);</span><br><span class="line">    <span class="keyword">if</span> (d_temp &lt; d_min) &#123;</span><br><span class="line">      d_min = d_temp;</span><br><span class="line">      index_min = i;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> trajectory_points_[index_min];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="trajectorytransformtocom"><a class="markdownIt-Anchor" href="#trajectorytransformtocom"></a> TrajectoryTransformToCOM()</h2>
+<p><font color=gree>将基于后轴中心的轨迹点集转换到基于车辆质心位置的轨迹点集。</font></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * @brief Transform the current trajectory points to the center of mass(COM)</span></span><br><span class="line"><span class="comment">   * of the vehicle, given the distance from rear wheels to the center of mass.</span></span><br><span class="line"><span class="comment">   * @param rear_to_com_distance Distance from rear wheels to</span></span><br><span class="line"><span class="comment">   *        the vehicle&#x27;s center of mass.</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">TrajectoryAnalyzer::TrajectoryTransformToCOM</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">const</span> <span class="type">double</span> rear_to_com_distance)</span> </span>&#123;</span><br><span class="line">  <span class="built_in">CHECK_GT</span>(trajectory_points_.<span class="built_in">size</span>(), <span class="number">0</span>);</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">size_t</span> i = <span class="number">0</span>; i &lt; trajectory_points_.<span class="built_in">size</span>(); ++i) &#123;</span><br><span class="line">    <span class="comment">// 遍历每个轨迹点</span></span><br><span class="line">    <span class="keyword">auto</span> com = <span class="built_in">ComputeCOMPosition</span>(rear_to_com_distance,</span><br><span class="line">                                  trajectory_points_[i].<span class="built_in">path_point</span>());</span><br><span class="line">    trajectory_points_[i].<span class="built_in">mutable_path_point</span>()-&gt;<span class="built_in">set_x</span>(com.<span class="built_in">x</span>());</span><br><span class="line">    trajectory_points_[i].<span class="built_in">mutable_path_point</span>()-&gt;<span class="built_in">set_y</span>(com.<span class="built_in">y</span>());</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="computecomposition"><a class="markdownIt-Anchor" href="#computecomposition"></a> ComputeCOMPosition()</h3>
+<p><font color=gree>将点平移指定距离。</font></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * @brief Compute the position of center of mass(COM) of the vehicle,</span></span><br><span class="line"><span class="comment">   *        given the distance from rear wheels to the center of mass.</span></span><br><span class="line"><span class="comment">   * @param rear_to_com_distance Distance from rear wheels to</span></span><br><span class="line"><span class="comment">   *        the vehicle&#x27;s center of mass.</span></span><br><span class="line"><span class="comment">   * @param path_point PathPoint along the published planning trajectory.</span></span><br><span class="line"><span class="comment">   * @return The position of the vehicle&#x27;s center of mass.</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">common::<span class="function">math::Vec2d <span class="title">TrajectoryAnalyzer::ComputeCOMPosition</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">const</span> <span class="type">double</span> rear_to_com_distance, <span class="type">const</span> PathPoint &amp;path_point)</span> <span class="type">const</span> </span>&#123;</span><br><span class="line">  <span class="comment">// Initialize the vector for coordinate transformation of the position</span></span><br><span class="line">  <span class="comment">// reference point</span></span><br><span class="line">  Eigen::Vector3d v;</span><br><span class="line">  <span class="type">const</span> <span class="type">double</span> cos_heading = std::<span class="built_in">cos</span>(path_point.<span class="built_in">theta</span>());</span><br><span class="line">  <span class="type">const</span> <span class="type">double</span> sin_heading = std::<span class="built_in">sin</span>(path_point.<span class="built_in">theta</span>());</span><br><span class="line">  v &lt;&lt; rear_to_com_distance * cos_heading, rear_to_com_distance * sin_heading,</span><br><span class="line">      <span class="number">0.0</span>;</span><br><span class="line">  <span class="comment">// Original position reference point at center of rear-axis</span></span><br><span class="line">  <span class="function">Eigen::Vector3d <span class="title">pos_vec</span><span class="params">(path_point.x(), path_point.y(), path_point.z())</span></span>;</span><br><span class="line">  <span class="comment">// Transform original position with vector v</span></span><br><span class="line">  Eigen::Vector3d com_pos_3d = v + pos_vec;</span><br><span class="line">  <span class="comment">// Return transfromed x and y</span></span><br><span class="line">  <span class="keyword">return</span> common::math::<span class="built_in">Vec2d</span>(com_pos_3d[<span class="number">0</span>], com_pos_3d[<span class="number">1</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+                    
+                </div>
+
+                
+
+                <div class="post-bottom-tags-and-share border-box">
+                    <div>
+                        
+                    </div>
+                    <div>
+                        
+                            <div class="post-share-container border-box">
+    <ul class="share-list-wrap border-box">
+        <li class="qq share-item border-box flex-center tooltip"
+            data-tooltip-content="分享到 QQ"
+        >
+            <i class="fa-brands fa-qq"></i>
+        </li>
+        <li class="wechat share-item border-box flex-center tooltip tooltip-img"
+            data-tooltip-content="分享到微信"
+            data-tooltip-img-tip="微信扫一扫"
+            data-tooltip-img-style="background-color: #fff; top: -10px; padding: 0.6rem 0.6rem 0.1rem 0.6rem;"
+        >
+            <i class="fa-brands fa-weixin"></i>
+        </li>
+        <li class="weibo share-item border-box flex-center tooltip"
+            data-tooltip-content="分享到微博"
+        >
+            <i class="fa-brands fa-weibo"></i>
+        </li>
+    </ul>
+</div>
+
+                        
+                    </div>
+                </div>
+
+                
+                    
+
+<div class="reward-author-container border-box flex-center">
+    <div class="reward-btn border-box flex-center tooltip tooltip-img"
+            data-tooltip-img-url="/images/pay/pay.png"
+            data-tooltip-img-trigger="click"
+            data-tooltip-img-style="top: -6px;"
+    >
+        <i class="fa-solid fa-gift"></i>&nbsp;请作者吃姜饼
+    </div>
+</div>
+
+                
+
+                
+                    <div class="post-nav border-box">
+                        
+                            <div class="prev-post">
+                                <a class="prev"
+                                   rel="prev"
+                                   href="/2023/05/08/LQR%E7%AE%97%E6%B3%95/"
+                                   title="LQR算法推演"
+                                >
+                                    <span class="left arrow-icon flex-center">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">LQR算法推演</span>
+                                        <span class="post-nav-item">上一篇</span>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                        
+                            <div class="next-post">
+                                <a class="next"
+                                   rel="next"
+                                   href="/2023/02/15/%E8%87%AA%E8%A1%8C%E8%BD%A6%E5%89%8D%E5%90%8E%E8%BD%AE%E8%BD%A8%E8%BF%B9%E9%97%AE%E9%A2%98%20%E4%B9%8B%20%E5%9F%BA%E4%BA%8E%E8%BF%90%E5%8A%A8%E5%AD%A6%E6%A8%A1%E5%9E%8B%E6%8E%A8%E5%AF%BC/"
+                                   title="自行车前后轮轨迹问题 之 基于运动学模型推导"
+                                >
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">自行车前后轮轨迹问题 之 基于运动学模型推导</span>
+                                        <span class="post-nav-item">下一篇</span>
+                                    </span>
+                                    <span class="right arrow-icon flex-center">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                    </div>
+                
+
+                
+                    
+
+
+    <div class="comments-container border-box">
+        <div id="comments-anchor" class="comment-area-title border-box">
+            <i class="fas fa-comments"></i>&nbsp;评论
+        </div>
+        <div class="comment-plugin-fail border-box">
+    <span class="fail-tip">评论插件加载失败</span>
+    <button class="reload keep-button">点击重新加载</button>
+</div>
+<div class="comment-plugin-loading flex-center border-box">
+    <i class="loading-icon fa-solid fa-spinner fa-spin"></i>
+    <span class="load-tip">正在加载评论插件</span>
+</div>
+<script data-pjax>
+  window.KeepCommentPlugin = {}
+  window.KeepCommentPlugin.hideLoading = () => {
+    const cplDom = document.querySelector('.comments-container .comment-plugin-loading')
+    cplDom.style.display = 'none'
+  }
+  window.KeepCommentPlugin.loadFailHandle = () => {
+    window.KeepCommentPlugin.hideLoading()
+    const cpfDom = document.querySelector('.comments-container .comment-plugin-fail')
+    cpfDom.style.display = 'flex'
+    cpfDom.querySelector('.reload').addEventListener('click', () => {
+      window.location.reload()
+    })
+  }
+</script>
+
+        
+            
+
+    <div class="giscus-comments-container">
+        <div class="giscus" id="giscus"></div>
+        <script data-pjax
+                onerror="window.KeepCommentPlugin.loadFailHandle()"
+        >
+          if (!window.KeepCommentPlugin?.getGiscusTheme) {
+            window.KeepCommentPlugin.getGiscusTheme = () => {
+              return document.documentElement.classList.contains('dark-mode') ? 'dark_dimmed' : 'light_tritanopia'
+            }
+          }
+
+          if (!window.KeepCommentPlugin?.changeGiscusTheme) {
+            window.KeepCommentPlugin.changeGiscusTheme = () => {
+              const iframe = document.querySelector('iframe.giscus-frame')
+              iframe && iframe.contentWindow.postMessage({
+                giscus: {
+                  setConfig: {
+                    theme: window.KeepCommentPlugin.getGiscusTheme()
+                  }
+                }
+              }, 'https://giscus.app')
+            }
+          }
+
+          if (!window.KeepCommentPlugin?.initGiscus) {
+            window.KeepCommentPlugin.initGiscus = () => {
+              const script = document.createElement('script')
+              script.async = true
+              script.src = 'https://giscus.app/client.js'
+              script.setAttribute('data-repo', 'i-Nog/iNog-blog-comments')
+              script.setAttribute('data-repo-id', 'R_kgDOPF7ymg')
+              script.setAttribute('data-category', 'Announcements')
+              script.setAttribute('data-category-id', 'DIC_kwDOPF7yms4Cscff')
+              script.setAttribute('data-reactions-enabled', '0')
+              script.setAttribute('data-lang', 'zh-CN')
+              script.setAttribute('data-mapping', 'pathname')
+              script.setAttribute('data-strict', '0')
+              script.setAttribute('data-emit-metadata', '0')
+              script.setAttribute('data-input-position', 'top')
+              script.setAttribute('crossorigin', 'anonymous')
+              script.setAttribute('loading', 'lazy')
+              script.setAttribute('data-theme', window.KeepCommentPlugin.getGiscusTheme())
+              document.querySelector('.giscus-comments-container').appendChild(script)
+              script.onerror = () => {
+                window.KeepCommentPlugin.loadFailHandle()
+              }
+              script.onload = () => {
+                window.KeepCommentPlugin.hideLoading()
+              }
+              const toggleThemeBtn = document.querySelector('.tool-toggle-theme-mode')
+              toggleThemeBtn && toggleThemeBtn.addEventListener('click', () => {
+                window.KeepCommentPlugin.changeGiscusTheme()
+              })
+            }
+          }
+
+          if ('true' === "true") {
+            setTimeout(() => {
+              window.KeepCommentPlugin.initGiscus()
+            }, 1000)
+          } else {
+            window.addEventListener("DOMContentLoaded", window.KeepCommentPlugin.initGiscus)
+          }
+        </script>
+    </div>
+
+
+        
+    </div>
+
+
+
+
+
+                
+            </div>
+        </div>
+
+        
+            <div class="pc-post-toc right-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#font-colorgreeeclass-loncontrollerfont"><span class="nav-text"> Class LonController</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#loncontroller"><span class="nav-text"> LonController()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#closelogfile"><span class="nav-text"> CloseLogFile()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#init"><span class="nav-text"> Init()</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#setdigitalfilterpitchangle"><span class="nav-text"> SetDigitalFilterPitchAngle()</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#setdigitalfilter"><span class="nav-text"> SetDigitalFilter()</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#loadcontrolcalibrationtable"><span class="nav-text"> LoadControlCalibrationTable()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#computecontrolcommand"><span class="nav-text"> ComputeControlCommand()</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#computelongitudinalerrors"><span class="nav-text"> ComputeLongitudinalErrors()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#getpathremain"><span class="nav-text"> GetPathRemain()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reset"><span class="nav-text"> Reset()</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#font-colorgreeeclass-trajectoryanalyzerfont"><span class="nav-text"> Class TrajectoryAnalyzer</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#trajectoryanalyzer"><span class="nav-text"> TrajectoryAnalyzer()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#querymatchedpathpoint"><span class="nav-text"> QueryMatchedPathPoint()</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#findmindistancepoint"><span class="nav-text"> FindMinDistancePoint()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#totrajectoryframe"><span class="nav-text"> ToTrajectoryFrame()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#querynearestpointbyabsolutetime"><span class="nav-text"> QueryNearestPointByAbsoluteTime()</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#querynearestpointbyrelativetime"><span class="nav-text"> QueryNearestPointByRelativeTime()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#querynearestpointbyposition"><span class="nav-text"> QueryNearestPointByPosition()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#trajectorytransformtocom"><span class="nav-text"> TrajectoryTransformToCOM()</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#computecomposition"><span class="nav-text"> ComputeCOMPosition()</span></a></li></ol></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+        </div>
+
+        <div class="page-main-content-bottom border-box">
+            
+<footer class="footer border-box">
+    <div class="copyright-info info-item">
+    &copy;&nbsp;<span>2021</span>&nbsp;-&nbsp;2025
+    
+            &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/">i-Nog</a>
+        
+    </div>
+
+    <div class="theme-info info-item">
+        由&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;驱动&nbsp;&&nbsp;主题&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
+    </div>
+
+    
+        
+        <div class="deploy-info info-item">
+            
+            本站由 <span class="tooltip" data-tooltip-content="GitHub Pages"><img src="/images/brands/github.png"></span> 提供部署服务
+            
+        </div>
+    
+
+    
+        <div class="count-info info-item">
+            
+                <span class="count-item border-box word">
+                    <span class="item-type border-box">总字数</span>
+                    <span class="item-value border-box word">105.3k</span>
+                </span>
+            
+
+            
+
+            
+        </div>
+    
+
+    
+        <div class="record-info info-item">
+            
+                
+            
+        </div>
+    
+</footer>
+
+        </div>
+    </div>
+
+    <!-- post tools -->
+    
+        <div class="post-tools right-toc">
+            <div class="post-tools-container border-box">
+    <ul class="post-tools-list border-box">
+        <!-- PC encrypt again -->
+        
+
+        <!-- PC TOC show toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- PC go comment -->
+        
+            <li class="tools-item flex-center go-to-comments">
+                <i class="fas fa-comment"></i>
+                <span class="post-comments-count"></span>
+            </li>
+        
+
+        <!-- PC full screen -->
+        <li class="tools-item flex-center full-screen">
+            <i class="fa-solid fa-expand"></i>
+        </li>
+    </ul>
+</div>
+
+        </div>
+    
+
+    <!-- side tools -->
+    <div class="side-tools">
+        <div class="side-tools-container border-box ">
+    <ul class="side-tools-list side-tools-show-handle border-box">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <!-- toggle mode -->
+        
+            <li class="tools-item tool-toggle-theme-mode flex-center">
+                <i class="fas fa-moon"></i>
+            </li>
+        
+
+        <!-- rss -->
+        
+
+        <!-- to bottom -->
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list border-box">
+        
+            <li class="tools-item toggle-show-toc-tablet flex-center">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        
+            <li class="tools-item go-to-comments-tablet flex-center">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+        <li class="tools-item tool-scroll-to-top flex-center show-arrow">
+            <i class="arrow fas fa-arrow-up"></i>
+            <span class="percent"></span>
+        </li>
+    </ul>
+</div>
+
+    </div>
+
+    <!-- image mask -->
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
+</div>
+
+
+    <!-- local search -->
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+    <!-- tablet toc -->
+    
+        <div class="tablet-post-toc-mask">
+            <div class="tablet-post-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#font-colorgreeeclass-loncontrollerfont"><span class="nav-text"> Class LonController</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#loncontroller"><span class="nav-text"> LonController()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#closelogfile"><span class="nav-text"> CloseLogFile()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#init"><span class="nav-text"> Init()</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#setdigitalfilterpitchangle"><span class="nav-text"> SetDigitalFilterPitchAngle()</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#setdigitalfilter"><span class="nav-text"> SetDigitalFilter()</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#loadcontrolcalibrationtable"><span class="nav-text"> LoadControlCalibrationTable()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#computecontrolcommand"><span class="nav-text"> ComputeControlCommand()</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#computelongitudinalerrors"><span class="nav-text"> ComputeLongitudinalErrors()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#getpathremain"><span class="nav-text"> GetPathRemain()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reset"><span class="nav-text"> Reset()</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#font-colorgreeeclass-trajectoryanalyzerfont"><span class="nav-text"> Class TrajectoryAnalyzer</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#trajectoryanalyzer"><span class="nav-text"> TrajectoryAnalyzer()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#querymatchedpathpoint"><span class="nav-text"> QueryMatchedPathPoint()</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#findmindistancepoint"><span class="nav-text"> FindMinDistancePoint()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#totrajectoryframe"><span class="nav-text"> ToTrajectoryFrame()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#querynearestpointbyabsolutetime"><span class="nav-text"> QueryNearestPointByAbsoluteTime()</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#querynearestpointbyrelativetime"><span class="nav-text"> QueryNearestPointByRelativeTime()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#querynearestpointbyposition"><span class="nav-text"> QueryNearestPointByPosition()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#trajectorytransformtocom"><span class="nav-text"> TrajectoryTransformToCOM()</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#computecomposition"><span class="nav-text"> ComputeCOMPosition()</span></a></li></ol></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        </div>
+    
+</main>
+
+
+
+
+
+<!-- common js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/header-shrink.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/back2top.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/toggle-theme.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/code-block.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/main.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/libs/anime.min.js"></script>
+
+<!-- local search -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/local-search.min.js"></script>
+
+
+<!-- lazyload -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/lazyload.min.js"></script>
+
+
+<div class="pjax">
+    <!-- home page -->
+    
+
+    <!-- post page -->
+    
+        <!-- post-helper -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/post/post-helper.min.js"></script>
+
+        <!-- toc -->
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/post/toc.min.js"></script>
+        
+
+        <!-- copyright-info -->
+        
+
+        <!-- share -->
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/post/share.min.js"></script>
+        
+    
+
+    <!-- categories page -->
+    
+
+    <!-- links page -->
+    
+
+    <!-- photos page -->
+    
+
+    <!-- tools page -->
+    
+</div>
+
+<!-- mermaid -->
+
+
+<!-- pjax -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-keep/4.2.5/js/libs/pjax.min.js"></script>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart()
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd()
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'))
+            KEEP.initExecute()
+        });
+    });
+</script>
+
+
+
+
+    
+        
+    
+
+</body>
+</html>
